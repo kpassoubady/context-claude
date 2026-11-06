@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"name": "primary",
+			"path": "."
+		},
+		{
+			"name": "companion",
+			"path": "../context-claude-companion"
+		},
+		{
+			"name": "setup",
+			"path": "../context-claude-setup"
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "disabled",
+		"markdown.marp.themes": [
+			"./assets/theme.css"
+		],
+		"markdown.marp.html": "all"
+	}
+}

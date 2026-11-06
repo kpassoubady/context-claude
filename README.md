@@ -67,5 +67,5 @@ After this course, participants will be able to:
 
 ## Related Repositories
 
-- [context-engineering-for-claude-code-companion](https://github.com/kpassoubady/context-engineering-for-claude-code-companion) — Student-facing breakout exercises, starter code, and reference solutions.
-- [context-engineering-for-claude-code-setup](https://github.com/kpassoubady/context-engineering-for-claude-code-setup) — Standalone pre-class setup guides and environment verification.
+- [context-claude-companion](https://github.com/kpassoubady/context-claude-companion) — Student-facing breakout exercises, starter code, and reference solutions.
+- [context-claude-setup](https://github.com/kpassoubady/context-claude-setup) — Standalone pre-class setup guides and environment verification.

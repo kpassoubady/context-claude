@@ -8,8 +8,8 @@ Internal course repository for **Context Engineering for Claude Code** (4-hour c
 - `scripts/`: Export and validation tooling.
 
 ## Related Repositories
-- [context-engineering-for-claude-code-companion](https://github.com/kpassoubady/context-engineering-for-claude-code-companion) — Student hands-on lab repository.
-- [context-engineering-for-claude-code-setup](https://github.com/kpassoubady/context-engineering-for-claude-code-setup) — Pre-class setup and environment verification.
+- [context-claude-companion](https://github.com/kpassoubady/context-claude-companion) — Student hands-on lab repository.
+- [context-claude-setup](https://github.com/kpassoubady/context-claude-setup) — Pre-class setup and environment verification.
 
 ## Verification Steps
 TBD
