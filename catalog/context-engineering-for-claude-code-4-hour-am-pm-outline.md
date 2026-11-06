@@ -21,7 +21,7 @@ The instructor delivers the same four-hour session to both cohorts. The afternoo
 
 ## Course Overview
 
-Participants learn context engineering principles specific to Claude Code. They begin by examining why static prompt engineering falls short in iterative agent loops and how unmanaged tool outputs cause context rot. They explore how Claude Code discovers and filters information at runtime using upfront project instructions in CLAUDE.md and on-demand search with glob and grep. Participants then practice preserving agent coherence across long tasks using transcript compaction, external note-taking, and sub-agent architectures. The session concludes with concrete diagnostic methods to identify context dilution, measure token efficiency, and iteratively improve context configurations.
+Participants learn how context engineering extends prompt design across the full information environment of an AI coding assistant. They examine how relevant project context is loaded or retrieved during a Claude Code session, including project instructions, scoped rules, auto memory, Skills, file-search tools, and MCP tool discovery. They practice managing long tasks with focused compaction, durable notes, fresh-session handoffs, and isolated subagents. The session also distinguishes RAG for external knowledge sources from direct project-file retrieval and introduces repeatable evaluation based on task correctness, instruction adherence, and context or usage cost.
 
 ## Main Topics Covered
 
@@ -34,10 +34,11 @@ Participants learn context engineering principles specific to Claude Code. They 
 
 By the end of the session, participants will be able to:
 
-- Distinguish context engineering from prompt engineering in the context of Claude Code.
-- Describe how Claude Code retrieves and manages context at runtime using files and tools.
-- Maintain agent coherence across extended workflows using compaction, structured handoffs, and external context.
-- Recognize how context decisions affect output reliability, error rates, and token efficiency.
+- Explain how context engineering extends prompt design across instructions, files, tools, and memory.
+- Describe how Claude Code combines startup context with information retrieved on demand.
+- Configure concise project guidance and select appropriate retrieval, memory, and delegation strategies for a task.
+- Manage long-running work with compaction, durable handoffs, and isolated subagents while checking for lost context.
+- Evaluate context changes using task correctness, instruction adherence, and context or usage cost.
 
 ## Project Context and Tools
 
@@ -57,37 +58,37 @@ Participants should have:
 
 #### Concept & Demo
 
-The instructor contrasts conventional prompt engineering with context engineering in autonomous agent workflows. In simple chat interfaces, crafting clever instructions often suffices. In agentic tools like Claude Code, the model operates in a loop of reading files, executing shell commands, and interpreting errors. The demonstration illustrates how unmanaged tool outputs and compiler logs cause context rot, where accumulated irrelevant tokens degrade instruction adherence and induce hallucinations. Participants observe how agent reliability depends on deliberate context curation, explicit working-memory boundaries, and selective retrieval rather than prompt phrasing alone.
+The instructor explains how context engineering extends prompt design to the information available throughout an agentic workflow. Unlike a single-turn prompt, Claude Code can read files, run commands, inspect results, and take further actions; each step may add useful or distracting information to the working context. The demonstration compares a broad, noisy context with a focused set of relevant instructions and tool results. Participants discuss how larger or less relevant contexts can reduce recall and focus, without treating hallucination as an inevitable or uniquely caused result of context growth.
 
 ### 2. How Claude Code Manages Context
 
 #### Concept & Demo
 
-The instructor walks through the runtime context lifecycle of Claude Code, examining how the agent discovers, filters, and retains information. The demonstration details how CLAUDE.md files supply upfront project instructions, style conventions, and verification commands without saturating the context window. The instructor shows how Claude Code uses glob patterns and grep regex searches for just-in-time retrieval instead of ingesting entire directories. The demonstration highlights techniques for structuring inputs, formatting CLI outputs, and preventing context bloating during repository reconnaissance.
+The instructor walks through the Claude Code context lifecycle, distinguishing instructions and other context available at session start from information loaded as work proceeds. The core demonstration uses `CLAUDE.md` or `AGENTS.md` project guidance, path-scoped rules in `.claude/rules/`, `/context`, and targeted file-search tools. It also shows how to structure task requests and keep tool output relevant. Auto memory, Skills, and MCP tool discovery, which can defer full tool schemas until needed, are introduced as additional mechanisms rather than explored in depth. The instructor explains that project instructions guide model behavior while permissions and hooks enforce tool-use constraints.
 
 #### Breakout Lab 2.1: Structuring Project Context with CLAUDE.md
 
-Participants inspect a multi-component codebase where Claude Code encounters ambiguous commands, contradictory conventions, and excessive token usage during file exploration. Working in their local environment, participants create and refine a project-level CLAUDE.md alongside targeted directory guidelines. They test and verify that Claude Code retrieves targeted files using glob and grep, follows project standards, and runs verification checks without human corrections.
+Participants inspect a multi-component codebase with ambiguous project guidance and conventions that should apply only to selected files. They create or refine a concise project-level `CLAUDE.md` and add a path-scoped rule for one component. They use Claude Code's file-search tools to retrieve relevant files and inspect `/context` to see what guidance is available.
 
-Lab outcome: A tested CLAUDE.md configuration with project instructions, verification commands, and documented evidence of reduced retrieval token overhead during agent exploration.
+Lab outcome: A tested project guidance configuration with verification commands, evidence that the relevant instructions are available for a repeatable task, and a before-and-after record of task results and context use. Token reduction is measured when observed, not assumed.
 
 ### 3. Maintaining Coherence Across Long Tasks
 
 #### Concept & Demo
 
-The instructor demonstrates strategies for preserving context coherence across extended, multi-turn development workflows. The demonstration covers Claude Code compaction, showing how to prune discarded hypotheses and redundant terminal logs while retaining critical architecture decisions, file paths, and active goals. The instructor illustrates external context preservation using structured scratchpad notes in persistent documentation directories, lightweight retrieval mechanisms, and sub-agent exploration architectures that delegate exploratory tasks to isolated child contexts before summarizing findings to the primary session.
+The instructor demonstrates strategies for extended development workflows. The class compares automatic compaction with a focused `/compact` request and discusses the limits of summaries: details may be lost even though some instructions and memory are re-injected or reloaded. The instructor shows how durable task notes and a fresh-session handoff provide another way to carry state forward. Subagents are introduced as isolated workers whose intermediate tool activity stays in their own context and whose findings are summarized for the parent. The class also compares direct project-file retrieval with RAG when relevant information lives in a large external corpus.
 
 #### Breakout Lab 3.1: Context Compaction and State Handoffs
 
-Participants inherit an ongoing debugging session with a bloated context history showing early signs of degradation. Participants analyze token accumulation, execute a structured compaction pass, and record active task state and architectural constraints into persistent scratchpad notes. They then transfer the task into a fresh agent session and verify that Claude Code completes the fix without repeating earlier failed steps or losing context.
+Participants inherit an ongoing debugging session with a long history of investigation and tool output. They use a focused compaction request, inspect the resulting summary, and write a concise handoff with the goal, current state, constraints, relevant files, failed approaches, and next verification steps. They continue in a fresh session and check the handoff against the repository and test results rather than assuming all prior context was preserved.
 
-Lab outcome: A documented handoff record including a distilled task summary, durable scratchpad notes, and verified test execution completed in a fresh agent session.
+Lab outcome: A durable task handoff and evidence that a fresh session can resume the task, re-check relevant files, and run the required verification. Participants note any missing or incorrect state they discover.
 
 ### 4. Context Quality and Iteration
 
 #### Concept & Demo
 
-The instructor presents methods for diagnosing context quality, measuring token efficiency, and refining context architectures over time. The demonstration identifies three primary context hazards: noise from verbose tool responses, staleness from cached file assumptions, and context dilution from redundant instructions. The instructor introduces metrics to track agent performance, including prompt-to-completion token ratios, turns required per task, and instruction compliance rates. The demonstration concludes with a systematic review process for auditing project rules and trimming obsolete guidance to maintain high agent velocity.
+The instructor presents a repeatable way to evaluate context changes. Participants identify hazards such as verbose tool results, stale assumptions, redundant rules, context dilution, or instructions that conflict. The instructor compares the same task before and after a context change, using acceptance tests and instruction adherence as primary quality checks and recording context or usage cost and turns as supporting measures. The class discusses why fewer tokens or fewer turns alone do not prove that a result is better.
 
 ### Session Breakdown Table
 
@@ -107,3 +108,12 @@ The instructor presents methods for diagnosing context quality, measuring token 
 | Course Wrap-up | 15 min |
 | **Total** | **4 hours** |
 
+## Documentation Currency
+
+Reviewed against Anthropic documentation on 2026-11-05. Claude Code changes over time; the instructor should verify command names and feature behavior against the current documentation before each delivery. This outline avoids pinning a Claude Code version unless a lab depends on a specific release.
+
+- [Claude Code memory and project instructions](https://code.claude.com/docs/en/memory)
+- [Claude Code context window](https://code.claude.com/docs/en/context-window)
+- [Claude Code features overview](https://code.claude.com/docs/en/features-overview)
+- [Claude Code permissions](https://code.claude.com/docs/en/permissions)
+- [Anthropic: Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
