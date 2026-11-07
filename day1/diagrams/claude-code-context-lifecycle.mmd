@@ -1,0 +1,27 @@
+%%{init: {"flowchart": {"wrappingWidth": 420}, "themeVariables": {"fontSize": "20px", "fontFamily": "Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif", "primaryColor": "#e3f2fd", "primaryTextColor": "#1e293b", "primaryBorderColor": "#1a73e8", "lineColor": "#1a73e8", "secondaryColor": "#fff3e0", "tertiaryColor": "#e8f5e9", "background": "#ffffff", "edgeLabelBackground": "#ffffff", "clusterBkg": "#f5f7fa", "clusterBorder": "#e2e8f0", "titleColor": "#1a73e8"}}}%%
+flowchart LR
+    subgraph STARTUP["<b>1. Loaded at Session Start</b>"]
+        direction LR
+        S_CLAUDE["<b>📄 Root CLAUDE.md</b><br/>& @AGENTS.md imports"] --> S_MEM["<b>🧠 Auto Memory</b><br/>MEMORY.md & skill metadata"]
+    end
+
+    subgraph DEMAND["<b>2. Loaded On Demand</b>"]
+        direction LR
+        D_RULES["<b>📂 Scoped .claude/rules/</b><br/>triggered by paths: globs"] --> D_SEARCH["<b>🔎 Targeted Retrieval</b><br/>Glob, Grep, Read, Skills, MCP"]
+    end
+
+    subgraph WINDOW["<b>3. Active Working Context</b>"]
+        direction LR
+        W_CTX["<b>📊 /context Window</b><br/>instructions + active turns"] --> W_OUT["<b>✅ Grounded Action</b><br/>verified by tests"]
+    end
+
+    STARTUP --> DEMAND
+    DEMAND --> WINDOW
+
+    style S_CLAUDE fill:#e3f2fd,stroke:#1a73e8
+    style S_MEM fill:#f3e5f5,stroke:#7b1fa2
+    style D_RULES fill:#fff3e0,stroke:#e65100
+    style D_SEARCH fill:#fff3e0,stroke:#e65100
+    style W_CTX fill:#1a73e8,stroke:#0d47a1,color:#fff
+    style W_OUT fill:#e8f5e9,stroke:#2e7d32
+

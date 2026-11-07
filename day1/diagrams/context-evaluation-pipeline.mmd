@@ -1,0 +1,15 @@
+%%{init: {"flowchart": {"wrappingWidth": 420}, "themeVariables": {"fontSize": "20px", "fontFamily": "Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif", "primaryColor": "#e3f2fd", "primaryTextColor": "#1e293b", "primaryBorderColor": "#1a73e8", "lineColor": "#1a73e8", "secondaryColor": "#fff3e0", "tertiaryColor": "#e8f5e9", "background": "#ffffff", "edgeLabelBackground": "#ffffff", "clusterBkg": "#f5f7fa", "clusterBorder": "#e2e8f0", "titleColor": "#1a73e8"}}}%%
+flowchart LR
+    BASE["<b>📌 Controlled Baseline</b><br/>same commit, prompt & tools"] --> CHANGE["<b>🔧 Context Change</b><br/>refined CLAUDE.md or rules"]
+    CHANGE --> GATE{"<b>🛡️ Quality & Safety Gates</b><br/>tests + adherence + safety"}
+    GATE -- "fail any gate" --> REJECT["<b>❌ Reject & Roll Back</b><br/>token savings never excuse failure"]
+    GATE -- "all gates pass" --> COST["<b>📊 Compare Efficiency</b><br/>/context, /cost & turns"]
+    COST --> ACCEPT["<b>✅ Adopt Context Change</b><br/>proven improvement"]
+
+    style BASE fill:#e3f2fd,stroke:#1a73e8
+    style CHANGE fill:#f3e5f5,stroke:#7b1fa2
+    style GATE fill:#1a73e8,stroke:#0d47a1,color:#fff
+    style REJECT fill:#fce4ec,stroke:#c62828
+    style COST fill:#fff3e0,stroke:#e65100
+    style ACCEPT fill:#e8f5e9,stroke:#2e7d32
+
