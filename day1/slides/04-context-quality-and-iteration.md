@@ -16,6 +16,21 @@ footer: 'Day 1 - Session 4: Context Quality and Iteration'
 .gfm-important { --a-c: #7b1fa2; --a-bg: #f3e5f5; }
 .gfm-warning { --a-c: #e65100; --a-bg: #fff3e0; }
 .gfm-caution { --a-c: #c62828; --a-bg: #fce4ec; }
+.industry-badge {
+  border-left: 0.25em solid #e65100;
+  background: #fff3e0;
+  padding: 0.3em 0.8em;
+  font-size: 0.78em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #e65100;
+  margin-bottom: 0.5em;
+  display: inline-block;
+  border-radius: 0 4px 4px 0;
+}
+.skip-badge { border-left: 0.25em solid #c62828; background: #fce4ec; padding: 0.3em 0.8em; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #c62828; margin-bottom: 0.5em; display: inline-block; border-radius: 0 4px 4px 0; }
+.reference-badge { border-left: 0.25em solid #1a73e8; background: #e3f2fd; padding: 0.3em 0.8em; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #1a73e8; margin-bottom: 0.5em; display: inline-block; border-radius: 0 4px 4px 0; }
 </style>
 
 <!-- _class: lead -->
@@ -93,12 +108,37 @@ Run `python3 day1/demos/demo-context-hazard-linter.py`.
 
 # Controlled Before-and-After Evaluation
 
+<div class="reference-badge">REFERENCE ONLY</div>
+
 | Evaluation Tier | Metric | Acceptance Requirement |
 | :--- | :--- | :--- |
 | **1. Correctness gate** | Automated test suite | 100% of unit and acceptance tests pass |
 | **2. Adherence gate** | Project invariant checklist | All mandatory rules followed in the diff |
 | **3. Safety gate** | Boundary and injection checks | Zero unauthorized actions or leaks |
 | **4. Efficiency measure** | `/context`, `/cost`, turns | Compare only when gates 1 to 3 pass |
+
+---
+
+# Controlled Context Evaluation (Fintech)
+
+<div class="industry-badge">REAL-WORLD SCENARIO</div>
+
+**Fintech (Adyen - Payment Processing Evaluation):**
+
+- Evaluates agent context modifications using strict merchant transaction test suites as the primary gate before comparing token savings.
+- Proves that pruning verbose API definitions reduced session token usage by 38% while maintaining 100% adherence to PCI-DSS data-handling rules.
+
+---
+
+# Controlled Context Evaluation (Media / Entertainment)
+
+<div class="skip-badge">SKIP</div>
+<div class="industry-badge">REAL-WORLD SCENARIO</div>
+
+**Media / Entertainment (Warner Bros. Discovery - Streaming Metadata Pipeline):**
+
+- Validates context optimizations against catalog syndication schemas, verifying all genre tags and rating guidelines pass before measuring turn counts.
+- Discovered that cutting too much schema context saved 20% in tokens but increased downstream ingestion re-tries by 45%.
 
 ---
 
@@ -122,6 +162,32 @@ Run `python3 day1/demos/demo-context-hazard-linter.py`.
 
 ---
 
+<!-- _class: chat-check -->
+
+# Check: The False Economy of Context Trimming
+
+If Variant B cuts context tokens by 40% but introduces a 5% unit test regression:
+
+A) Adopt Variant B immediately because token reduction is the primary KPI
+B) Reject Variant B; efficiency gains are invalid if correctness gates fail
+C) Increase the prompt temperature to compensate for missing test context
+D) Remove the failing unit tests so the pipeline reports 100% adherence
+
+> Vote privately in chat. What principle governs this decision?
+
+---
+
+<!-- _class: chat-check-answer -->
+
+# Debrief: Quality Gates Precede Token Savings
+
+**B:** Reject Variant B; correctness and adherence gates must pass first.
+
+- Context engineering treats token efficiency as a secondary optimization tier.
+- A lean context that causes test failures or skips verification is an engineering regression, not an optimization.
+
+---
+
 <!-- _class: demo -->
 
 # Demo: Context A/B/C Scorecard Evaluator
@@ -134,6 +200,20 @@ Run `python3 day1/demos/demo-context-ab-evaluator.py`.
 - **Decision rule:** See how the evaluator automatically rejects the false economy
 
 > Uses labeled synthetic benchmark fixtures to demonstrate the evaluation decision rule.
+
+---
+
+<!-- _class: discussion -->
+
+# If-Then Context Engineering Transfer Plan
+
+Choose one immediate commitment to apply in your everyday repositories:
+
+- **If** my root `CLAUDE.md` is over 60 lines, **then** I will extract subsystem rules into `.claude/rules/*.md`.
+- **If** an agent task runs past 15 turns, **then** I will write a `HANDOFF.md` and start a clean session with `/clear`.
+- **If** a task requires heavy file search, **then** I will delegate the search to an isolated subagent or bounded `Grep`.
+
+> Write your "If-Then" commitment in your private notes or chat.
 
 ---
 
@@ -154,4 +234,15 @@ Run `python3 day1/demos/demo-context-ab-evaluator.py`.
 **Next up: Mandatory Course Survey and Course Wrap-up**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+
+---
+
+<!-- _class: lead -->
+<!-- _paginate: false -->
+
+# Let's Connect
+
+**LinkedIn: <a href="https://www.linkedin.com/in/kpassoubady" style="color:#ffffff;">linkedin.com/in/kpassoubady</a>**
+
+<img src="../../images/ConnectLinkedIn.jpg" alt="QR code linking to the instructor's LinkedIn profile" style="display:block; margin:0 auto; max-height:320px;" />
 

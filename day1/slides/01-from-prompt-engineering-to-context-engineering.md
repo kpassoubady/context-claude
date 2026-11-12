@@ -16,6 +16,30 @@ footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
 .gfm-important { --a-c: #7b1fa2; --a-bg: #f3e5f5; }
 .gfm-warning { --a-c: #e65100; --a-bg: #fff3e0; }
 .gfm-caution { --a-c: #c62828; --a-bg: #fce4ec; }
+.personal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; margin: 0.8em 0; }
+.personal-card { border-radius: 16px; box-shadow: 0 8px 20px rgba(30, 41, 59, 0.12); min-height: 155px; padding: 0.9em; }
+.personal-card:nth-child(1) { background: #e3f2fd; border-top: 8px solid #1a73e8; }
+.personal-card:nth-child(2) { background: #fff3e0; border-top: 8px solid #e65100; }
+.personal-card:nth-child(3) { background: #f3e5f5; border-top: 8px solid #7b1fa2; }
+.personal-number { color: #64748b; font-size: 0.72em; font-weight: 700; letter-spacing: 0.08em; }
+.personal-card h2 { font-size: 1.05em; margin: 0.3em 0 0.5em; }
+.personal-card p { font-size: 0.82em; line-height: 1.35; margin: 0; }
+.industry-badge {
+  border-left: 0.25em solid #e65100;
+  background: #fff3e0;
+  padding: 0.3em 0.8em;
+  font-size: 0.78em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #e65100;
+  margin-bottom: 0.5em;
+  display: inline-block;
+  border-radius: 0 4px 4px 0;
+}
+.trick-badge { border-left: 0.25em solid #7b1fa2; background: #f3e5f5; padding: 0.3em 0.8em; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #7b1fa2; margin-bottom: 0.5em; display: inline-block; border-radius: 0 4px 4px 0; }
+.skip-badge { border-left: 0.25em solid #c62828; background: #fce4ec; padding: 0.3em 0.8em; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #c62828; margin-bottom: 0.5em; display: inline-block; border-radius: 0 4px 4px 0; }
+.reference-badge { border-left: 0.25em solid #1a73e8; background: #e3f2fd; padding: 0.3em 0.8em; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #1a73e8; margin-bottom: 0.5em; display: inline-block; border-radius: 0 4px 4px 0; }
 </style>
 
 <!-- _class: lead -->
@@ -27,6 +51,92 @@ footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
 **Day 1 - Session 1**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+
+---
+
+# Prerequisites
+
+Confirm these prerequisites:
+
+- Familiarity with core LLM (Large Language Model) concepts and prompt engineering terminology
+- Basic experience using Claude Code or a comparable AI coding assistant
+- Working knowledge of terminal commands, Git version control, and project navigation
+- Pre-class environment setup verified via `test_setup.py`
+
+---
+
+<!-- _class: chat-waterfall -->
+<!-- 🌊 WATERFALL STRATEGY INJECTION -->
+
+# Introduce Yourself
+
+In one chat message, type:
+
+1. Your name
+2. Your location or time zone
+3. Your role
+4. Your total experience in IT and at your current organization
+
+> ### 🌊 Chat Waterfall
+> **Type your answer in the chat, but do not send it yet.**
+> *Wait for the countdown: 3... 2... 1... BLAST*
+
+---
+
+# A Little Beyond Work
+
+Choose one prompt. Share only what feels comfortable.
+
+<div class="personal-grid">
+<div class="personal-card">
+<div class="personal-number">01</div>
+<h2>Bucket List</h2>
+<p>Name one to three experiences you hope to have.</p>
+</div>
+<div class="personal-card">
+<div class="personal-number">02</div>
+<h2>Recent Trip</h2>
+<p>Share a place you visited and one detail that stayed with you.</p>
+</div>
+<div class="personal-card">
+<div class="personal-number">03</div>
+<h2>Memorable Moment</h2>
+<p>Share a recent moment that made you proud, grateful, or happy.</p>
+</div>
+</div>
+
+> **60 seconds:** Share in chat, speak when invited, keep a private note, or pass.
+
+---
+
+<!-- _class: chat-waterfall -->
+<!-- 🌊 WATERFALL STRATEGY INJECTION -->
+
+# Your Context Engineering Experience
+
+In one chat message, type:
+
+1. **Your current Claude Code or AI assistant experience** (e.g., daily code assistant, occasional prompting, first-time user)
+2. **Your main focus** (e.g., backend services, full-stack apps, refactoring, reviews)
+3. **One context engineering challenge or question** you want answered (e.g., context bloat in long tasks, managing CLAUDE.md rules, compaction loss)
+
+> ### 🌊 Chat Waterfall
+> **Type your answer in the chat, but do not send it yet.**
+> *Wait for the countdown: 3... 2... 1... BLAST*
+
+---
+
+<!-- _class: chat-waterfall-answer -->
+
+# Your Context Engineering Experience: What We Learned
+
+Your responses help us emphasize:
+
+- **Your starting point:** Bridging from single-prompt prompting to multi-turn agentic context
+- **Your focus area:** Tailoring `CLAUDE.md`, scoped rules, and subagents to real project workflows
+- **Your key questions:** Preventing context degradation, managing compaction, and verifying handoffs
+
+> ### 💬 Compare your response with these themes and note one topic to revisit.
 
 ---
 
@@ -70,6 +180,29 @@ footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
 
 ---
 
+# Prompt vs. Context Engineering (Fintech)
+
+<div class="industry-badge">REAL-WORLD SCENARIO</div>
+
+**Fintech (Stripe - Payments Agent & Fraud Analysis):**
+
+- Stripe engineered real-time transaction context across ledger APIs and dispute histories, moving beyond single-turn prompts to multi-turn agent investigations.
+- Dynamic retrieval bounds context size to active merchant accounts and settlement windows, cutting latency and preventing hallucinations during balance reconciliation.
+
+---
+
+# Prompt vs. Context Engineering (Media / Entertainment)
+
+<div class="skip-badge">SKIP</div>
+<div class="industry-badge">REAL-WORLD SCENARIO</div>
+
+**Media / Entertainment (Netflix - Content Localization & Subtitle Agent):**
+
+- Netflix replaced static prompt translation with a context-engineered agent pulling glossaries, character bibles, and scene timestamps dynamically.
+- The system loads episodic lore on demand while keeping subtitle constraints fixed, preserving creative continuity across twenty regional languages.
+
+---
+
 # From Single-Turn Prompts to Agentic Context
 
 <img src="../diagrams/prompt-vs-context-engineering.svg" alt="Comparison between single-turn prompt design and multi-turn agentic context engineering" style="display:block; margin:0 auto; max-height:420px;" />
@@ -103,6 +236,8 @@ footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
 
 # Unfiltered Tool Outputs Cause Bloat
 
+<div class="trick-badge">TRICK OF THE TRADE</div>
+
 ```bash
 # Unbounded test run floods the window with 400 passing traces
 pytest -vv --tb=long
@@ -112,6 +247,21 @@ pytest tests/settlement/test_rounding.py -q --tb=short
 ```
 
 > Bounding command output keeps diagnostic evidence while avoiding thousands of low-signal lines.
+
+---
+
+<!-- _class: chat-check -->
+
+# Predict: Tool Output Context Bloat
+
+When running `pytest -vv --tb=long` across 400 passing tests in an agent session:
+
+A) Output is automatically discarded by the shell without reaching context
+B) Hundreds of passing traces enter the window, diluting core prompt rules
+C) Claude Code automatically triggers `/clear` to protect context limits
+D) Token count remains unchanged because only test errors consume tokens
+
+> Vote privately in chat. Keep your answer visible while the demo runs.
 
 ---
 
@@ -127,6 +277,17 @@ Run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
 - **Verification check:** Review how acceptance criteria catch missed invariants
 
 > Runs locally with synthetic fixtures; pair with `/context` in Claude Code for live inspection.
+
+---
+
+<!-- _class: chat-check-answer -->
+
+# Explain: Output Signal vs. Bloat
+
+**B:** Passing traces flood the window, diluting instruction adherence.
+
+- Unfiltered stdout appends directly into working memory, pushing critical rules far up the context window.
+- Option A is false: tool outputs enter context by default. Bounding commands (e.g. `-q --tb=short`) preserves high signal.
 
 ---
 
@@ -214,4 +375,15 @@ Run `python3 day1/demos/demo-agent-loop-context-growth.py`.
 **Next up: Session 2 - How Claude Code Manages Context**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+
+---
+
+<!-- _class: lead -->
+<!-- _paginate: false -->
+
+# Let's Connect
+
+**LinkedIn: <a href="https://www.linkedin.com/in/kpassoubady" style="color:#ffffff;">linkedin.com/in/kpassoubady</a>**
+
+<img src="../../images/ConnectLinkedIn.jpg" alt="QR code linking to the instructor's LinkedIn profile" style="display:block; margin:0 auto; max-height:320px;" />
 
