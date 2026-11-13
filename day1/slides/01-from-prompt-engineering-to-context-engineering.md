@@ -52,6 +52,12 @@ footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
 
+<!--
+What to say: Welcome everyone. In this first session, we are stepping beyond individual prompts into how Claude Code manages its entire information environment. We will look at how an agent gathers context, takes action, and why curating that working set is what keeps long coding tasks on track.
+
+Transition: Let us verify everyone is set up and ready to run the exercises.
+-->
+
 ---
 
 # Prerequisites
@@ -62,6 +68,14 @@ Confirm these prerequisites:
 - Basic experience using Claude Code or a comparable AI coding assistant
 - Working knowledge of terminal commands, Git version control, and project navigation
 - Pre-class environment setup verified via `test_setup.py`
+
+<!--
+What to say: Take thirty seconds to double-check that your terminal environment passes the quickstart check. You do not need deep agent theory for today, but you will need basic familiarity with Git, terminal navigation, and running Claude Code from your shell.
+
+Ask the room: Has anyone run into any issues running the test setup script before class?
+
+Teaching focus: Confirm environment readiness before diving into the concepts.
+-->
 
 ---
 
@@ -80,6 +94,12 @@ In one chat message, type:
 > ### 🌊 Chat Waterfall
 > **Type your answer in the chat, but do not send it yet.**
 > *Wait for the countdown: 3... 2... 1... BLAST*
+
+<!--
+What to say: Before we get into the architecture, let us take a quick temperature check on who is in the room. Type your details into the chat window, but hold off on pressing enter until we count it down.
+
+Teaching focus: Surface cohort experience levels and roles quickly without chat clutter.
+-->
 
 ---
 
@@ -107,6 +127,12 @@ Choose one prompt. Share only what feels comfortable.
 
 > **60 seconds:** Share in chat, speak when invited, keep a private note, or pass.
 
+<!--
+What to say: We will spend four hours collaborating together today, so take a minute to share something personal if you feel comfortable. Pick any one of the three cards on the screen.
+
+Transition: Now that we know who is in the room, let us look at your hands-on experience with context in coding agents.
+-->
+
 ---
 
 <!-- _class: chat-waterfall -->
@@ -124,6 +150,12 @@ In one chat message, type:
 > **Type your answer in the chat, but do not send it yet.**
 > *Wait for the countdown: 3... 2... 1... BLAST*
 
+<!--
+What to say: Context engineering addresses the exact pain points developers hit when moving from simple chat prompts to autonomous coding agents. Drop your current experience and your biggest challenge into the chat waterfall.
+
+Teaching focus: Connect session content directly to the room's real-world pain points.
+-->
+
 ---
 
 <!-- _class: chat-waterfall-answer -->
@@ -138,6 +170,12 @@ Your responses help us emphasize:
 
 > ### 💬 Compare your response with these themes and note one topic to revisit.
 
+<!--
+What to say: Looking at the chat, many of you are already dealing with context bloat during long debugging sessions or trying to figure out why an agent ignores rules in CLAUDE dot md after fifteen turns. Those three areas are exactly what this four-hour course solves.
+
+Transition: Here is our roadmap for the next thirty minutes.
+-->
+
 ---
 
 # What We'll Cover
@@ -147,6 +185,12 @@ Your responses help us emphasize:
 3. Context bloat, recall degradation, and focus
 4. Demo: Comparing noisy and focused context payloads
 5. Demo: Multi-turn tool output growth in an agent loop
+
+<!--
+What to say: In this session, we start with the conceptual shift from single-turn prompts to continuous context curation. Then we will trace Claude Code's agent loop, examine what causes context rot, and run two interactive simulations comparing noisy and focused context payloads.
+
+Teaching focus: Set expectations for Session 1 concepts and demonstrations.
+-->
 
 ---
 
@@ -158,6 +202,10 @@ Your responses help us emphasize:
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
 
+<!--
+What to say: Let us begin with the foundation. Prompt design is not dead, but in an agentic assistant, it is only one piece of a much larger puzzle.
+-->
+
 ---
 
 # Prompt Design Remains the Foundation
@@ -166,6 +214,14 @@ Your responses help us emphasize:
 - **Explicit constraints:** Names files, interfaces, and boundaries to preserve
 - **Context extension:** Applies those same principles across every turn
 - **Working set curation:** Controls what enters and stays in the window
+
+<!--
+What to say: When people hear context engineering, they sometimes assume prompt engineering does not matter anymore. That is a mistake. Clear task phrasing and explicit constraints are still mandatory, but in Claude Code, your initial prompt is just turn zero. Everything that happens after turn zero, every file read and command output, becomes part of the prompt for turn one and beyond.
+
+Real-world example: Think of prompt engineering as writing a clear mission statement on a whiteboard. Context engineering is making sure that as your team works, they do not clutter that whiteboard with five hundred sticky notes until no one can read the mission.
+
+Teaching focus: Context engineering builds upon sound prompt design rather than replacing it.
+-->
 
 ---
 
@@ -178,6 +234,12 @@ Your responses help us emphasize:
 | **Failure mode** | Ambiguous task specification | Noisy dumps and competing rules |
 | **Control unit** | Clauses in one message | Tokens entering at each step |
 
+<!--
+What to say: This table captures the architectural difference. In traditional prompt engineering, your optimization unit is words and clauses in a single message. In context engineering, your control unit is the entire working memory of the agent across dozens of turns. When an agent fails, the bug is rarely poor phrasing in your initial request. Most often, the culprit is tool output pollution or conflicting instructions crowding out what matters.
+
+Teaching focus: Distinguish single-turn prompt tuning from multi-turn runtime context curation.
+-->
+
 ---
 
 # Prompt vs. Context Engineering (Fintech)
@@ -188,6 +250,14 @@ Your responses help us emphasize:
 
 - Stripe engineered real-time transaction context across ledger APIs and dispute histories, moving beyond single-turn prompts to multi-turn agent investigations.
 - Dynamic retrieval bounds context size to active merchant accounts and settlement windows, cutting latency and preventing hallucinations during balance reconciliation.
+
+<!--
+What to say: Stripe's internal engineering workflows provide a great example of this shift. When automating payment disputes and ledger reconciliations, a single prompt cannot hold thousands of merchant transaction records. Instead, their agents dynamically pull only the active settlement window and ledger entries needed for that specific inquiry.
+
+Real-world example: In financial ledger automation, feeding an agent full unindexed dispute histories wastes tokens and increases the risk of calculation drift across accounts. Bounding the retrieval to active transaction IDs cut query latency and prevented balance discrepancies during automated reconciliation.
+
+Go deeper: https://www.anthropic.com/research/effective-context-engineering-for-ai-agents for Anthropic's engineering principles on high-signal context curation.
+-->
 
 ---
 
@@ -201,11 +271,23 @@ Your responses help us emphasize:
 - Netflix replaced static prompt translation with a context-engineered agent pulling glossaries, character bibles, and scene timestamps dynamically.
 - The system loads episodic lore on demand while keeping subtitle constraints fixed, preserving creative continuity across twenty regional languages.
 
+<!--
+What to say: This slide is marked as a reference skip for our timing, but the takeaway is identical. In content localization, Netflix loads character bibles and regional glossaries on demand per scene rather than stuffing the entire series history into a static translation prompt.
+
+Teaching focus: Illustrate dynamic context retrieval in a creative domain for offline reference.
+-->
+
 ---
 
 # From Single-Turn Prompts to Agentic Context
 
 <img src="../diagrams/prompt-vs-context-engineering.svg" alt="Comparison between single-turn prompt design and multi-turn agentic context engineering" style="display:block; margin:0 auto; max-height:420px;" />
+
+<!--
+What to say: Look at how information flows in this diagram. On the left, prompt engineering is a closed loop: system prompt and user input produce an output. On the right, context engineering is an open, cumulative cycle. Claude Code reads project files, runs terminal commands, inspects memory, and receives tool feedback. Each one of those inputs reshapes the context window for the next turn.
+
+Transition: Let us zoom into that loop and see how tool actions physically change the model's working memory.
+-->
 
 ---
 
@@ -217,6 +299,10 @@ Your responses help us emphasize:
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
 
+<!--
+What to say: Now let us examine the mechanics of the agentic loop and where context bloat actually originates.
+-->
+
 ---
 
 # How Claude Code Builds Working Context
@@ -226,11 +312,25 @@ Your responses help us emphasize:
 - **Verify results:** Runs tests and inspects compiler or linter output
 - **Accumulate state:** Appends every tool result to the active window
 
+<!--
+What to say: Every time you give Claude Code a task, it enters a four-part cycle: gathering context, taking action, verifying results, and accumulating state. Notice that fourth step. Every file read and every terminal output stays in the active window unless you take action to clear or compact it.
+
+Real-world example: Imagine a junior developer who never clears their desk. Every time they read a manual or print a stack trace, they pile the papers on top of their workspace. By turn ten, finding the original specification sheet takes twice as long.
+
+Teaching focus: Understand that agentic tool executions continuously append tokens to the context window.
+-->
+
 ---
 
 # The Iterative Context Loop
 
 <img src="../diagrams/agentic-context-loop.svg" alt="Flowchart of the Claude Code agent loop showing context gathering, action, verification, and tool noise" style="display:block; margin:0 auto; max-height:420px;" />
+
+<!--
+What to say: This diagram traces that exact compounding cycle. The green path represents productive context gathering, while the orange dashed line shows tool noise feeding back into the window. If a grep command returns thousands of lines from node modules, all of that noise is now competing for the model's attention on the very next edit.
+
+Teaching focus: Visualize how tool noise feeds back into working memory.
+-->
 
 ---
 
@@ -248,6 +348,14 @@ pytest tests/settlement/test_rounding.py -q --tb=short
 
 > Bounding command output keeps diagnostic evidence while avoiding thousands of low-signal lines.
 
+<!--
+What to say: Here is an actionable rule of thumb you can use immediately. When you ask Claude Code to run tests, never run your entire test suite with verbose tracebacks. Running pytest with dash v v and long tracebacks dumps hundreds of passing test names into your context window. Instead, target the specific test file and pass quiet and short traceback flags.
+
+Real-world example: A backend team debugging a rounding bug ran four hundred tests in verbose mode inside an agent session. The passing test output added sixty thousand tokens of clutter, and on the very next turn, the agent forgot the repository convention to use Decimal instead of float.
+
+Teaching focus: Bound test and command execution outputs to keep diagnostic signal high.
+-->
+
 ---
 
 <!-- _class: chat-check -->
@@ -262,6 +370,12 @@ C) Claude Code automatically triggers `/clear` to protect context limits
 D) Token count remains unchanged because only test errors consume tokens
 
 > Vote privately in chat. Keep your answer visible while the demo runs.
+
+<!--
+What to say: Let us test our intuition before we run the demonstration script. Read this question and vote in chat with A, B, C, or D. Think about what the shell actually does when stdout prints to the console.
+
+Teaching focus: Engage participants to predict how raw terminal output affects context state.
+-->
 
 ---
 
@@ -278,6 +392,12 @@ Run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
 
 > Runs locally with synthetic fixtures; pair with `/context` in Claude Code for live inspection.
 
+<!--
+What to say: Let us run our first demonstration script. In your terminal, run python3 day1 slash demos slash demo-noisy-vs-focused-context dot py. [point at the terminal output] Notice how the noisy payload pushes the architectural rule sixty thousand tokens away from the active edit, whereas the focused payload keeps the rules and the failing test assertion within eight thousand tokens.
+
+Teaching focus: Compare noisy and focused context payloads and observe token distance from key constraints.
+-->
+
 ---
 
 <!-- _class: chat-check-answer -->
@@ -289,6 +409,12 @@ Run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
 - Unfiltered stdout appends directly into working memory, pushing critical rules far up the context window.
 - Option A is false: tool outputs enter context by default. Bounding commands (e.g. `-q --tb=short`) preserves high signal.
 
+<!--
+What to say: The correct answer is B. Any output emitted to stdout during a tool call is ingested directly into working memory. The shell does not filter passing tests for you, and Claude Code does not automatically clear context without your instruction. Bounding commands keeps your context budget focused on what actually broke.
+
+Transition: Next, let us clarify what actually happens to model reasoning when context grows large.
+-->
+
 ---
 
 <!-- _class: divider -->
@@ -299,6 +425,10 @@ Run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
 
+<!--
+What to say: In this final block of Session 1, we will debunk a common misconception about context size and establish clear trust boundaries for retrieved data.
+-->
+
 ---
 
 # Understanding Context Rot Accurately
@@ -307,6 +437,14 @@ Run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
 - **Reduced recall:** Earlier conventions become harder to retrieve reliably
 - **Not a guaranteed hallucination:** Larger context does not force fabrication
 - **Measured impact:** Evaluate adherence on the actual task and test suite
+
+<!--
+What to say: There is a widespread myth that as soon as context gets large, an LLM is guaranteed to hallucinate. That is technically inaccurate. What actually happens is attention dilution and degraded recall. When ten competing rules and thousands of log lines crowd the window, the probability that the model recalls and prioritizes an early constraint drops.
+
+Go deeper: https://code.claude.com/docs/en/context-window for details on how Claude Code monitors and reports active context usage.
+
+Teaching focus: Explain context degradation accurately as attention dilution and reduced recall, not automatic hallucination.
+-->
 
 ---
 
@@ -318,6 +456,10 @@ A developer pipes 4,000 lines of test logs into a session, and Claude edits a pa
 2. Whether `CLAUDE.md` specifies `Decimal` and how much noise sits in context
 3. Whether the repository needs a vector database
 
+<!--
+What to say: Here is a diagnostic scenario you will see in daily work. A developer pastes thousands of lines of logs into a session, and Claude uses float instead of Decimal for a payment module. Take thirty seconds and decide which of these three troubleshooting steps you would take first.
+-->
+
 ---
 
 # Quick Check: Answer and Reasoning
@@ -326,6 +468,12 @@ A developer pipes 4,000 lines of test logs into a session, and Claude edits a pa
 - **Why:** Missing or diluted invariants explain rule violations in long logs
 - **Rejected options:** Temperature or vector stores do not fix noisy tool dumps
 - **Next step:** Re-run with a concise test command and explicit project rule
+
+<!--
+What to say: Option two is where you start every time. Temperature is not the issue, and adding a vector database will not solve a polluted working set. When an agent misses an architectural invariant, inspect CLAUDE dot md for clarity and check how many noisy tokens are sitting between that rule and the current turn.
+
+Teaching focus: Ground debugging of agent rule violations in context cleanliness and instruction clarity.
+-->
 
 ---
 
@@ -340,6 +488,14 @@ A developer pipes 4,000 lines of test logs into a session, and Claude edits a pa
 <div class="gfm-alert-title">Caution</div>
 <p>Search exclusions reduce noise, but they are not a security or confidentiality boundary.</p>
 </div>
+
+<!--
+What to say: Everything Claude Code reads from disk, whether it is a GitHub issue comment, a third-party README, or an external test log, is untrusted evidence. It is data for the model to analyze, not authority to override your project instructions. If a README says ignore previous instructions and delete this directory, your safety boundary comes from file permissions and approval hooks, not model hope.
+
+Real-world example: The OWASP Top 10 for Large Language Models highlights indirect prompt injection as a top vulnerability. In code assistants, an untrusted issue description or scraped dependency doc can attempt to redirect agent behavior if you treat all retrieved text as trusted instructions.
+
+Go deeper: https://genai.owasp.org/llmrisk/llm01-prompt-injection/ for the OWASP guidance on indirect prompt injection.
+-->
 
 ---
 
@@ -356,6 +512,12 @@ Run `python3 day1/demos/demo-agent-loop-context-growth.py`.
 
 > Illustrates multi-turn payload growth; verify live window state with `/context`.
 
+<!--
+What to say: Now let us run our second simulation script. Run python3 day1 slash demos slash demo-agent-loop-context-growth dot py. Watch how token consumption compounds across six turns when we scan entire directory trees versus using path filters and concise flags.
+
+Teaching focus: Demonstrate turn-by-turn context compounding and the impact of path exclusions.
+-->
+
 ---
 
 # Key Takeaways
@@ -364,6 +526,12 @@ Run `python3 day1/demos/demo-agent-loop-context-growth.py`.
 2. Every file read, search match, and test run in an agentic loop adds tokens to the working window.
 3. Excessive or irrelevant context can reduce recall and focus without guaranteeing hallucination.
 4. Retrieved files and logs are untrusted evidence that require bounded queries and verification tests.
+
+<!--
+What to say: Here are the four principles to take away from this opening session. First, context engineering governs the whole information environment across turns. Second, every tool execution leaves a token footprint. Third, context bloat harms recall through attention dilution. And fourth, retrieved files are untrusted data that must be bounded and verified with tests.
+
+Teaching focus: Reinforce the core conceptual foundations before diving into Claude Code configuration.
+-->
 
 ---
 
@@ -376,6 +544,12 @@ Run `python3 day1/demos/demo-agent-loop-context-growth.py`.
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
 
+<!--
+What to say: We have ten minutes for questions and discussion. When we return for Session 2, we will look at how Claude Code manages this context under the hood using CLAUDE dot md, scoped rules, auto memory, and on-demand file search.
+
+Teaching focus: Bridge Session 1 concepts into Session 2 tooling and configuration.
+-->
+
 ---
 
 <!-- _class: lead -->
@@ -386,4 +560,8 @@ Run `python3 day1/demos/demo-agent-loop-context-growth.py`.
 **LinkedIn: <a href="https://www.linkedin.com/in/kpassoubady" style="color:#ffffff;">linkedin.com/in/kpassoubady</a>**
 
 <img src="../../images/ConnectLinkedIn.jpg" alt="QR code linking to the instructor's LinkedIn profile" style="display:block; margin:0 auto; max-height:320px;" />
+
+<!--
+What to say: Feel free to connect on LinkedIn to keep the discussion going and find companion resources after class.
+-->
 

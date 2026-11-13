@@ -44,6 +44,12 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
 
+<!--
+What to say: Welcome back to Session 2. Now that we understand how the agent loop works, we are going to look under the hood at how Claude Code manages information. We will explore how startup instructions, path-scoped rules, memory, and permissions work together to keep context focused and secure.
+
+Transition: Let us look at what we will cover across this block.
+-->
+
 ---
 
 # What We'll Cover
@@ -54,6 +60,12 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 4. Demo: Inspecting lifecycle loading and execution controls
 5. Breakout Lab 2.1: Structuring Project Context with `CLAUDE.md`
 
+<!--
+What to say: In this session, we map out the lifecycle from startup to on-demand retrieval. We will learn how to write a tight root CLAUDE dot md, configure path-scoped rules, and inspect our active token budget with the slash context command. Then we will run two demos and launch our first hands-on breakout lab.
+
+Teaching focus: Outline Session 2 progression from lifecycle architecture to hands-on lab.
+-->
+
 ---
 
 <!-- _class: divider -->
@@ -63,6 +75,10 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 ## What loads at startup versus on demand
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+
+<!--
+What to say: Let us begin by breaking down what enters the context window when you first start a session versus what loads dynamically as work proceeds.
+-->
 
 ---
 
@@ -75,11 +91,23 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 | **On demand** | `Glob`, `Grep`, `Read`, full Skill and MCP schemas | Added only when task needs them |
 | **Out of band** | Permissions and `PreToolUse` / `PostToolUse` hooks | Enforces policy outside model prose |
 
+<!--
+What to say: Notice the four distinct phases in this table. When you launch Claude Code, root CLAUDE dot md, unconditional rules, and auto memory load immediately. Every token in those files sits in your window from turn one. Path-scoped rules, by contrast, wait until a matching file is touched. And tools like grep and read only pull content when specifically called.
+
+Teaching focus: Distinguish baseline startup token cost from dynamic on-demand retrieval.
+-->
+
 ---
 
 # Claude Code Context Lifecycle
 
 <img src="../diagrams/claude-code-context-lifecycle.svg" alt="Flowchart showing startup context, conditional and on-demand retrieval, and active working context in Claude Code" style="display:block; margin:0 auto; max-height:420px;" />
+
+<!--
+What to say: This diagram visualizes that exact flow. [point at the diagram] On the left, startup files create your initial baseline. In the middle, conditional rules and search tools expand your context on demand. And on the right, your active working context grows as turns accumulate. Keeping startup lean leaves maximum room for your actual coding task.
+
+Transition: Let us look at the built-in tool that shows you this exact breakdown in real time.
+-->
 
 ---
 
@@ -92,6 +120,12 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 - **Verification habit:** Check `/context` before and after restructuring rules
 - **Task reset:** Use `/clear` when switching to an unrelated task
 
+<!--
+What to say: Get into the habit of typing slash context regularly during your sessions. It gives you an immediate breakdown of how your window is partitioned across system instructions, loaded memory files, tool definitions, and conversation turns. If you see startup context eating forty percent of your window before you even begin editing, that is your cue to refactor your project rules.
+
+Teaching focus: Introduce slash context as the primary command for auditing token distribution.
+-->
+
 ---
 
 <!-- _class: divider -->
@@ -101,6 +135,10 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 ## Designing `CLAUDE.md` and `.claude/rules/`
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+
+<!--
+What to say: Now let us look at the primary way developers configure Claude Code: authoring CLAUDE dot md and path-scoped rules.
+-->
 
 ---
 
@@ -115,6 +153,14 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 <div class="gfm-alert-title">Note</div>
 <p>Loaded CLAUDE.md content occupies context tokens; move subsystem details to scoped rules.</p>
 </div>
+
+<!--
+What to say: A common mistake is turning root CLAUDE dot md into an encyclopedia. You do not need to document every API endpoint or legacy migration script here. Keep it to three things: a one-paragraph architecture overview, exact build and test verification commands, and cross-cutting rules that apply to every single file.
+
+Real-world example: An e-commerce team had a bloated, three-hundred-line root CLAUDE dot md mixing legacy migration notes with pricing rules. When the agent was asked to fix an order calculation, it followed an old rule from the migration section and used floating-point discounts instead of integer basis points. Distilling root instructions down to thirty-five lines and moving pricing rules into scoped files eliminated those cross-service errors.
+
+Teaching focus: Establish root CLAUDE dot md as a concise, repo-wide entry point rather than a subsystem manual.
+-->
 
 ---
 
@@ -133,6 +179,14 @@ paths:
 - Run verification with: pytest tests/orders -q
 ```
 
+<!--
+What to say: Here is the syntax for path-scoped rules in the dot claude slash rules directory. Notice the YAML frontmatter at the top with the paths key. This tells Claude Code not to load these rules until a file matching that glob pattern is read or edited. That means frontend developers never pay the context price for backend billing constraints, and vice versa.
+
+Go deeper: https://code.claude.com/docs/en/memory for official syntax and file resolution order in Claude Code.
+
+Teaching focus: Demonstrate path-scoped rule syntax and conditional activation using YAML frontmatter.
+-->
+
 ---
 
 # Path-Scoped Rules (Fintech)
@@ -143,6 +197,12 @@ paths:
 
 - Scoped rules bind banking transaction constraints (strict ISO 4217 currency codes, zero float precision) only to ledger and settlement paths.
 - General developer tasks avoid loading compliance rule overhead, saving thousands of startup context tokens while enforcing strict financial invariants.
+
+<!--
+What to say: Fintech engineering teams like Brex maintain strict ISO currency and ledger invariants across their financial microservices. By binding those rules to ledger and settlement directory paths, developers working on authentication or web interfaces do not waste startup tokens loading banking compliance schemas they do not need.
+
+Real-world example: Binding zero-float precision and idempotency invariants strictly to ledger microservice paths prevents developers in unrelated repositories from hitting context limits or seeing confusing banking constraints during general refactoring.
+-->
 
 ---
 
@@ -155,6 +215,12 @@ paths:
 
 - Path-scoped rules activate DRM and royalty attribution standards exclusively when engineers modify audio ingest and playback pipeline files.
 - Web client and UI developers work in the same monorepo without paying the context token cost of complex audio licensing schemas.
+
+<!--
+What to say: This slide is another reference example showing how audio streaming services scope DRM and royalty rules exclusively to audio ingestion pipelines while leaving the web UI clean.
+
+Teaching focus: Reinforce path scoping benefits across cross-functional monorepos.
+-->
 
 ---
 
@@ -171,6 +237,12 @@ Run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
 
 > Illustrates rule scoping mechanics; verify actual loading with `/context` in your CLI.
 
+<!--
+What to say: Let us run our first Session 2 demonstration. In your terminal, run python3 day1 slash demos slash demo-context-lifecycle-inspector dot py. [point at the output] Compare the startup footprint of a monolithic guide against a concise root guide with scoped rules, and watch how touching the orders service activates the scoped rule dynamically.
+
+Teaching focus: Demonstrate how path-scoped rules load conditionally when target paths are touched.
+-->
+
 ---
 
 <!-- _class: divider -->
@@ -181,6 +253,10 @@ Run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
 
+<!--
+What to say: Next, let us look at Claude Code's advanced context features: auto memory, skills, and model context protocol discovery, and the critical distinction between guidance and security enforcement.
+-->
+
 ---
 
 # Auto Memory, Skills, and MCP Discovery
@@ -189,6 +265,14 @@ Run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
 - **Skills (`SKILL.md`):** Descriptions load at start; full workflow loads on use
 - **MCP tool discovery:** Defers heavy tool schemas until a task needs them
 - **Progressive disclosure:** Keeps baseline startup overhead predictable
+
+<!--
+What to say: Claude Code uses progressive disclosure across three additional capabilities. Auto memory records corrections you make during sessions and loads the first two hundred lines at startup. Skills load short descriptions initially and only pull their full instructions when invoked. And MCP server discovery lets Claude discover tool names without loading heavy JSON schemas until a task needs them.
+
+Go deeper: https://code.claude.com/docs/en/memory for details on how auto memory persists learnings across sessions.
+
+Teaching focus: Explain progressive disclosure mechanisms that keep startup overhead low.
+-->
 
 ---
 
@@ -201,11 +285,25 @@ Run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
 - **Post-action checks:** `PostToolUse` runs linters or checks after an edit completes
 - **Platform boundary:** Least-privilege credentials and CI protect repositories
 
+<!--
+What to say: This is one of the most critical security takeaways in the entire course. Project instructions in CLAUDE dot md are advisory prose. They guide the model's choices, but they cannot enforce security boundaries. If an untrusted README or prompt injection tells Claude to ignore rules and overwrite an environment file, advisory text cannot stop the tool call. Deterministic security requires permission controls and pre-tool-use hooks that intercept calls outside of model reasoning.
+
+Real-world example: A team relied on a sentence in their project guide saying never touch production configuration files. During a complex multi-turn refactor, an untrusted script output instructed the assistant to backup config dot env, and the agent executed the write. Relying on model-facing prose instead of repository permissions and blocking hooks is a dangerous architectural mistake.
+
+Go deeper: https://code.claude.com/docs/en/permissions for configuring deterministic tool permissions and hooks.
+-->
+
 ---
 
 # Guidance and Execution Controls
 
 <img src="../diagrams/guidance-vs-enforcement.svg" alt="Comparison between model-facing advisory guidance and deterministic execution controls using permissions and hooks" style="display:block; margin:0 auto; max-height:420px;" />
+
+<!--
+What to say: Look at how this diagram separates model guidance from execution controls. On the left, CLAUDE dot md sits inside the model context window as advisory guidance. On the right, permissions, pre-tool-use hooks, and CI gates operate out of band. Even if the model decides to run a command, a pre-tool-use hook can cancel the action before it touches your filesystem.
+
+Teaching focus: Contrast in-band model guidance with out-of-band deterministic enforcement gates.
+-->
 
 ---
 
@@ -222,6 +320,12 @@ D) The model API automatically raises a 403 Forbidden error upon reading .env
 
 > Vote privately in chat. Keep your answer visible while the demo runs.
 
+<!--
+What to say: Let us check our understanding before we run the hooks demonstration. Read this scenario and vote in chat with A, B, C, or D. What actually prevents a tool call from editing an environment file?
+
+Teaching focus: Engage the room on the boundary between prompt instructions and execution enforcement.
+-->
+
 ---
 
 <!-- _class: demo -->
@@ -237,6 +341,12 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
 
 > Uses harmless local fixtures to contrast advisory prose with pre- and post-action checks.
 
+<!--
+What to say: Run python3 day1 slash demos slash demo-instructions-vs-permissions-hooks dot py. Notice how the pre-tool-use check halts an unauthorized write attempt before it executes, while post-tool-use runs after the fact to check formatting.
+
+Teaching focus: Show how pre-tool-use hooks intercept actions before execution and contrast with advisory prose.
+-->
+
 ---
 
 <!-- _class: chat-check-answer -->
@@ -248,6 +358,12 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
 - `CLAUDE.md` is model guidance; prompt injection, complex context, or drift can cause instructions to be bypassed.
 - Deterministic controls operate out-of-band: PreToolUse hooks intercept and cancel actions before execution.
 
+<!--
+What to say: The correct answer is B. Only permissions and pre-tool-use hooks provide deterministic enforcement. Advisory text in CLAUDE dot md tells the model what you want it to do, but out-of-band hooks ensure that disallowed actions are physically blocked before execution.
+
+Transition: Now it is time to put these principles into practice in our first hands-on breakout lab.
+-->
+
 ---
 
 <!-- _class: divider -->
@@ -257,6 +373,10 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
 ## Structuring Project Context with `CLAUDE.md`
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+
+<!--
+What to say: Welcome to Breakout Lab 2.1. In this exercise, you will take a cluttered starter repository, restructure its project context, and verify that your scoped rules work as expected.
+-->
 
 ---
 
@@ -273,11 +393,23 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
   - **19-23m:** Verify with `python3 verify_lab.py` and fill `context_comparison.md`
   - **23-25m:** Prepare 60-second evidence share-out
 
+<!--
+What to say: You will work in pairs as driver and navigator in the companion repository under labs slash day1 slash lab2_1. You have twenty-five minutes. Follow the pacing milestones on screen: spend the first four minutes establishing your baseline, seven minutes refactoring instructions, and eight minutes implementing the scoped pricing fix before verifying your result.
+
+Teaching focus: Set clear expectations, pairing roles, and timing checkpoints for Lab 2.1.
+-->
+
 ---
 
 # Lab 2.1 Architecture: Scoped Rule Activation
 
 <img src="../diagrams/claude-code-context-lifecycle.svg" alt="Context lifecycle diagram showing global startup rules vs conditional scoped rules" style="display:block; margin:0 auto; max-height:400px;" />
+
+<!--
+What to say: This diagram matches the exact repository structure you are about to inspect. Root CLAUDE dot md stays lean and delegates orders rules into dot claude slash rules slash orders dot md, which activates only when services slash orders is accessed.
+
+Teaching focus: Ground lab tasks in the scoped rule activation architecture.
+-->
 
 ---
 
@@ -291,6 +423,12 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
    - Open `services/orders/pricing.py`; reject untrusted comments (OWASP LLM01).
    - Implement integer-cents and idempotency validation adhering to the scoped rule.
 4. **Verify & Compare (19-23m):** Run `python3 verify_lab.py` to confirm all 5 checks pass.
+
+<!--
+What to say: Here is your four-step workflow. First, run python3 verify_lab dot py to observe the baseline failures. Second, trim root CLAUDE dot md under sixty lines and author the scoped orders rule. Third, implement the pricing calculation in pricing dot py, watching out for untrusted comment injection. And fourth, re-run verification until all five checks pass.
+
+Teaching focus: Provide an explicit step-by-step roadmap through the lab checkpoints.
+-->
 
 ---
 
@@ -306,6 +444,12 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
   - `python3 verify_lab.py` prints `ALL LAB 2.1 CHECKS PASSED!`.
 - **Share-Out:** 60-second summary explaining your glob pattern and rejected comment.
 
+<!--
+What to say: Keep these constraints in mind: do not edit the tests or the verification script, because they represent your acceptance contract. Remember that comments in source files are untrusted data, so do not let them mislead your arithmetic. Your definition of done is all five checks passing and completing your context comparison table.
+
+Teaching focus: Reinforce lab constraints, security awareness, and definition of done.
+-->
+
 ---
 
 # Key Takeaways
@@ -314,6 +458,12 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
 2. Path-scoped rules in `.claude/rules/` load on demand when matching files are accessed.
 3. Auto memory, Skills, and MCP tool discovery progressively disclose context as needed.
 4. Project instructions guide model behavior, whereas permissions and hooks enforce tool constraints.
+
+<!--
+What to say: As we wrap up Session 2, remember these four pillars. Root CLAUDE dot md should be concise and universal. Scoped rules load on demand based on file paths. Advanced features like memory and skills disclose context progressively. And always enforce security with permissions and hooks, not model-facing prose.
+
+Teaching focus: Consolidate core lessons on context lifecycle, scoped rules, and security controls.
+-->
 
 ---
 
@@ -326,6 +476,12 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
 
+<!--
+What to say: Great work on the lab. We will take five minutes for questions and then a fifteen-minute bio break. When we return, Session 3 will tackle maintaining coherence across long tasks using compaction, handoffs, and subagents.
+
+Teaching focus: Transition smoothly into the bio break and preview Session 3.
+-->
+
 ---
 
 <!-- _class: lead -->
@@ -336,4 +492,8 @@ Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
 **LinkedIn: <a href="https://www.linkedin.com/in/kpassoubady" style="color:#ffffff;">linkedin.com/in/kpassoubady</a>**
 
 <img src="../../images/ConnectLinkedIn.jpg" alt="QR code linking to the instructor's LinkedIn profile" style="display:block; margin:0 auto; max-height:320px;" />
+
+<!--
+What to say: Keep this link handy to access companion materials and connect with the community after class.
+-->
 

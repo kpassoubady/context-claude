@@ -8,6 +8,7 @@ This folder contains build and export helpers for course slide decks, diagrams, 
 |--------|---------|-------|--------|
 | [`build-diagrams.sh`](#build-diagramssh) | Convert `.mmd` Mermaid diagrams to SVG/PNG | `slides/slides-2-day-am-pm/day*/diagrams/*.mmd` | `.svg` and/or `.png` files next to each `.mmd` |
 | [`build-slides.sh`](#build-slidessh) | Convert Marp markdown slide decks to PDF | `slides/**/*.md` | `slides/pdf/**/*.pdf` |
+| [`build-slides-html.sh`](#build-slides-htmlsh) | Convert Marp markdown slide decks to HTML | `day1/slides/*.md` | `day1/slides/html/*.html` |
 | [`export-slides.sh`](#export-slidessh) | Combine and export full course slide decks to PDF | `slides/slides-{1-day,2-day-am-pm,mobile}/` | `exports/slides-*.pdf` |
 | [`export-excalidraw.sh`](#export-excalidrawsh) | Export `.excalidraw` files to SVG/PNG | `book/diagrams/*.excalidraw` | `.excalidraw.svg`, `.excalidraw.png` |
 | [`generate-excalidraw-diagrams.py`](#generate-excalidraw-diagramspy) | Generate `.excalidraw` source files programmatically | Hard-coded diagram definitions | `slides/slides-2-day-am-pm/day2-session2/diagrams/*.excalidraw` |
@@ -71,6 +72,30 @@ Example:
 ```bash
 ./scripts/build-slides.sh
 ./scripts/build-slides.sh -p slides/slides-2-day-am-pm
+```
+
+## build-slides-html.sh
+
+Builds Marp markdown slide decks to HTML format, preserving folder structure under `<slide-dir>/html/`.
+
+### Dependencies
+
+- [Marp CLI](https://marp.app/)
+
+### Usage
+
+```bash
+./scripts/build-slides-html.sh [-p <path>] [-o <output-dir>]
+```
+
+- `-p <path>`: build all `.md` files found recursively under `<path>` (default: `day1/slides/` or `slides/`)
+- `-o <output-dir>`: custom output directory (default: `<slide-dir>/html`)
+
+Examples:
+
+```bash
+./scripts/build-slides-html.sh
+./scripts/build-slides-html.sh -p day1/slides
 ```
 
 ## export-slides.sh

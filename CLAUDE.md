@@ -4,6 +4,7 @@ Internal course repository for **Context Engineering for Claude Code** (4-hour c
 
 ## Directory Layout
 - `catalog/`: Course outlines and delivery guides.
+- `docs/`: Guides and instructor references.
 - `llm-context/`: Stores context for LLM agents.
 - `scripts/`: Export and validation tooling.
 
