@@ -1,7 +1,7 @@
 ---
 marp: true
 theme: default
-style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/blue-theme.css");'
+style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/blue-theme.css");'
 paginate: true
 header: 'Context Engineering for Claude Code'
 footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
@@ -50,7 +50,7 @@ footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
 
 **Day 1 - Session 1**
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Welcome everyone. In this first session, we are stepping beyond individual prompts into how Claude Code manages its entire information environment. We will look at how an agent gathers context, takes action, and why curating that working set is what keeps long coding tasks on track.
@@ -200,7 +200,7 @@ Teaching focus: Set expectations for Session 1 concepts and demonstrations.
 
 ## Shaping the full information environment
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Let us begin with the foundation. Prompt design is not dead, but in an agentic assistant, it is only one piece of a much larger puzzle.
@@ -297,7 +297,7 @@ Transition: Let us zoom into that loop and see how tool actions physically chang
 
 ## How tool actions change the working set
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Now let us examine the mechanics of the agentic loop and where context bloat actually originates.
@@ -423,7 +423,7 @@ Transition: Next, let us clarify what actually happens to model reasoning when c
 
 ## Managing signal, noise, and untrusted inputs
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: In this final block of Session 1, we will debunk a common misconception about context size and establish clear trust boundaries for retrieved data.
@@ -542,7 +542,7 @@ Teaching focus: Reinforce the core conceptual foundations before diving into Cla
 
 **Next up: Session 2 - How Claude Code Manages Context**
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: We have ten minutes for questions and discussion. When we return for Session 2, we will look at how Claude Code manages this context under the hood using CLAUDE dot md, scoped rules, auto memory, and on-demand file search.

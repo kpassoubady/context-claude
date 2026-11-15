@@ -1,7 +1,7 @@
 ---
 marp: true
 theme: default
-style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/blue-theme.css");'
+style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/blue-theme.css");'
 paginate: true
 header: 'Context Engineering for Claude Code'
 footer: 'Day 1 - Session 2: How Claude Code Manages Context'
@@ -42,7 +42,7 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 
 **Day 1 - Session 2**
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Welcome back to Session 2. Now that we understand how the agent loop works, we are going to look under the hood at how Claude Code manages information. We will explore how startup instructions, path-scoped rules, memory, and permissions work together to keep context focused and secure.
@@ -74,7 +74,7 @@ Teaching focus: Outline Session 2 progression from lifecycle architecture to han
 
 ## What loads at startup versus on demand
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Let us begin by breaking down what enters the context window when you first start a session versus what loads dynamically as work proceeds.
@@ -134,7 +134,7 @@ Teaching focus: Introduce slash context as the primary command for auditing toke
 
 ## Designing `CLAUDE.md` and `.claude/rules/`
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Now let us look at the primary way developers configure Claude Code: authoring CLAUDE dot md and path-scoped rules.
@@ -251,7 +251,7 @@ Teaching focus: Demonstrate how path-scoped rules load conditionally when target
 
 ## On-demand capabilities and deterministic boundaries
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Next, let us look at Claude Code's advanced context features: auto memory, skills, and model context protocol discovery, and the critical distinction between guidance and security enforcement.
@@ -372,7 +372,7 @@ Transition: Now it is time to put these principles into practice in our first ha
 
 ## Structuring Project Context with `CLAUDE.md`
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Welcome to Breakout Lab 2.1. In this exercise, you will take a cluttered starter repository, restructure its project context, and verify that your scoped rules work as expected.
@@ -474,7 +474,7 @@ Teaching focus: Consolidate core lessons on context lifecycle, scoped rules, and
 
 **Next up: 15-Minute Bio Break, then Session 3**
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Great work on the lab. We will take five minutes for questions and then a fifteen-minute bio break. When we return, Session 3 will tackle maintaining coherence across long tasks using compaction, handoffs, and subagents.

@@ -1,7 +1,7 @@
 ---
 marp: true
 theme: default
-style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/blue-theme.css");'
+style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/blue-theme.css");'
 paginate: true
 header: 'Context Engineering for Claude Code'
 footer: 'Day 1 - Session 3: Maintaining Coherence Across Long Tasks'
@@ -42,7 +42,7 @@ footer: 'Day 1 - Session 3: Maintaining Coherence Across Long Tasks'
 
 **Day 1 - Session 3**
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Welcome to Session 3. In this block, we tackle the hardest engineering problem in agentic workflows: keeping an agent coherent across long, complex tasks. We will look at what happens when context fills up, how compaction actually works, how to write durable handoffs, and when to delegate work to isolated subagents.
@@ -74,7 +74,7 @@ Teaching focus: Establish Session 3 goals for state preservation and context iso
 
 ## Carrying verified state across long workflows
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Let us begin with compaction and handoffs, the two primary mechanisms for carrying verified state forward as your task grows.
@@ -206,7 +206,7 @@ Transition: Now let us look at how subagents let us explore massive codebases wi
 
 ## Isolating exploration and choosing retrieval tools
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: In this block, we examine subagents for context isolation and clarify when to use local file search versus external retrieval systems.
@@ -322,7 +322,7 @@ Teaching focus: Contrast inline context bloat with subagent synthesis and review
 
 ## Context Compaction & State Handoffs
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Welcome to Breakout Lab 3.1. In this lab, you inherit a real-world debugging session that has accumulated thirty turns of history and an unverified compaction summary.
@@ -426,7 +426,7 @@ Teaching focus: Solidify principles of state verification, compaction auditing, 
 
 **Next up: Kahoot Quiz 1, Break, and Session 4**
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
 What to say: Outstanding work on the handoffs lab. We have five minutes for questions, followed by our mid-course Kahoot quiz and a ten-minute break. In Session 4, we will look at context quality, linting context hazards, and evaluating agent performance.
