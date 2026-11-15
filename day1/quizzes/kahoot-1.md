@@ -10,12 +10,12 @@ Covering Day 1 Sessions 1 through 3:
 ## Q1 (MCQ)
 How does context engineering differ from prompt engineering in an agentic coding workflow?
 
-- A) It shapes the entire runtime information environment across multi-turn tasks
-- B) It replaces prompt wording with automated system commands
-- C) It eliminates the need for instructions in root configuration files
-- D) It strictly forces the model to ignore tool execution results
+- A) It tunes the wording of a single prompt for a better one-shot answer
+- B) It selects which model version answers each turn of the task
+- C) It manages everything the model sees across a multi-turn task
+- D) It moves every instruction out of CLAUDE.md into the first user prompt
 
-**Correct Answer:** A
+**Correct Answer:** C
 **Rationale:** Context engineering controls what enters, stays in, and exits the model context window across an entire multi-turn workflow.
 
 ---
@@ -34,12 +34,12 @@ Every tool execution result returned in Claude Code is automatically appended to
 ## Q3 (MCQ)
 What is a primary risk of accumulating excessive tool outputs and file dumps in context?
 
-- A) Retrieval recall degrades and the model may lose focus on key instructions
-- B) The agent immediately raises a syntax compilation error
-- C) Claude Code revokes local repository git permissions
-- D) Token costs drop as the context window becomes fully saturated
+- A) Outputs are silently discarded once the file count passes a fixed limit
+- B) Claude Code blocks further tool calls until the user runs /clear
+- C) Only the cost changes, and answer quality stays the same at any size
+- D) Recall degrades and the model may lose focus on key instructions
 
-**Correct Answer:** A
+**Correct Answer:** D
 **Rationale:** Context bloat dilutes attention, degrades retrieval precision, and can cause the model to ignore critical instructions.
 
 ---
@@ -47,12 +47,12 @@ What is a primary risk of accumulating excessive tool outputs and file dumps in 
 ## Q4 (MCQ)
 When does Claude Code load the root CLAUDE.md file into session context?
 
-- A) At session startup, occupying context space from turn 1
-- B) Only after a relevant test failure occurs in the workspace
-- C) On demand when the user invokes the /context slash command
-- D) Only when a subagent is explicitly launched by the user
+- A) When Claude first reads a file in the same directory
+- B) At session startup, occupying context space from turn 1
+- C) On demand when the user runs the /context command
+- D) Only after the first /compact reloads it from disk
 
-**Correct Answer:** A
+**Correct Answer:** B
 **Rationale:** Root guidance files load unconditionally at session startup and consume context tokens from the very first turn.
 
 ---
@@ -71,10 +71,10 @@ Rules in .claude/rules/ with file path globs load conditionally when a matching 
 ## Q6 (MCQ)
 How does Claude Code enforce security and operational policy outside model prose guidance?
 
-- A) Through system permissions and PreToolUse or PostToolUse hooks
-- B) By relying exclusively on polite reminders in CLAUDE.md
-- C) By deleting unauthorized source files from the working tree
-- D) By automatically disabling the local terminal shell session
+- A) Through permissions and PreToolUse or PostToolUse hooks
+- B) Through a firmly worded rule at the top of the root CLAUDE.md
+- C) Through a longer system prompt that the model reads on every turn
+- D) Through a path-scoped rule that loads when matching files are read
 
 **Correct Answer:** A
 **Rationale:** Permissions and hooks enforce hard constraints out-of-band deterministically, without relying on model compliance.
@@ -84,12 +84,12 @@ How does Claude Code enforce security and operational policy outside model prose
 ## Q7 (MCQ)
 What is the main purpose of running the /context command in Claude Code?
 
-- A) To inspect token usage across system prompt, tools, memory, and turns
-- B) To permanently wipe all committed changes in the Git working tree
-- C) To reset Claude Code's model weights to base training configuration
-- D) To automatically compress all project files into a zip archive
+- A) To summarize the conversation and free up window space
+- B) To reset the session history and start with a clean window
+- C) To inspect token usage across system prompt, tools, memory, and turns
+- D) To list which files in the repository were edited this session
 
-**Correct Answer:** A
+**Correct Answer:** C
 **Rationale:** `/context` provides visibility into token consumption broken down by system instructions, memory, tools, and conversation history.
 
 ---
@@ -108,26 +108,26 @@ Claude Code auto memory permanently persists full terminal command output transc
 ## Q9 (MCQ)
 What critical information is most at risk of being lost during automatic context compaction?
 
-- A) Exact file paths, line numbers, and intermediate failed test outputs
-- B) The foundational system instructions of Claude Code
-- C) Git commit history stored in the repository object database
-- D) The active model family assigned to the session
+- A) Root CLAUDE.md instructions, which are never reloaded after compaction
+- B) Exact line numbers, error codes, and rejected fixes
+- C) Auto memory notes, which are cleared on every compaction
+- D) Git commit history that the repository stores on disk
 
-**Correct Answer:** A
-**Rationale:** Summarization collapses details, which frequently drops line numbers, specific error traces, and exact code fragments.
+**Correct Answer:** B
+**Rationale:** Summarization collapses details, which frequently drops line numbers, specific error traces, and rejected fixes. Root CLAUDE.md and auto memory are re-injected from disk.
 
 ---
 
 ## Q10 (MCQ)
 Why write a durable handoff file like HANDOFF.md when hitting long-task context limits?
 
-- A) It transfers verified state, open questions, and next steps to a new session
-- B) It prevents any future compaction from occurring in subsequent sessions
-- C) It bypasses the need for running verification commands before committing
-- D) It automatically executes all pending unit tests in the background
+- A) It keeps the next session from ever needing compaction
+- B) It lets the next session skip re-checking the repo and test results
+- C) It stores the full chat transcript so nothing is lost
+- D) It carries verified state, open questions, and next steps to a new session
 
-**Correct Answer:** A
-**Rationale:** A structured handoff documents completed tasks, verified facts, and pending items for a clean fresh session.
+**Correct Answer:** D
+**Rationale:** A structured handoff documents completed tasks, verified facts, and pending items for a clean fresh session, which still verifies them against disk and tests.
 
 ---
 
@@ -146,9 +146,9 @@ Running a subagent isolates intermediate tool outputs from bloating the parent s
 When is local file search (Grep/Glob) preferred over an external RAG index in Claude Code?
 
 - A) For active codebase search with zero indexing lag and exact symbol matches
-- B) When querying hundreds of archived external legal compliance PDFs
-- C) Only when the local repository has fewer than ten total lines of code
-- D) When search must run strictly on an external cloud embedding cluster
+- B) When searching hundreds of archived external compliance documents
+- C) When results must come from semantic similarity rather than exact names
+- D) When results need tenant-level access controls before reaching context
 
 **Correct Answer:** A
-**Rationale:** Local tools provide immediate zero-latency matching on current code without synchronization delays.
+**Rationale:** Local tools provide immediate zero-latency matching on current code without synchronization delays. External RAG suits large external corpora, semantic retrieval, and ACL-gated sources.

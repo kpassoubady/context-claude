@@ -101,8 +101,8 @@ The instructor presents a repeatable way to evaluate context changes. Participan
 | Bio Break | 15 min |
 | 3. Maintaining Coherence Across Long Tasks: Concept & Demo | 30 min |
 | Lab 3.1: Context Compaction and State Handoffs | 25 min |
-| Kahoot Quiz 1 | 15 min |
-| Bio Break | 10 min |
+| Kahoot Quiz 1 | 10 min |
+| Bio Break | 15 min |
 | Mandatory Course Survey | 5 min |
 | 4. Context Quality and Iteration: Concept & Demo | 25 min |
 | Course Wrap-up | 15 min |

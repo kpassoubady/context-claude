@@ -244,6 +244,7 @@ Run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
 > Illustrates rule scoping mechanics; verify actual loading with `/context` in your CLI.
 
 <!--
+Timebox: 3 minutes.
 What to say: Let us run our first Session 2 demonstration. In your terminal, run python3 day1 slash demos slash demo-context-lifecycle-inspector dot py. [point at the output] Compare the startup footprint of a monolithic guide against a concise root guide with scoped rules, and watch how touching the orders service activates the scoped rule dynamically.
 
 Teaching focus: Demonstrate how path-scoped rules load conditionally when target paths are touched.
@@ -306,6 +307,8 @@ Go deeper: https://code.claude.com/docs/en/permissions for configuring determini
 ---
 
 # Guidance and Execution Controls
+
+<div class="reference-badge">REFERENCE ONLY</div>
 
 <img src="../diagrams/guidance-vs-enforcement.svg" alt="Comparison between model-facing advisory guidance and deterministic execution controls using permissions and hooks" style="display:block; margin:0 auto; max-height:420px;" />
 

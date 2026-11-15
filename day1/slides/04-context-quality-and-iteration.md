@@ -101,6 +101,8 @@ Teaching focus: Identify the five common context hazards and explain their impac
 
 # Mapping Context Hazards to Remediation
 
+<div class="reference-badge">REFERENCE ONLY</div>
+
 <img src="../diagrams/context-hazards-map.svg" alt="Flowchart mapping the five context hazards to runtime failure modes and engineered remediation steps" style="display:block; margin:0 auto; max-height:420px;" />
 
 <!--
@@ -215,6 +217,8 @@ Teaching focus: Map out the step-by-step controlled evaluation pipeline.
 ---
 
 # Why Fewer Tokens Alone Do Not Prove Quality
+
+<div class="reference-badge">REFERENCE ONLY</div>
 
 - **The false economy trap:** Stripping rules cuts tokens but increases regressions
 - **Skipped verification:** Fewer turns may mean the agent skipped running tests
