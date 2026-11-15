@@ -1,7 +1,7 @@
 ---
 marp: true
 theme: default
-style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/blue-theme.css");'
+style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/blue-theme.css");'
 paginate: true
 header: 'Context Engineering for Claude Code'
 footer: 'Day 1 - Session 4: Context Quality and Iteration'
@@ -41,7 +41,7 @@ footer: 'Day 1 - Session 4: Context Quality and Iteration'
 
 **Day 1 - Session 4**
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
 
 <!--
 What to say: Welcome to our fourth and final session. Now that we know how to configure and isolate context, we need to know whether our changes actually improve performance. In this session, we will look at how to audit your repositories for context hazards and establish an evidence-based evaluation pipeline.
@@ -73,7 +73,7 @@ Teaching focus: Outline Session 4 topics covering hazard diagnostics, evaluation
 
 ## What degrades instruction adherence over time
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
 
 <!--
 What to say: Let us begin by examining what actually goes wrong in real project configurations as repositories grow.
@@ -138,7 +138,7 @@ Teaching focus: Demonstrate static auditing of project instructions to catch con
 
 ## Quality gates first, efficiency metrics second
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
 
 <!--
 What to say: Now let us turn to evaluation. How do we scientifically prove that a context optimization made our agent better rather than just cheaper?
@@ -339,7 +339,7 @@ Teaching focus: Summarize the course-wide context engineering methodology.
 
 **Next up: Mandatory Course Survey and Course Wrap-up**
 
-<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v6/logo-white.svg" />
+<img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v18/logo-white.svg" />
 
 <!--
 What to say: Thank you all for your active participation today. We have time for final questions, followed by our mandatory five-minute course survey. Your feedback directly shapes how we refine these course materials.
@@ -349,14 +349,18 @@ Teaching focus: Conclude the instructional delivery and transition into the cour
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: connect -->
 <!-- _paginate: false -->
 
 # Let's Connect
 
-**LinkedIn: <a href="https://www.linkedin.com/in/kpassoubady" style="color:#ffffff;">linkedin.com/in/kpassoubady</a>**
+<p class="connect-subtitle">Scan the QR code or click the link below to stay in touch</p>
 
-<img src="../../images/ConnectLinkedIn.jpg" alt="QR code linking to the instructor's LinkedIn profile" style="display:block; margin:0 auto; max-height:320px;" />
+<div class="connect-card">
+<img src="../../images/ConnectLinkedIn.jpg" alt="Kangeyan Passoubady's LinkedIn contact card and QR code" />
+<a class="connect-btn" href="https://www.linkedin.com/in/kpassoubady">linkedin.com/in/kpassoubady</a>
+<span class="connect-hint">Point your phone camera at the QR code</span>
+</div>
 
 <!--
 What to say: Thank you everyone. Connect with me on LinkedIn to follow ongoing research and share how your context engineering transfer plan goes.
