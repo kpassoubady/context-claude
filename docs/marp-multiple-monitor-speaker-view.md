@@ -20,7 +20,7 @@ Generate the standalone HTML slide deck using Marp CLI or the workspace build sc
 ./scripts/build-slides-html.sh
 
 # Or directly with Marp CLI
-marp --html --allow-local-files day1/slides/01-from-prompt-engineering-to-context-engineering.md -o day1/slides/html/01-from-prompt-engineering-to-context-engineering.html
+marp --html --allow-local-files day1/slides/01-from-prompt-engineering-to-context-engineering.md -o day1/html/01-from-prompt-engineering-to-context-engineering.html
 ```
 
 The resulting HTML file contains the complete presentation engine, themes, assets, and Bespoke.js presenter logic in a single file.
@@ -30,8 +30,8 @@ The resulting HTML file contains the complete presentation engine, themes, asset
 Launch your browser (Google Chrome, Microsoft Edge, Brave, or Mozilla Firefox) and open the exported HTML file in two independent windows:
 
 1. Open the first window displaying the presentation:
-   - macOS: Open Terminal or Finder and run `open day1/slides/html/01-from-prompt-engineering-to-context-engineering.html`
-   - Windows: Double-click the file or run `start day1/slides/html/01-from-prompt-engineering-to-context-engineering.html`
+   - macOS: Open Terminal or Finder and run `open day1/html/01-from-prompt-engineering-to-context-engineering.html`
+   - Windows: Double-click the file or run `start day1/html/01-from-prompt-engineering-to-context-engineering.html`
 2. Open a **brand new browser window** (press `Cmd+N` on macOS or `Ctrl+N` on Windows).
 3. Copy the URL from the first window and paste it into the second window's address bar, or drag the tab out into its own standalone window.
 

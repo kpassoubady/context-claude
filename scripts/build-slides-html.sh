@@ -3,7 +3,10 @@
 # Usage: ./scripts/build-slides-html.sh [-p <path>] [-o <output-dir>]
 #   -p <path>         Build all slide decks found recursively under <path>
 #                     (defaults to <repo>/day1/slides or <repo>/slides)
-#   -o <output-dir>   Custom output directory (defaults to <slide-dir>/html)
+#   -o <output-dir>   Custom output directory (defaults to <day-dir>/html, a
+#                     sibling of slides/, so relative ../ image links resolve)
+#   A bare <path> argument is also accepted; if it contains a slides/ folder
+#   (e.g. day1), that folder is used as the slide directory.
 
 set -e
 
@@ -29,12 +32,22 @@ while getopts "p:o:h" opt; do
     h)
       echo "Usage: $0 [-p <path>] [-o <output-dir>]"
       echo "  -p <path>         Slide directory to build (default: $DEFAULT_SLIDE_DIR)"
-      echo "  -o <output-dir>   Custom output directory (default: <slide-dir>/html)"
+      echo "  -o <output-dir>   Custom output directory (default: <day-dir>/html, sibling of slides/)"
       exit 0
       ;;
     *) echo "Usage: $0 [-p <path>] [-o <output-dir>]" >&2; exit 1 ;;
   esac
 done
+
+shift $((OPTIND - 1))
+if [ -n "${1:-}" ]; then
+  SLIDE_DIR="$1"
+fi
+
+# If given a day directory (e.g. day1) that contains slides/, build from slides/
+if [ -d "$SLIDE_DIR/slides" ]; then
+  SLIDE_DIR="$SLIDE_DIR/slides"
+fi
 
 if [ ! -d "$SLIDE_DIR" ]; then
   echo "No slides directory found at $SLIDE_DIR" >&2
@@ -46,7 +59,12 @@ SLIDE_DIR="$(cd "$SLIDE_DIR" && pwd)"
 if [ -n "$CUSTOM_OUT_DIR" ]; then
   HTML_DIR="$CUSTOM_OUT_DIR"
 else
-  HTML_DIR="$SLIDE_DIR/html"
+  # Output beside slides/ (not inside) so ../diagrams and ../../images links resolve
+  if [ "$(basename "$SLIDE_DIR")" = "slides" ]; then
+    HTML_DIR="$(dirname "$SLIDE_DIR")/html"
+  else
+    HTML_DIR="$SLIDE_DIR/html"
+  fi
 fi
 
 md_count=$(find "$SLIDE_DIR" -name '*.md' -not -name 'README.md' -not -path '*/\.*' | wc -l | tr -d ' ')

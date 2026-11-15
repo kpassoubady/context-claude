@@ -189,19 +189,25 @@ Teaching focus: Demonstrate path-scoped rule syntax and conditional activation u
 
 ---
 
+# Path-Scoped Rule Activation
+
+<img src="../diagrams/01-path-scoped-rule-activation.png" alt="Flowchart of path-scoped rules: root CLAUDE.md always loads, while a file read or edit is checked against the paths glob; a match loads the rule into context, and a non-match leaves it unloaded." style="display:block; margin:0 auto; max-height:420px;" />
+
+---
+
 # Path-Scoped Rules (Fintech)
 
-<div class="industry-badge">REAL-WORLD SCENARIO</div>
+<div class="industry-badge">ILLUSTRATIVE SCENARIO</div>
 
-**Fintech (Brex - Ledger & Compliance Microservices):**
+**Fintech (Ledger Microservices):**
 
-- Scoped rules bind banking transaction constraints (strict ISO 4217 currency codes, zero float precision) only to ledger and settlement paths.
-- General developer tasks avoid loading compliance rule overhead, saving thousands of startup context tokens while enforcing strict financial invariants.
+- Scoped rules can bind currency and precision constraints (integer minor units, no floats) only to ledger and settlement paths.
+- Developers working elsewhere in the repository do not load that rule set at startup.
 
 <!--
-What to say: Fintech engineering teams like Brex maintain strict ISO currency and ledger invariants across their financial microservices. By binding those rules to ledger and settlement directory paths, developers working on authentication or web interfaces do not waste startup tokens loading banking compliance schemas they do not need.
+What to say: Financial teams often keep currency and precision rules in ledger and settlement code only. By binding those rules to ledger and settlement paths, developers working on authentication or web interfaces do not load banking constraints they do not need. This is an illustrative scenario, not a description of a named company's system.
 
-Real-world example: Binding zero-float precision and idempotency invariants strictly to ledger microservice paths prevents developers in unrelated repositories from hitting context limits or seeing confusing banking constraints during general refactoring.
+Illustrative example: scoping zero-float and idempotency rules to ledger paths keeps unrelated work free of banking constraints during general refactoring.
 -->
 
 ---
@@ -209,15 +215,15 @@ Real-world example: Binding zero-float precision and idempotency invariants stri
 # Path-Scoped Rules (Media / Entertainment)
 
 <div class="skip-badge">SKIP</div>
-<div class="industry-badge">REAL-WORLD SCENARIO</div>
+<div class="industry-badge">ILLUSTRATIVE SCENARIO</div>
 
-**Media / Entertainment (Spotify - Audio Metadata & Royalty Services):**
+**Media / Entertainment (Audio Pipeline):**
 
-- Path-scoped rules activate DRM and royalty attribution standards exclusively when engineers modify audio ingest and playback pipeline files.
-- Web client and UI developers work in the same monorepo without paying the context token cost of complex audio licensing schemas.
+- Path-scoped rules can apply licensing and attribution standards only when engineers edit audio ingest and playback files.
+- UI developers working in the same repository do not load those rules.
 
 <!--
-What to say: This slide is another reference example showing how audio streaming services scope DRM and royalty rules exclusively to audio ingestion pipelines while leaving the web UI clean.
+What to say: This slide is another reference example of how a media team might scope licensing rules to the audio pipeline while leaving the web UI clean. It is an illustrative scenario, not a description of a named company's system.
 
 Teaching focus: Reinforce path scoping benefits across cross-functional monorepos.
 -->
@@ -271,6 +277,8 @@ What to say: Claude Code uses progressive disclosure across three additional cap
 
 Go deeper: https://code.claude.com/docs/en/memory for details on how auto memory persists learnings across sessions.
 
+Provenance: <span data-cite="anthropic-memory-2026">Anthropic's Claude Code memory documentation</span> states that the first 200 lines or 25KB of auto memory load at the start of every session.
+
 Teaching focus: Explain progressive disclosure mechanisms that keep startup overhead low.
 -->
 
@@ -281,9 +289,11 @@ Teaching focus: Explain progressive disclosure mechanisms that keep startup over
 <div class="reference-badge">REFERENCE ONLY</div>
 
 - **Advisory prose:** `CLAUDE.md` and rules guide model choices but cannot enforce access
-- **Pre-action blocking:** Permissions and `PreToolUse` hooks stop disallowed tool calls
+- **Pre-action blocking:** a `PreToolUse` hook can block a tool call before it runs
 - **Post-action checks:** `PostToolUse` runs linters or checks after an edit completes
 - **Platform boundary:** Least-privilege credentials and CI protect repositories
+
+<p class="source" data-cite="anthropic-hooks-2026">Source: <a href="https://code.claude.com/docs/en/hooks">Anthropic, Hooks reference (Claude Code docs)</a>.</p>
 
 <!--
 What to say: This is one of the most critical security takeaways in the entire course. Project instructions in CLAUDE dot md are advisory prose. They guide the model's choices, but they cannot enforce security boundaries. If an untrusted README or prompt injection tells Claude to ignore rules and overwrite an environment file, advisory text cannot stop the tool call. Deterministic security requires permission controls and pre-tool-use hooks that intercept calls outside of model reasoning.

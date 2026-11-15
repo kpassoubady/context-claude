@@ -84,15 +84,17 @@ What to say: Let us begin with compaction and handoffs, the two primary mechanis
 
 # Automatic vs. Focused Compaction
 
-- **Automatic compaction:** Summarizes older turns as the window approaches capacity
+- **Automatic compaction:** Summarizes the conversation history to fit the context window
 - **Focused `/compact`:** Accepts instructions on what state the summary should keep
-- **Reloaded context:** Root `CLAUDE.md` and auto memory remain available
+- **Reloaded context:** Root `CLAUDE.md` and auto memory are re-injected from disk
 - **Lossy nature:** Exact line numbers, error codes, or rejected fixes can drop out
 
 <div class="gfm-alert gfm-warning">
 <div class="gfm-alert-title">Warning</div>
 <p>Never assume a summary preserved every negative constraint; verify against disk and tests.</p>
 </div>
+
+<p class="source" data-cite="anthropic-context-window-2026">Source: <a href="https://code.claude.com/docs/en/context-window">Anthropic, Explore the context window (Claude Code docs)</a>.</p>
 
 <!--
 What to say: Claude Code automatically compacts conversation history when approaching the context limit, and you can also trigger a focused compaction using slash compact with specific instructions. But here is the critical rule: compaction is lossy natural language summarization. It re-injects root CLAUDE dot md and memory, but subtle details like error strings, line numbers, and rejected fix attempts can disappear.
@@ -216,10 +218,12 @@ What to say: In this block, we examine subagents for context isolation and clari
 
 # Isolated Subagents for Exploration
 
-- **Separate window:** Intermediate `Grep` and `Read` calls stay in the worker context
+- **Separate window:** Each subagent runs in its own context window, so intermediate `Grep` and `Read` calls stay out of the parent
 - **Synthesized return:** Parent session receives only the summarized findings and paths
 - **Cost reality:** Total model usage spans both parent and subagent windows
 - **Security boundary:** Context isolation is not filesystem or credential isolation
+
+<p class="source" data-cite="anthropic-subagents-2026">Source: <a href="https://code.claude.com/docs/en/sub-agents">Anthropic, Create custom subagents (Claude Code docs)</a>.</p>
 
 <!--
 What to say: When you need to search twelve directories or audit hundreds of dependency files, running grep and read inside your main session will dump thousands of tokens into your window. Subagents solve this by spinning up an independent context window. The subagent reads the files, encounters dead ends, and synthesizes a concise summary that it passes back to the parent session.
@@ -231,17 +235,17 @@ Teaching focus: Explain subagents as context-isolated workers that keep explorat
 
 # Isolated Subagents (Fintech)
 
-<div class="industry-badge">REAL-WORLD SCENARIO</div>
+<div class="industry-badge">ILLUSTRATIVE SCENARIO</div>
 
-**Fintech (Robinhood - Multi-Account Audit & Reconciliation):**
+**Fintech (Multi-Account Reconciliation):**
 
-- Dispatches subagents to audit hundreds of independent trading ledger logs in isolated windows, filtering millions of audit events down to mismatched balances.
-- The parent orchestrator stays clean and responsive, receiving only flagged discrepancy IDs without context bloat from raw transaction streams.
+- A reconciliation agent can give independent ledger batches to subagents, each reviewing its batch in an isolated window.
+- The parent orchestrator receives only the flagged discrepancy IDs, not the raw transaction stream.
 
 <!--
-What to say: Trading platforms like Robinhood process high-volume multi-account ledgers. When an automated reconciliation agent audits transactions, dispatching subagents allows each worker to inspect thousands of raw ledger entries in isolation. The parent orchestrator receives only the flagged discrepancy IDs, keeping its context clean and responsive.
+What to say: Trading and payments platforms process high-volume multi-account ledgers. When an automated reconciliation agent audits transactions, subagents can each inspect a batch of raw ledger entries in isolation. The parent orchestrator receives only the flagged discrepancy IDs, keeping its context clean. This is an illustrative scenario, not a description of a named company's system.
 
-Real-world example: Auditing thousands of raw transaction logs in isolated subagent windows prevents orchestrator context exhaustion while surfacing exact ledger mismatches for remediation.
+Illustrative example: auditing raw transaction logs in isolated subagent windows keeps them out of the orchestrator's context while still surfacing exact ledger mismatches.
 -->
 
 ---
@@ -249,15 +253,15 @@ Real-world example: Auditing thousands of raw transaction logs in isolated subag
 # Isolated Subagents (Media / Entertainment)
 
 <div class="skip-badge">SKIP</div>
-<div class="industry-badge">REAL-WORLD SCENARIO</div>
+<div class="industry-badge">ILLUSTRATIVE SCENARIO</div>
 
-**Media / Entertainment (Disney+ - Content Asset Catalog Ingestion):**
+**Media / Entertainment (Catalog Ingestion):**
 
-- Delegates deep media tag extraction across video, audio, and subtitle streams to temporary subagents running in isolated context windows.
-- The main ingest orchestrator receives only standardized syndication manifests, preventing file schema bloat from exhausting memory during batch imports.
+- A catalog ingest can hand tag extraction across video, audio, and subtitle files to temporary subagents.
+- The main ingest step receives standardized manifests, not raw file contents.
 
 <!--
-What to say: This slide is a reference example showing how media catalog ingestion uses temporary subagents to extract deep video and audio metadata tags without exhausting memory in the main syndication pipeline.
+What to say: This slide is a reference example of how a media catalog team might use temporary subagents to extract metadata without filling the main pipeline's memory. It is an illustrative scenario, not a description of a named company's system.
 
 Teaching focus: Illustrate subagent batch isolation in media ingestion for offline reference.
 -->

@@ -167,17 +167,17 @@ Teaching focus: Enforce the rule that correctness, adherence, and safety gates m
 
 # Controlled Context Evaluation (Fintech)
 
-<div class="industry-badge">REAL-WORLD SCENARIO</div>
+<div class="industry-badge">ILLUSTRATIVE SCENARIO</div>
 
-**Fintech (Adyen - Payment Processing Evaluation):**
+**Fintech (Payment Processing Evaluation):**
 
-- Evaluates agent context modifications using strict merchant transaction test suites as the primary gate before comparing token savings.
-- Proves that pruning verbose API definitions reduced session token usage by 38% while maintaining 100% adherence to PCI-DSS data-handling rules.
+- A payments team can gate context changes on merchant transaction test suites before it compares token savings.
+- Pruning verbose API definitions is acceptable only if data-handling compliance checks still pass.
 
 <!--
-What to say: Payment platforms like Adyen evaluate context modifications with the exact same rigor as payment gateway code. Before adopting an optimized API context payload, they require one hundred percent pass rates across merchant transaction test suites.
+What to say: Payment platforms evaluate context modifications with the same rigor as payment gateway code. Before adopting an optimized API context payload, a team can require full pass rates across its merchant transaction test suites. This is an illustrative scenario, not a description of a named company's system.
 
-Real-world example: Pruning verbose API definitions cut session token usage by thirty-eight percent while maintaining one hundred percent adherence to PCI data handling standards, proving you can improve efficiency without compromising compliance.
+Illustrative example: pruning verbose API definitions can cut token use, but the change still has to pass the same PCI data-handling checks before it ships.
 
 Go deeper: https://code.claude.com/docs/en/features-overview for details on native telemetry and session monitoring.
 -->
@@ -187,15 +187,15 @@ Go deeper: https://code.claude.com/docs/en/features-overview for details on nati
 # Controlled Context Evaluation (Media / Entertainment)
 
 <div class="skip-badge">SKIP</div>
-<div class="industry-badge">REAL-WORLD SCENARIO</div>
+<div class="industry-badge">ILLUSTRATIVE SCENARIO</div>
 
-**Media / Entertainment (Warner Bros. Discovery - Streaming Metadata Pipeline):**
+**Media / Entertainment (Metadata Pipeline):**
 
-- Validates context optimizations against catalog syndication schemas, verifying all genre tags and rating guidelines pass before measuring turn counts.
-- Discovered that cutting too much schema context saved 20% in tokens but increased downstream ingestion re-tries by 45%.
+- A metadata pipeline can validate context changes against syndication schemas before it measures turn counts.
+- Cutting too much schema context can save tokens while adding downstream ingestion retries.
 
 <!--
-What to say: This slide is another reference example from streaming media syndication, showing that cutting too much schema context saved twenty percent in tokens but increased downstream ingestion failures by forty-five percent.
+What to say: This slide is another reference example from streaming media syndication, showing that cutting too much schema context can save tokens while adding downstream ingestion failures. It is an illustrative scenario, not a reported result.
 
 Teaching focus: Reinforce that over-trimming context introduces expensive downstream regressions.
 -->
@@ -346,6 +346,21 @@ What to say: Thank you all for your active participation today. We have time for
 
 Teaching focus: Conclude the instructional delivery and transition into the course survey.
 -->
+
+---
+
+<!-- _class: references -->
+
+# References
+
+<ul class="refs two-col">
+<li>Anthropic (2026). Create custom subagents. Claude Code Documentation. code.claude.com/docs/en/sub-agents</li>
+<li>Anthropic (2026). Explore the context window. Claude Code Documentation. code.claude.com/docs/en/context-window</li>
+<li>Anthropic (2026). Hooks reference. Claude Code Documentation. code.claude.com/docs/en/hooks</li>
+<li>Anthropic (2026). How Claude remembers your project. Claude Code Documentation. code.claude.com/docs/en/memory</li>
+<li>Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., and Liang, P. (2023). Lost in the Middle: How Language Models Use Long Contexts. arXiv:2307.03172.</li>
+<li>OWASP (2025). <em>LLM01:2025 Prompt Injection</em>. OWASP Gen AI Security Project. genai.owasp.org/llmrisk/llm01-prompt-injection/</li>
+</ul>
 
 ---
 

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="440" viewBox="20 10 800 440">
+<rect x="20" y="10" width="800" height="440" fill="#ffffff"/>
+<rect x="580" y="30" width="220" height="70" rx="17.5" ry="17.5" fill="#b2f2bb" stroke="#1e1e1e" stroke-width="2" opacity="1" />
+<text x="690" y="59" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">Active working context</text>
+<text x="690" y="77.75" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">loaded from turn 1</text>
+<rect x="580" y="150" width="220" height="70" rx="17.5" ry="17.5" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1" />
+<text x="690" y="179" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">Rule loads into context</text>
+<text x="690" y="197.75" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">.claude/rules/*.md</text>
+<rect x="580" y="310" width="220" height="70" rx="17.5" ry="17.5" fill="#b2f2bb" stroke="#1e1e1e" stroke-width="2" opacity="1" />
+<text x="690" y="339" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">Rule stays unloaded</text>
+<text x="690" y="357.75" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">avoids rule overhead</text>
+<rect x="40" y="30" width="220" height="70" rx="17.5" ry="17.5" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1" />
+<text x="150" y="59" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">Root CLAUDE.md</text>
+<text x="150" y="77.75" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">loaded at session start</text>
+<rect x="40" y="215" width="220" height="70" rx="17.5" ry="17.5" fill="#dee2e6" stroke="#1e1e1e" stroke-width="2" opacity="1" />
+<text x="150" y="253.38" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="15" fill="#1e1e1e" text-anchor="middle" opacity="1">File read or edit</text>
+<path d="M 385 200 L 470 250 L 385 300 L 300 250 Z" stroke-linejoin="round" fill="#ffec99" stroke="#1e1e1e" stroke-width="2" opacity="1" />
+<text x="385" y="244.4" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1">Matches</text>
+<text x="385" y="261.9" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1">paths: glob?</text>
+<g><path d="M 260 65 L 580 65" fill="none" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" /><polygon points="580,65 572,69 572,61" fill="#1e1e1e" stroke="#1e1e1e" /></g>
+<g><path d="M 260 250 L 300 250" fill="none" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" /><polygon points="300,250 292,254 292,246" fill="#1e1e1e" stroke="#1e1e1e" /></g>
+<g><path d="M 470 250 L 580 185" fill="none" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" /><polygon points="580,185 575.15,192.51 571.08,185.63" fill="#1e1e1e" stroke="#1e1e1e" /></g>
+<text x="510" y="243.9" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1">matches</text>
+<g><path d="M 385 300 L 580 345" fill="none" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" /><polygon points="580,345 571.31,347.1 573.1,339.3" fill="#1e1e1e" stroke="#1e1e1e" /></g>
+<text x="462.5" y="312.4" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1">no match</text>
+<g><path d="M 690 150 L 690 100" fill="none" stroke="#1e1e1e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="1" /><polygon points="690,100 694,108 686,108" fill="#1e1e1e" stroke="#1e1e1e" /></g>
+<text x="40" y="423.6" font-family="Virgil, Segoe Print, Comic Sans MS, sans-serif" font-size="16" fill="#1e1e1e" text-anchor="start" opacity="1">Path-scoped rule activation</text>
+</svg>
