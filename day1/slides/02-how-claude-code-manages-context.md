@@ -252,18 +252,18 @@ Teaching focus: Reinforce path scoping benefits across cross-functional monorepo
 
 # Demo: Context Lifecycle Inspector
 
-Run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
+From `context-claude-companion`, run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
 
-- **Startup baseline:** Compare a 320-line monolithic guide against a concise root guide plus scoped rules
+- **Startup baseline:** Compare one monolithic guide against a concise root guide plus scoped rules read from a fixture repo
 - **Glob activation:** See which `.claude/rules/` files load when editing `services/orders/`
 - **Control check:** Confirm unrelated modules do not trigger orders-specific rules
 - **Live pairing:** Compare the estimated breakdown with `/context` in Claude Code
 
-> Illustrates rule scoping mechanics; verify actual loading with `/context` in your CLI.
+> Reads real rule files and uses a stand-in glob matcher; verify actual loading with `/context` in your CLI.
 
 <!--
 Timebox: 3 minutes.
-What to say: Let us run our first Topic 2 demonstration. In your terminal, run python3 day1 slash demos slash demo-context-lifecycle-inspector dot py. [point at the output] Compare the startup footprint of a monolithic guide against a concise root guide with scoped rules, and watch how touching the orders service activates the scoped rule dynamically.
+What to say: Let us run our first Topic 2 demonstration. In your terminal, run python3 day1 slash demos slash demo-context-lifecycle-inspector dot py. [point at the output] It reads the rule files in the fixture repo. Compare the startup footprint, 7 lines, against the 18 lines a monolithic guide would load, and watch how reading the orders pricing file adds the 6-line orders rule.
 
 Teaching focus: Demonstrate how path-scoped rules load conditionally when target paths are touched.
 -->
@@ -363,17 +363,17 @@ Teaching focus: Engage the room on the boundary between prompt instructions and 
 
 # Demo: Instructions vs. Permissions and Hooks
 
-Run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
+From `context-claude-companion`, run `python3 day1/demos/demo-instructions-vs-permissions-hooks.py`.
 
 - **Advisory guidance:** Observe how `CLAUDE.md` steers coding conventions
-- **PreToolUse gate:** See how a blocking check halts a forbidden path edit before execution
-- **PostToolUse check:** Watch a post-edit check report formatting drift after a write
+- **PreToolUse gate:** The real hook script exits 2 and the locked file is unchanged
+- **PostToolUse check:** The real hook reports a `float()` call after the write has already happened
 - **Coverage limits:** Identify why OS permissions and CI remain mandatory
 
-> Uses harmless local fixtures to contrast advisory prose with pre- and post-action checks.
+> Runs the hook scripts from a fixture `settings.json` on a temporary copy; `permissions.deny` is listed, not evaluated.
 
 <!--
-What to say: Run python3 day1 slash demos slash demo-instructions-vs-permissions-hooks dot py. Notice how the pre-tool-use check halts an unauthorized write attempt before it executes, while post-tool-use runs after the fact to check formatting.
+What to say: Run python3 day1 slash demos slash demo-instructions-vs-permissions-hooks dot py. Notice the exit code. The pre-tool-use hook returns exit 2 for the locked migration and the file hash does not change. In scenario two the post-tool-use hook also returns exit 2, but the float is already on disk, so it can only report.
 
 Teaching focus: Show how pre-tool-use hooks intercept actions before execution and contrast with advisory prose.
 -->
@@ -446,10 +446,10 @@ Teaching focus: Ground lab tasks in the scoped rule activation architecture.
 
 # Lab 2.1: Tasks & Workflow Checkpoints
 
-1. **Baseline & Audit (0-4m):** Run `python3 verify_lab.py` in `start/` (observe 5 failing checks and 8 reported issues).
+1. **Baseline & Audit (0-4m):** Run `python3 verify_lab.py` in `start/` (observe 5 failing checks and 10 reported issues).
 2. **Refactor Guidance (4-11m):**
    - Trim root `CLAUDE.md` under 60 lines, retain `@AGENTS.md`, remove legacy float directives.
-   - Author `.claude/rules/orders.md` with `paths:` globs for `services/orders/**/*.py`.
+   - Author `.claude/rules/orders.md` with `paths:` globs for `services/orders/**/*.py` and `tests/orders/**/*.py`.
 3. **Scoped Fix (11-19m):**
    - Open `services/orders/pricing.py`; reject untrusted comments (OWASP LLM01).
    - Implement integer-cents and idempotency validation adhering to the scoped rule.

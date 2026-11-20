@@ -175,15 +175,15 @@ paths:
 <header>Context Engineering for Claude Code</header>
 
 <h1 id="demo-context-lifecycle-inspector">Demo: Context Lifecycle Inspector</h1>
-<p>Run <code>python3 day1/demos/demo-context-lifecycle-inspector.py</code>.</p>
+<p>From <code>context-claude-companion</code>, run <code>python3 day1/demos/demo-context-lifecycle-inspector.py</code>.</p>
 <ul>
-<li><strong>Startup baseline:</strong> Compare a 320-line monolithic guide against a concise root guide plus scoped rules</li>
+<li><strong>Startup baseline:</strong> Compare one monolithic guide against a concise root guide plus scoped rules read from a fixture repo</li>
 <li><strong>Glob activation:</strong> See which <code>.claude/rules/</code> files load when editing <code>services/orders/</code></li>
 <li><strong>Control check:</strong> Confirm unrelated modules do not trigger orders-specific rules</li>
 <li><strong>Live pairing:</strong> Compare the estimated breakdown with <code>/context</code> in Claude Code</li>
 </ul>
 <blockquote>
-<p>Illustrates rule scoping mechanics; verify actual loading with <code>/context</code> in your CLI.</p>
+<p>Reads real rule files and uses a stand-in glob matcher; verify actual loading with <code>/context</code> in your CLI.</p>
 </blockquote>
 <footer>Day 1 - Topic 2: How Claude Code Manages Context</footer>
 </section>
@@ -244,15 +244,15 @@ D) The model API automatically raises a 403 Forbidden error upon reading .env</p
 <header>Context Engineering for Claude Code</header>
 
 <h1 id="demo-instructions-vs-permissions-and-hooks">Demo: Instructions vs. Permissions and Hooks</h1>
-<p>Run <code>python3 day1/demos/demo-instructions-vs-permissions-hooks.py</code>.</p>
+<p>From <code>context-claude-companion</code>, run <code>python3 day1/demos/demo-instructions-vs-permissions-hooks.py</code>.</p>
 <ul>
 <li><strong>Advisory guidance:</strong> Observe how <code>CLAUDE.md</code> steers coding conventions</li>
-<li><strong>PreToolUse gate:</strong> See how a blocking check halts a forbidden path edit before execution</li>
-<li><strong>PostToolUse check:</strong> Watch a post-edit check report formatting drift after a write</li>
+<li><strong>PreToolUse gate:</strong> The real hook script exits 2 and the locked file is unchanged</li>
+<li><strong>PostToolUse check:</strong> The real hook reports a <code>float()</code> call after the write has already happened</li>
 <li><strong>Coverage limits:</strong> Identify why OS permissions and CI remain mandatory</li>
 </ul>
 <blockquote>
-<p>Uses harmless local fixtures to contrast advisory prose with pre- and post-action checks.</p>
+<p>Runs the hook scripts from a fixture <code>settings.json</code> on a temporary copy; <code>permissions.deny</code> is listed, not evaluated.</p>
 </blockquote>
 <footer>Day 1 - Topic 2: How Claude Code Manages Context</footer>
 </section>
@@ -304,11 +304,11 @@ D) The model API automatically raises a 403 Forbidden error upon reading .env</p
 <header>Context Engineering for Claude Code</header>
 <h1 id="lab-21-tasks--workflow-checkpoints">Lab 2.1: Tasks &amp; Workflow Checkpoints</h1>
 <ol>
-<li><strong>Baseline &amp; Audit (0-4m):</strong> Run <code>python3 verify_lab.py</code> in <code>start/</code> (observe 5 failing checks and 8 reported issues).</li>
+<li><strong>Baseline &amp; Audit (0-4m):</strong> Run <code>python3 verify_lab.py</code> in <code>start/</code> (observe 5 failing checks and 10 reported issues).</li>
 <li><strong>Refactor Guidance (4-11m):</strong>
 <ul>
 <li>Trim root <code>CLAUDE.md</code> under 60 lines, retain <code>@AGENTS.md</code>, remove legacy float directives.</li>
-<li>Author <code>.claude/rules/orders.md</code> with <code>paths:</code> globs for <code>services/orders/**/*.py</code>.</li>
+<li>Author <code>.claude/rules/orders.md</code> with <code>paths:</code> globs for <code>services/orders/**/*.py</code> and <code>tests/orders/**/*.py</code>.</li>
 </ul>
 </li>
 <li><strong>Scoped Fix (11-19m):</strong>
@@ -401,7 +401,7 @@ Teaching focus: Demonstrate path-scoped rule syntax and conditional activation u
 Illustrative example: scoping zero-float and idempotency rules to ledger paths keeps unrelated work free of banking constraints during general refactoring.</p></div><div class="bespoke-marp-note" data-index="12" tabindex="0"><p>What to say: This slide is another reference example of how a media team might scope licensing rules to the audio pipeline while leaving the web UI clean. It is an illustrative scenario, not a description of a named company's system.
 
 Teaching focus: Reinforce path scoping benefits across cross-functional monorepos.</p></div><div class="bespoke-marp-note" data-index="13" tabindex="0"><p>Timebox: 3 minutes.
-What to say: Let us run our first Topic 2 demonstration. In your terminal, run python3 day1 slash demos slash demo-context-lifecycle-inspector dot py. [point at the output] Compare the startup footprint of a monolithic guide against a concise root guide with scoped rules, and watch how touching the orders service activates the scoped rule dynamically.
+What to say: Let us run our first Topic 2 demonstration. In your terminal, run python3 day1 slash demos slash demo-context-lifecycle-inspector dot py. [point at the output] It reads the rule files in the fixture repo. Compare the startup footprint, 7 lines, against the 18 lines a monolithic guide would load, and watch how reading the orders pricing file adds the 6-line orders rule.
 
 Teaching focus: Demonstrate how path-scoped rules load conditionally when target paths are touched.</p></div><div class="bespoke-marp-note" data-index="14" tabindex="0"><p>What to say: Next, let us look at Claude Code's advanced context features: auto memory, skills, and model context protocol discovery, and the critical distinction between guidance and security enforcement.</p></div><div class="bespoke-marp-note" data-index="15" tabindex="0"><p>What to say: Claude Code uses progressive disclosure across three additional capabilities. Auto memory records corrections you make during sessions and loads the first two hundred lines at startup. Skills load short descriptions initially and only pull their full instructions when invoked. And MCP server discovery lets Claude discover tool names without loading heavy JSON schemas until a task needs them.
 
@@ -417,7 +417,7 @@ Go deeper: https://code.claude.com/docs/en/permissions for configuring determini
 
 Teaching focus: Contrast in-band model guidance with out-of-band deterministic enforcement gates.</p></div><div class="bespoke-marp-note" data-index="18" tabindex="0"><p>What to say: Let us check our understanding before we run the hooks demonstration. Read this scenario and vote in chat with A, B, C, or D. What actually prevents a tool call from editing an environment file?
 
-Teaching focus: Engage the room on the boundary between prompt instructions and execution enforcement.</p></div><div class="bespoke-marp-note" data-index="19" tabindex="0"><p>What to say: Run python3 day1 slash demos slash demo-instructions-vs-permissions-hooks dot py. Notice how the pre-tool-use check halts an unauthorized write attempt before it executes, while post-tool-use runs after the fact to check formatting.
+Teaching focus: Engage the room on the boundary between prompt instructions and execution enforcement.</p></div><div class="bespoke-marp-note" data-index="19" tabindex="0"><p>What to say: Run python3 day1 slash demos slash demo-instructions-vs-permissions-hooks dot py. Notice the exit code. The pre-tool-use hook returns exit 2 for the locked migration and the file hash does not change. In scenario two the post-tool-use hook also returns exit 2, but the float is already on disk, so it can only report.
 
 Teaching focus: Show how pre-tool-use hooks intercept actions before execution and contrast with advisory prose.</p></div><div class="bespoke-marp-note" data-index="20" tabindex="0"><p>What to say: The correct answer is B. Only permissions and pre-tool-use hooks provide deterministic enforcement. Advisory text in CLAUDE dot md tells the model what you want it to do, but out-of-band hooks ensure that disallowed actions are physically blocked before execution.
 
