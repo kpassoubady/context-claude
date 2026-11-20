@@ -1,9 +1,9 @@
 # Kahoot Quiz 1: Context Engineering Fundamentals
 
-Covering Day 1 Sessions 1 through 3:
-- Session 1: From Prompt Engineering to Context Engineering
-- Session 2: How Claude Code Manages Context & Structuring Project Guidance
-- Session 3: Maintaining Coherence Across Long Tasks & Compaction Handoffs
+Covering Day 1 Topics 1 through 3:
+- Topic 1: From Prompt Engineering to Context Engineering
+- Topic 2: How Claude Code Manages Context & Structuring Project Guidance
+- Topic 3: Maintaining Coherence Across Long Tasks & Compaction Handoffs
 
 ---
 

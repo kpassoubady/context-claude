@@ -42,7 +42,7 @@ By the end of the session, participants will be able to:
 
 ## Project Context and Tools
 
-Participants use Claude Code, Git, and a multi-module sample repository with independent starter directories for each lab. The repository contains realistic application code, unconfigured build scripts, and test suites. Course materials provide reference prompt rules, task handoff templates, compaction runbooks, and context audit checklists. Each breakout lab starts from a verified standalone snapshot, allowing participants to complete each exercise without depending on outputs from earlier blocks.
+Participants use Claude Code, Git, and a multi-module sample repository with independent starter directories for each lab. The repository contains realistic application code, unconfigured build scripts, and test suites. Course materials provide a path-scoped rule template (Lab 2.1), a task handoff template (Lab 3.1), a verification script for each lab, and concept notes with an evaluation rubric for context changes. Each breakout lab starts from a verified standalone snapshot, allowing participants to complete each exercise without depending on outputs from earlier blocks.
 
 ## Prerequisites
 

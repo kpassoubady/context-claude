@@ -4,7 +4,7 @@ theme: default
 style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/blue-theme.css");'
 paginate: true
 header: 'Context Engineering for Claude Code'
-footer: 'Day 1 - Session 3: Maintaining Coherence Across Long Tasks'
+footer: 'Day 1 - Topic 3: Maintaining Coherence Across Long Tasks'
 ---
 
 <style>
@@ -40,12 +40,12 @@ footer: 'Day 1 - Session 3: Maintaining Coherence Across Long Tasks'
 # Context Engineering
 ## Maintaining Coherence Across Long Tasks
 
-**Day 1 - Session 3**
+**Day 1 - Topic 3**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: Welcome to Session 3. In this block, we tackle the hardest engineering problem in agentic workflows: keeping an agent coherent across long, complex tasks. We will look at what happens when context fills up, how compaction actually works, how to write durable handoffs, and when to delegate work to isolated subagents.
+What to say: Welcome to Topic 3. In this block, we tackle the hardest engineering problem in agentic workflows: keeping an agent coherent across long, complex tasks. We will look at what happens when context fills up, how compaction actually works, how to write durable handoffs, and when to delegate work to isolated subagents.
 
 Transition: Let us preview what we will explore over the next hour.
 -->
@@ -61,9 +61,9 @@ Transition: Let us preview what we will explore over the next hour.
 5. Breakout Lab 3.1: Context Compaction and State Handoffs
 
 <!--
-What to say: Here is our roadmap for Session 3. We will examine the strengths and limits of automatic and focused compaction, demonstrate how to author durable handoff notes, and compare local file search with external retrieval. Then we will run two demonstrations and put these patterns into practice in Breakout Lab 3.1.
+What to say: Here is our roadmap for Topic 3. We will examine the strengths and limits of automatic and focused compaction, demonstrate how to author durable handoff notes, and compare local file search with external retrieval. Then we will run two demonstrations and put these patterns into practice in Breakout Lab 3.1.
 
-Teaching focus: Establish Session 3 goals for state preservation and context isolation.
+Teaching focus: Establish Topic 3 goals for state preservation and context isolation.
 -->
 
 ---
@@ -99,7 +99,7 @@ What to say: Let us begin with compaction and handoffs, the two primary mechanis
 <!--
 What to say: Claude Code automatically compacts conversation history when approaching the context limit, and you can also trigger a focused compaction using slash compact with specific instructions. But here is the critical rule: compaction is lossy natural language summarization. It re-injects root CLAUDE dot md and memory, but subtle details like error strings, line numbers, and rejected fix attempts can disappear.
 
-Real-world example: An engineer spent forty-five turns debugging a distributed task queue lease bug. They tested two fixes and proved they failed: increasing lease time broke heartbeats, and adding a global lock killed concurrency. When auto-compaction fired, it summarized that locking was investigated without noting that global locks failed the SLA test. Ten minutes later, the agent re-proposed the exact same broken lock fix.
+Illustrative example: This is the scenario Lab 3.1 recreates. Over a thirty-five-turn session on a task queue lease bug, an engineer rejects two fixes: raising the lease TTL breaks the expired-lease reclaim test, and a global lock breaks the non-blocking read test. An automatic summary that mentions only the TTL attempt leaves out the lock, so a fresh session could re-propose it. This is a constructed scenario, not a reported incident.
 
 Teaching focus: Emphasize that compaction is lossy and requires verification against disk and tests.
 -->
@@ -115,7 +115,7 @@ Teaching focus: Emphasize that compaction is lossy and requires verification aga
 - Revision: commit 8f4a12c (modified: task_queue/lease.py)
 - Goal: Prevent duplicate job execution on lease renewal
 - Constraints: Keep LeaseManager signature; no external lock service
-- Failed Approaches: Global mutex (failed test_concurrent_lease_renewal)
+- Failed Approaches: Global lock (broke test_non_blocking_read_status)
 - Next Verification: Run pytest tests/test_lease.py -q
 ```
 
@@ -282,7 +282,9 @@ What to say: A common architectural question is whether you need RAG for your re
 
 Real-world example: Direct file search is like opening the blueprints already sitting on your workbench. RAG is sending an inquiry to the corporate archives across town. Use the workbench when you are modifying the engine.
 
-Go deeper: https://www.anthropic.com/research/effective-context-engineering-for-ai-agents for Anthropic's guidance on local retrieval versus external knowledge bases.
+Provenance: <span data-cite="anthropic-context-engineering-2025">Anthropic's context engineering post</span> describes Claude Code as a hybrid agent: CLAUDE.md files load up front, while glob and grep fetch files just in time.
+
+Go deeper: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents for Anthropic's discussion of just-in-time retrieval alongside up-front retrieval.
 -->
 
 ---
@@ -313,7 +315,7 @@ Run `python3 day1/demos/demo-subagent-isolation-vs-inline-search.py`.
 > Illustrates information flow between parent and subagent windows; not a sandbox test.
 
 <!--
-What to say: Let us run our second Session 3 demonstration. Run python3 day1 slash demos slash demo-subagent-isolation-vs-inline-search dot py. Watch how inline search fills the parent window with eighteen thousand tokens of file noise, whereas delegating to a subagent returns a concise three-hundred-token finding while keeping the parent clean.
+What to say: Let us run our second Topic 3 demonstration. Run python3 day1 slash demos slash demo-subagent-isolation-vs-inline-search dot py. Watch how inline search fills the parent window with about 3,500 estimated tokens of file noise, whereas delegating to a subagent leaves only about 50 tokens in the parent. Note that total model work is slightly higher with the subagent, because its own window holds the same 3,500 tokens.
 
 Teaching focus: Contrast inline context bloat with subagent synthesis and review retrieval selection criteria.
 -->
@@ -329,7 +331,7 @@ Teaching focus: Contrast inline context bloat with subagent synthesis and review
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: Welcome to Breakout Lab 3.1. In this lab, you inherit a real-world debugging session that has accumulated thirty turns of history and an unverified compaction summary.
+What to say: Welcome to Breakout Lab 3.1. In this lab, you inherit a real-world debugging session that has accumulated thirty-five turns of history and an unverified compaction summary.
 -->
 
 ---
@@ -416,7 +418,7 @@ Teaching focus: Reiterate lab constraints, anti-pattern traps, and completion cr
 4. Direct `Glob` and `Grep` fit local codebases, whereas RAG serves large access-controlled external corpora.
 
 <!--
-What to say: Here are our four key takeaways for Session 3. Compaction is lossy and must be checked against files and tests. Durable handoffs with slash clear let fresh sessions resume cleanly. Subagents isolate intermediate exploration noise. And local file search beats RAG for your active codebase.
+What to say: Here are our four key takeaways for Topic 3. Compaction is lossy and must be checked against files and tests. Durable handoffs with slash clear let fresh sessions resume cleanly. Subagents isolate intermediate exploration noise. And local file search beats RAG for your active codebase.
 
 Teaching focus: Solidify principles of state verification, compaction auditing, and subagent delegation.
 -->
@@ -428,14 +430,14 @@ Teaching focus: Solidify principles of state verification, compaction auditing, 
 
 # Questions?
 
-**Next up: Kahoot Quiz 1, Break, and Session 4**
+**Next up: Kahoot Quiz 1, Break, and Topic 4**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: Outstanding work on the handoffs lab. We have five minutes for questions, followed by our mid-course Kahoot quiz and a ten-minute break. In Session 4, we will look at context quality, linting context hazards, and evaluating agent performance.
+What to say: Outstanding work on the handoffs lab. We have five minutes for questions, followed by our mid-course Kahoot quiz and a ten-minute break. In Topic 4, we will look at context quality, linting context hazards, and evaluating agent performance.
 
-Teaching focus: Wrap up Session 3 and transition into the Kahoot quiz and break.
+Teaching focus: Wrap up Topic 3 and transition into the Kahoot quiz and break.
 -->
 
 ---

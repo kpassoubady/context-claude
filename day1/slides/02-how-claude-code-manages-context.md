@@ -4,7 +4,7 @@ theme: default
 style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/blue-theme.css");'
 paginate: true
 header: 'Context Engineering for Claude Code'
-footer: 'Day 1 - Session 2: How Claude Code Manages Context'
+footer: 'Day 1 - Topic 2: How Claude Code Manages Context'
 ---
 
 <style>
@@ -40,12 +40,12 @@ footer: 'Day 1 - Session 2: How Claude Code Manages Context'
 # Context Engineering
 ## How Claude Code Manages Context
 
-**Day 1 - Session 2**
+**Day 1 - Topic 2**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: Welcome back to Session 2. Now that we understand how the agent loop works, we are going to look under the hood at how Claude Code manages information. We will explore how startup instructions, path-scoped rules, memory, and permissions work together to keep context focused and secure.
+What to say: Welcome back to Topic 2. Now that we understand how the agent loop works, we are going to look under the hood at how Claude Code manages information. We will explore how startup instructions, path-scoped rules, memory, and permissions work together to keep context focused and secure.
 
 Transition: Let us look at what we will cover across this block.
 -->
@@ -55,7 +55,7 @@ Transition: Let us look at what we will cover across this block.
 # What We'll Cover
 
 1. Startup context versus on-demand retrieval
-2. Project guidance with `CLAUDE.md` and `.claude/rules/`
+2. Project guidance with `CLAUDE.md` and `.claude/rules/`, plus structured task requests
 3. Auto memory, Skills, and MCP (Model Context Protocol) tool discovery
 4. Demo: Inspecting lifecycle loading and execution controls
 5. Breakout Lab 2.1: Structuring Project Context with `CLAUDE.md`
@@ -63,7 +63,7 @@ Transition: Let us look at what we will cover across this block.
 <!--
 What to say: In this session, we map out the lifecycle from startup to on-demand retrieval. We will learn how to write a tight root CLAUDE dot md, configure path-scoped rules, and inspect our active token budget with the slash context command. Then we will run two demos and launch our first hands-on breakout lab.
 
-Teaching focus: Outline Session 2 progression from lifecycle architecture to hands-on lab.
+Teaching focus: Outline Topic 2 progression from lifecycle architecture to hands-on lab.
 -->
 
 ---
@@ -128,6 +128,24 @@ Teaching focus: Introduce slash context as the primary command for auditing toke
 
 ---
 
+# Structuring Task Requests
+
+<div class="trick-badge">TRICK OF THE TRADE</div>
+
+- **Goal and scope:** Name the outcome and the files or directories in play
+- **Verification:** Give the exact test or lint command that proves success
+- **Bounded output:** Ask for quiet flags, filtered searches, and path limits
+- **Pointers over pastes:** Reference file paths instead of pasting large logs
+
+<!--
+Timebox: 1 minute.
+What to say: Context also depends on how you ask. A well-structured task request names the goal and the files in play, gives the exact command that proves success, and asks for bounded output. Point Claude at file paths so it reads what it needs instead of pasting thousands of lines into the window. The bounded prompts in Lab 2.1 follow exactly this shape.
+
+Teaching focus: Show how structured task requests keep the working set small and verifiable.
+-->
+
+---
+
 <!-- _class: divider -->
 
 # Project Instructions & Scoped Rules
@@ -151,13 +169,13 @@ What to say: Now let us look at the primary way developers configure Claude Code
 
 <div class="gfm-alert gfm-note">
 <div class="gfm-alert-title">Note</div>
-<p>Loaded CLAUDE.md content occupies context tokens; move subsystem details to scoped rules.</p>
+<p>Loaded CLAUDE.md content occupies context tokens; move subsystem details to scoped rules. Anthropic's docs target under 200 lines per file; this course uses under 60 as a stricter working rule.</p>
 </div>
 
 <!--
 What to say: A common mistake is turning root CLAUDE dot md into an encyclopedia. You do not need to document every API endpoint or legacy migration script here. Keep it to three things: a one-paragraph architecture overview, exact build and test verification commands, and cross-cutting rules that apply to every single file.
 
-Real-world example: An e-commerce team had a bloated, three-hundred-line root CLAUDE dot md mixing legacy migration notes with pricing rules. When the agent was asked to fix an order calculation, it followed an old rule from the migration section and used floating-point discounts instead of integer basis points. Distilling root instructions down to thirty-five lines and moving pricing rules into scoped files eliminated those cross-service errors.
+Illustrative example: Imagine an e-commerce team with a bloated, three-hundred-line root CLAUDE dot md mixing legacy migration notes with pricing rules. An agent fixing an order calculation could follow an old rule from the migration section and use floating-point discounts instead of integer basis points. Distilling the root file and moving pricing rules into scoped files removes that conflict. Lab 2.1 recreates this situation. It is a hypothetical scenario, not a reported incident.
 
 Teaching focus: Establish root CLAUDE dot md as a concise, repo-wide entry point rather than a subsystem manual.
 -->
@@ -236,7 +254,7 @@ Teaching focus: Reinforce path scoping benefits across cross-functional monorepo
 
 Run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
 
-- **Startup baseline:** Compare a 320-line monolithic guide against a 35-line root guide
+- **Startup baseline:** Compare a 320-line monolithic guide against a concise root guide plus scoped rules
 - **Glob activation:** See which `.claude/rules/` files load when editing `services/orders/`
 - **Control check:** Confirm unrelated modules do not trigger orders-specific rules
 - **Live pairing:** Compare the estimated breakdown with `/context` in Claude Code
@@ -245,7 +263,7 @@ Run `python3 day1/demos/demo-context-lifecycle-inspector.py`.
 
 <!--
 Timebox: 3 minutes.
-What to say: Let us run our first Session 2 demonstration. In your terminal, run python3 day1 slash demos slash demo-context-lifecycle-inspector dot py. [point at the output] Compare the startup footprint of a monolithic guide against a concise root guide with scoped rules, and watch how touching the orders service activates the scoped rule dynamically.
+What to say: Let us run our first Topic 2 demonstration. In your terminal, run python3 day1 slash demos slash demo-context-lifecycle-inspector dot py. [point at the output] Compare the startup footprint of a monolithic guide against a concise root guide with scoped rules, and watch how touching the orders service activates the scoped rule dynamically.
 
 Teaching focus: Demonstrate how path-scoped rules load conditionally when target paths are touched.
 -->
@@ -299,7 +317,7 @@ Teaching focus: Explain progressive disclosure mechanisms that keep startup over
 <!--
 What to say: This is one of the most critical security takeaways in the entire course. Project instructions in CLAUDE dot md are advisory prose. They guide the model's choices, but they cannot enforce security boundaries. If an untrusted README or prompt injection tells Claude to ignore rules and overwrite an environment file, advisory text cannot stop the tool call. Deterministic security requires permission controls and pre-tool-use hooks that intercept calls outside of model reasoning.
 
-Real-world example: A team relied on a sentence in their project guide saying never touch production configuration files. During a complex multi-turn refactor, an untrusted script output instructed the assistant to backup config dot env, and the agent executed the write. Relying on model-facing prose instead of repository permissions and blocking hooks is a dangerous architectural mistake.
+Illustrative example: Suppose a team relies on one sentence in their project guide saying never touch production configuration files. During a long refactor, untrusted script output tells the assistant to back up config dot env, and the write goes through because nothing outside the model blocks it. Relying on model-facing prose instead of repository permissions and blocking hooks is a dangerous architectural mistake. This is a hypothetical scenario, not a reported incident.
 
 Go deeper: https://code.claude.com/docs/en/permissions for configuring deterministic tool permissions and hooks.
 -->
@@ -416,7 +434,7 @@ Teaching focus: Set clear expectations, pairing roles, and timing checkpoints fo
 
 # Lab 2.1 Architecture: Scoped Rule Activation
 
-<img src="../diagrams/claude-code-context-lifecycle.svg" alt="Context lifecycle diagram showing global startup rules vs conditional scoped rules" style="display:block; margin:0 auto; max-height:400px;" />
+<img src="../diagrams/01-path-scoped-rule-activation.png" alt="Flowchart of path-scoped rules: root CLAUDE.md always loads, while a file read or edit is checked against the paths glob; a match loads the rule into context, and a non-match leaves it unloaded." style="display:block; margin:0 auto; max-height:400px;" />
 
 <!--
 What to say: This diagram matches the exact repository structure you are about to inspect. Root CLAUDE dot md stays lean and delegates orders rules into dot claude slash rules slash orders dot md, which activates only when services slash orders is accessed.
@@ -428,7 +446,7 @@ Teaching focus: Ground lab tasks in the scoped rule activation architecture.
 
 # Lab 2.1: Tasks & Workflow Checkpoints
 
-1. **Baseline & Audit (0-4m):** Run `python3 verify_lab.py` in `start/` (observe 8 initial check failures).
+1. **Baseline & Audit (0-4m):** Run `python3 verify_lab.py` in `start/` (observe 5 failing checks and 8 reported issues).
 2. **Refactor Guidance (4-11m):**
    - Trim root `CLAUDE.md` under 60 lines, retain `@AGENTS.md`, remove legacy float directives.
    - Author `.claude/rules/orders.md` with `paths:` globs for `services/orders/**/*.py`.
@@ -473,7 +491,7 @@ Teaching focus: Reinforce lab constraints, security awareness, and definition of
 4. Project instructions guide model behavior, whereas permissions and hooks enforce tool constraints.
 
 <!--
-What to say: As we wrap up Session 2, remember these four pillars. Root CLAUDE dot md should be concise and universal. Scoped rules load on demand based on file paths. Advanced features like memory and skills disclose context progressively. And always enforce security with permissions and hooks, not model-facing prose.
+What to say: As we wrap up Topic 2, remember these four pillars. Root CLAUDE dot md should be concise and universal. Scoped rules load on demand based on file paths. Advanced features like memory and skills disclose context progressively. And always enforce security with permissions and hooks, not model-facing prose.
 
 Teaching focus: Consolidate core lessons on context lifecycle, scoped rules, and security controls.
 -->
@@ -485,14 +503,14 @@ Teaching focus: Consolidate core lessons on context lifecycle, scoped rules, and
 
 # Questions?
 
-**Next up: 15-Minute Bio Break, then Session 3**
+**Next up: 15-Minute Bio Break, then Topic 3**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: Great work on the lab. We will take five minutes for questions and then a fifteen-minute bio break. When we return, Session 3 will tackle maintaining coherence across long tasks using compaction, handoffs, and subagents.
+What to say: Great work on the lab. We will take five minutes for questions and then a fifteen-minute bio break. When we return, Topic 3 will tackle maintaining coherence across long tasks using compaction, handoffs, and subagents.
 
-Teaching focus: Transition smoothly into the bio break and preview Session 3.
+Teaching focus: Transition smoothly into the bio break and preview Topic 3.
 -->
 
 ---

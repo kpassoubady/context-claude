@@ -4,7 +4,7 @@ theme: default
 style: '@import url("https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/blue-theme.css");'
 paginate: true
 header: 'Context Engineering for Claude Code'
-footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
+footer: 'Day 1 - Topic 1: From Prompt Engineering to Context Engineering'
 ---
 
 <style>
@@ -48,7 +48,7 @@ footer: 'Day 1 - Session 1: From Prompt Engineering to Context Engineering'
 # Context Engineering
 ## From Prompt Engineering to Context Engineering
 
-**Day 1 - Session 1**
+**Day 1 - Topic 1**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
@@ -189,7 +189,7 @@ Transition: Here is our roadmap for the next thirty minutes.
 <!--
 What to say: In this session, we start with the conceptual shift from single-turn prompts to continuous context curation. Then we will trace Claude Code's agent loop, examine what causes context rot, and run two interactive simulations comparing noisy and focused context payloads.
 
-Teaching focus: Set expectations for Session 1 concepts and demonstrations.
+Teaching focus: Set expectations for Topic 1 concepts and demonstrations.
 -->
 
 ---
@@ -256,7 +256,7 @@ What to say: Payment teams hit this limit quickly. A dispute investigation can t
 
 Illustrative example: feeding an agent full, unindexed dispute histories wastes tokens and makes calculation drift more likely. Bounding retrieval to the active transaction IDs keeps the agent focused on the inquiry.
 
-Go deeper: https://www.anthropic.com/research/effective-context-engineering-for-ai-agents for Anthropic's engineering principles on high-signal context curation.
+Go deeper: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents for Anthropic's engineering principles on high-signal context curation.
 -->
 
 ---
@@ -351,7 +351,7 @@ pytest tests/settlement/test_rounding.py -q --tb=short
 <!--
 What to say: Here is an actionable rule of thumb you can use immediately. When you ask Claude Code to run tests, never run your entire test suite with verbose tracebacks. Running pytest with dash v v and long tracebacks dumps hundreds of passing test names into your context window. Instead, target the specific test file and pass quiet and short traceback flags.
 
-Real-world example: A backend team debugging a rounding bug ran four hundred tests in verbose mode inside an agent session. The passing test output added sixty thousand tokens of clutter, and on the very next turn, the agent forgot the repository convention to use Decimal instead of float.
+Illustrative example: Picture a backend team debugging a rounding bug who runs four hundred tests in verbose mode inside an agent session. Hundreds of passing-test lines can bury the repository convention to use Decimal instead of float. This is a hypothetical scenario, not a reported incident.
 
 Teaching focus: Bound test and command execution outputs to keep diagnostic signal high.
 -->
@@ -393,7 +393,7 @@ Run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
 > Runs locally with synthetic fixtures; pair with `/context` in Claude Code for live inspection.
 
 <!--
-What to say: Let us run our first demonstration script. In your terminal, run python3 day1 slash demos slash demo-noisy-vs-focused-context dot py. [point at the terminal output] Notice how the noisy payload pushes the architectural rule sixty thousand tokens away from the active edit, whereas the focused payload keeps the rules and the failing test assertion within eight thousand tokens.
+What to say: Let us run our first demonstration script. In your terminal, run python3 day1 slash demos slash demo-noisy-vs-focused-context dot py. [point at the terminal output] Notice how the noisy payload is roughly 7,500 estimated tokens with only 2.5 percent signal and leaves the architectural rule about 7,400 tokens away from the active edit, whereas the focused payload is roughly 220 tokens and keeps the rule within about 125 tokens. These are illustrative four-characters-per-token estimates.
 
 Teaching focus: Compare noisy and focused context payloads and observe token distance from key constraints.
 -->
@@ -426,7 +426,7 @@ Transition: Next, let us clarify what actually happens to model reasoning when c
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: In this final block of Session 1, we will debunk a common misconception about context size and establish clear trust boundaries for retrieved data.
+What to say: In this final block of Topic 1, we will debunk a common misconception about context size and establish clear trust boundaries for retrieved data.
 -->
 
 ---
@@ -542,14 +542,14 @@ Teaching focus: Reinforce the core conceptual foundations before diving into Cla
 
 # Questions?
 
-**Next up: Session 2 - How Claude Code Manages Context**
+**Next up: Topic 2 - How Claude Code Manages Context**
 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: We have ten minutes for questions and discussion. When we return for Session 2, we will look at how Claude Code manages this context under the hood using CLAUDE dot md, scoped rules, auto memory, and on-demand file search.
+What to say: We have ten minutes for questions and discussion. When we return for Topic 2, we will look at how Claude Code manages this context under the hood using CLAUDE dot md, scoped rules, auto memory, and on-demand file search.
 
-Teaching focus: Bridge Session 1 concepts into Session 2 tooling and configuration.
+Teaching focus: Bridge Topic 1 concepts into Topic 2 tooling and configuration.
 -->
 
 ---
