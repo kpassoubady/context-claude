@@ -64,7 +64,8 @@
     "additionalDirectories": [
       "/tmp",
       "/Users/kangs/code/github",
-      "/dev"
+      "/dev",
+      "/Users/kangs/code/github/context-claude"
     ]
   }
 }
