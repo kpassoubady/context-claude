@@ -60,15 +60,15 @@
 <header>Context Engineering for Claude Code</header>
 
 <h1 id="demo-context-hazard-linter">Demo: Context Hazard Linter</h1>
-<p>Run <code>python3 day1/demos/demo-context-hazard-linter.py</code>.</p>
+<p>From <code>context-claude-companion</code>, run <code>python3 day1/demos/demo-context-hazard-linter.py</code>.</p>
 <ul>
-<li><strong>Stale path check:</strong> Detect references to non-existent directories in <code>CLAUDE.md</code></li>
+<li><strong>Stale path check:</strong> Check every backticked path in <code>CLAUDE.md</code> against the file system</li>
 <li><strong>Conflict detection:</strong> Flag opposing test-runner and HTTP-client directives</li>
 <li><strong>Scoping audit:</strong> Identify subsystem rule files missing <code>paths:</code> frontmatter</li>
 <li><strong>Remediation report:</strong> Review concrete fixes before running evaluation tasks</li>
 </ul>
 <blockquote>
-<p>Static checks catch explicit fixture hazards; pair with human review and runtime tests.</p>
+<p>Reads real fixture files; static checks need human review and runtime tests alongside.</p>
 </blockquote>
 <footer>Day 1 - Topic 4: Context Quality and Iteration</footer>
 </section>

@@ -117,14 +117,14 @@ Teaching focus: Provide an actionable remediation path for each of the five cont
 
 # Demo: Context Hazard Linter
 
-Run `python3 day1/demos/demo-context-hazard-linter.py`.
+From `context-claude-companion`, run `python3 day1/demos/demo-context-hazard-linter.py`.
 
-- **Stale path check:** Detect references to non-existent directories in `CLAUDE.md`
+- **Stale path check:** Check every backticked path in `CLAUDE.md` against the file system
 - **Conflict detection:** Flag opposing test-runner and HTTP-client directives
 - **Scoping audit:** Identify subsystem rule files missing `paths:` frontmatter
 - **Remediation report:** Review concrete fixes before running evaluation tasks
 
-> Static checks catch explicit fixture hazards; pair with human review and runtime tests.
+> Reads real fixture files; static checks need human review and runtime tests alongside.
 
 <!--
 What to say: Let us run our first Topic 4 demonstration. Run python3 day1 slash demos slash demo-context-hazard-linter dot py. [point at the output] Notice how the linter scans CLAUDE dot md and rule files to detect missing directories, conflicting test directives, and un-scoped component rules before you ever launch an agent task.
