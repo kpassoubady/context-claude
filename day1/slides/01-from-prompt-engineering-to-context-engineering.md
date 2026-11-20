@@ -505,17 +505,17 @@ Go deeper: https://genai.owasp.org/llmrisk/llm01-prompt-injection/ for the OWASP
 
 # Demo: Multi-Turn Agent Loop Context Growth
 
-Run `python3 day1/demos/demo-agent-loop-context-growth.py`.
+From `context-claude-companion`, run `python3 day1/demos/demo-agent-loop-context-growth.py`.
 
-- **Turn-by-turn growth:** Track context accumulation across six agent turns
-- **Unbounded vs. bounded:** Compare broad directory scans with targeted queries
-- **Artifact pollution:** See how un-ignored `dist/` files mislead later edits
-- **Remediation pattern:** Apply path filters and concise flags at each step
+- **Real tool output:** Six real commands (`ls`, `grep`, `cat`, `pytest`, `git diff`) run on a temporary project
+- **Unbounded vs. scoped:** The same six turns, once broad and once scoped to `src/`
+- **Artifact pollution:** Count the `dist/` and `node_modules/` lines each turn adds
+- **Remediation pattern:** Path filters, `grep -m`, and `pytest -q` at each step
 
-> Illustrates multi-turn payload growth; verify live window state with `/context`.
+> Measures real command output; token counts are estimates. Verify the live window with `/context`.
 
 <!--
-What to say: Now let us run our second simulation script. Run python3 day1 slash demos slash demo-agent-loop-context-growth dot py. Watch how token consumption compounds across six turns when we scan entire directory trees versus using path filters and concise flags.
+What to say: Now let us run our second demo. From the companion repo, run python3 day1 slash demos slash demo-agent-loop-context-growth dot py. It runs real commands on a temporary project. Watch the cumulative lines and estimated tokens: the whole-repo grep and the dist bundle read push the unbounded run to about 1,660 lines and 31,000 tokens, while the scoped run ends near 130 lines and 700 tokens. Point at the build and vendor column.
 
 Teaching focus: Demonstrate turn-by-turn context compounding and the impact of path exclusions.
 -->

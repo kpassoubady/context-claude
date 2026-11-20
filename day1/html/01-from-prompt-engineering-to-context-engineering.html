@@ -343,15 +343,15 @@ D) Token count remains unchanged because only test errors consume tokens</p>
 <header>Context Engineering for Claude Code</header>
 
 <h1 id="demo-multi-turn-agent-loop-context-growth">Demo: Multi-Turn Agent Loop Context Growth</h1>
-<p>Run <code>python3 day1/demos/demo-agent-loop-context-growth.py</code>.</p>
+<p>From <code>context-claude-companion</code>, run <code>python3 day1/demos/demo-agent-loop-context-growth.py</code>.</p>
 <ul>
-<li><strong>Turn-by-turn growth:</strong> Track context accumulation across six agent turns</li>
-<li><strong>Unbounded vs. bounded:</strong> Compare broad directory scans with targeted queries</li>
-<li><strong>Artifact pollution:</strong> See how un-ignored <code>dist/</code> files mislead later edits</li>
-<li><strong>Remediation pattern:</strong> Apply path filters and concise flags at each step</li>
+<li><strong>Real tool output:</strong> Six real commands (<code>ls</code>, <code>grep</code>, <code>cat</code>, <code>pytest</code>, <code>git diff</code>) run on a temporary project</li>
+<li><strong>Unbounded vs. scoped:</strong> The same six turns, once broad and once scoped to <code>src/</code></li>
+<li><strong>Artifact pollution:</strong> Count the <code>dist/</code> and <code>node_modules/</code> lines each turn adds</li>
+<li><strong>Remediation pattern:</strong> Path filters, <code>grep -m</code>, and <code>pytest -q</code> at each step</li>
 </ul>
 <blockquote>
-<p>Illustrates multi-turn payload growth; verify live window state with <code>/context</code>.</p>
+<p>Measures real command output; token counts are estimates. Verify the live window with <code>/context</code>.</p>
 </blockquote>
 <footer>Day 1 - Topic 1: From Prompt Engineering to Context Engineering</footer>
 </section>
@@ -443,7 +443,7 @@ Teaching focus: Ground debugging of agent rule violations in context cleanliness
 
 Real-world example: The OWASP Top 10 for Large Language Models highlights indirect prompt injection as a top vulnerability. In code assistants, an untrusted issue description or scraped dependency doc can attempt to redirect agent behavior if you treat all retrieved text as trusted instructions.
 
-Go deeper: https://genai.owasp.org/llmrisk/llm01-prompt-injection/ for the OWASP guidance on indirect prompt injection.</p></div><div class="bespoke-marp-note" data-index="25" tabindex="0"><p>What to say: Now let us run our second simulation script. Run python3 day1 slash demos slash demo-agent-loop-context-growth dot py. Watch how token consumption compounds across six turns when we scan entire directory trees versus using path filters and concise flags.
+Go deeper: https://genai.owasp.org/llmrisk/llm01-prompt-injection/ for the OWASP guidance on indirect prompt injection.</p></div><div class="bespoke-marp-note" data-index="25" tabindex="0"><p>What to say: Now let us run our second demo. From the companion repo, run python3 day1 slash demos slash demo-agent-loop-context-growth dot py. It runs real commands on a temporary project. Watch the cumulative lines and estimated tokens: the whole-repo grep and the dist bundle read push the unbounded run to about 1,660 lines and 31,000 tokens, while the scoped run ends near 130 lines and 700 tokens. Point at the build and vendor column.
 
 Teaching focus: Demonstrate turn-by-turn context compounding and the impact of path exclusions.</p></div><div class="bespoke-marp-note" data-index="26" tabindex="0"><p>What to say: Here are the four principles to take away from this opening session. First, context engineering governs the whole information environment across turns. Second, every tool execution leaves a token footprint. Third, context bloat harms recall through attention dilution. And fourth, retrieved files are untrusted data that must be bounded and verified with tests.
 
