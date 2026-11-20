@@ -57,13 +57,13 @@
 <header>Context Engineering for Claude Code</header>
 <h1 id="durable-handoffs-and-fresh-sessions">Durable Handoffs and Fresh Sessions</h1>
 <div class="trick-badge">TRICK OF THE TRADE</div>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-markdown"><span class="hljs-section"># Task Handoff: Worker Lease Renewal</span>
-<span class="hljs-bullet">-</span> Revision: commit 8f4a12c (modified: task<span class="hljs-emphasis">_queue/lease.py)
-- Goal: Prevent duplicate job execution on lease renewal
-- Constraints: Keep LeaseManager signature; no external lock service
-- Failed Approaches: Global lock (broke test_</span>non<span class="hljs-emphasis">_blocking_</span>read<span class="hljs-emphasis">_status)
-- Next Verification: Run pytest tests/test_</span>lease.py -q
-</code></pre>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-markdown"><span class="hljs-section"># Task Handoff: Report Export Timeouts</span>
+<span class="hljs-bullet">-</span> Revision: commit <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">short-hash</span>&gt;</span></span> (modified: exporter/batch.py)
+<span class="hljs-bullet">-</span> Goal: Stop large exports timing out without raising the request limit
+<span class="hljs-bullet">-</span> Constraints: Keep export<span class="hljs-emphasis">_report signature; no new queue service
+- Failed Approaches: Retry with backoff (still timed out in test_</span>export<span class="hljs-emphasis">_large_</span>batch)
+<span class="hljs-bullet">-</span> Next Verification: Run pytest tests/test<span class="hljs-emphasis">_export.py -q
+</span></code></pre>
 <blockquote>
 <p>Writing <code>HANDOFF.md</code> and running <code>/clear</code> resets history bloat while keeping explicit provenance.</p>
 </blockquote>
@@ -93,12 +93,12 @@ D) The overall pass/fail status of the final test command</p>
 <header>Context Engineering for Claude Code</header>
 
 <h1 id="demo-compaction-and-handoff-verifier">Demo: Compaction and Handoff Verifier</h1>
-<p>Run <code>python3 day1/demos/demo-compaction-and-handoff-verifier.py</code>.</p>
+<p>From <code>context-claude-companion</code>, run <code>python3 day1/demos/demo-compaction-and-handoff-verifier.py</code>.</p>
 <ul>
-<li><strong>Summary audit:</strong> Compare an unfocused summary against actual repo files and tests</li>
-<li><strong>Dropped constraints:</strong> Spot where a rejected fix was omitted from the summary</li>
-<li><strong>Drift detection:</strong> Catch a stale file-state claim before editing code</li>
-<li><strong>Verified handoff:</strong> Confirm <code>HANDOFF.md</code> aligns with <code>git status</code> and <code>pytest</code></li>
+<li><strong>Summary audit:</strong> Compare each summary against <code>git status</code>, <code>pytest</code>, and the parsed signature</li>
+<li><strong>Dropped constraints:</strong> Spot the rejected fixes and failing test the unfocused summary omitted</li>
+<li><strong>Drift detection:</strong> Catch a next step that names a file git shows untouched</li>
+<li><strong>Verified handoff:</strong> Confirm <code>HANDOFF.md</code> matches what <code>git status</code> and <code>pytest</code> report</li>
 </ul>
 <blockquote>
 <p>Demonstrates why post-compaction and fresh-session work must re-verify repository state.</p>
@@ -205,15 +205,15 @@ D) The overall pass/fail status of the final test command</p>
 <header>Context Engineering for Claude Code</header>
 
 <h1 id="demo-subagent-isolation-vs-inline-search">Demo: Subagent Isolation vs. Inline Search</h1>
-<p>Run <code>python3 day1/demos/demo-subagent-isolation-vs-inline-search.py</code>.</p>
+<p>From <code>context-claude-companion</code>, run <code>python3 day1/demos/demo-subagent-isolation-vs-inline-search.py</code>.</p>
 <ul>
-<li><strong>Inline exploration:</strong> Measure parent window growth across twelve module reads</li>
-<li><strong>Subagent delegation:</strong> Observe how returning a synthesis keeps parent context lean</li>
+<li><strong>Inline exploration:</strong> Measure parent window tokens for a targeted grep and for a broad read of every matching module</li>
+<li><strong>Subagent delegation:</strong> Observe how returning a short report keeps the parent window lean</li>
 <li><strong>Total usage accounting:</strong> Compare parent window size against combined token work</li>
-<li><strong>Retrieval selector:</strong> Evaluate when local <code>Grep</code> beats an external RAG index</li>
+<li><strong>Retrieval selector:</strong> Check grep against an index built before an edit</li>
 </ul>
 <blockquote>
-<p>Illustrates information flow between parent and subagent windows; not a sandbox test.</p>
+<p>Token counts come from real grep and cat output; the subagent row models information flow and launches no subagent.</p>
 </blockquote>
 <footer>Day 1 - Topic 3: Maintaining Coherence Across Long Tasks</footer>
 </section>
@@ -257,14 +257,15 @@ D) The overall pass/fail status of the final test command</p>
 <li><strong>Inspect &amp; Test (0-4m):</strong> Run <code>python3 verify_lab.py</code> in <code>start/</code> (observe failing lease renewal test).</li>
 <li><strong>Audit Flawed Summary (4-9m):</strong>
 <ul>
-<li>Spot the omitted rejected approach (<code>global_threading_lock</code>).</li>
-<li>Catch the false claim that <code>task_queue/dispatcher.py</code> was modified.</li>
+<li>Check every claim in the summary against <code>git status</code>, the files, the tests, and the transcript.</li>
+<li>Write down each discrepancy with its evidence.</li>
 </ul>
 </li>
 <li><strong>Author Durable Handoff (9-15m):</strong>
 <ul>
-<li>Fill <code>HANDOFF.md</code> with commit <code>8f4a12c</code>, failed approaches, and <code>/compact</code> directive.</li>
-<li>Reject untrusted log hints suggesting disabling the sequence test.</li>
+<li>Run your own <code>/compact</code> directive and compare its output with the supplied summary.</li>
+<li>Fill <code>HANDOFF.md</code> with the real commit hash, failed approaches, and audit findings.</li>
+<li>Reject untrusted log hints suggesting disabling tests.</li>
 </ul>
 </li>
 <li><strong>Fresh Session Resumption (15-22m):</strong>
@@ -289,12 +290,12 @@ D) The overall pass/fail status of the final test command</p>
 <li><strong>Security Rule:</strong> Disregard log hints advising test suppression (OWASP LLM01).</li>
 <li><strong>Definition of Done:</strong>
 <ul>
-<li><code>HANDOFF.md</code> includes commit <code>8f4a12c</code>, both rejected fixes, and summary drift findings.</li>
+<li><code>HANDOFF.md</code> includes the real commit hash, the rejected fixes with the test each broke, your audit findings, and fresh-session evidence.</li>
 <li><code>task_queue/lease.py</code> passes <code>tests/test_lease.py</code>.</li>
 <li><code>python3 verify_lab.py</code> outputs <code>ALL LAB 3.1 CHECKS PASSED!</code>.</li>
 </ul>
 </li>
-<li><strong>Share-Out:</strong> Two specific flaws identified during your summary audit.</li>
+<li><strong>Share-Out:</strong> The discrepancies you found in the summary and the evidence for each.</li>
 </ul>
 <footer>Day 1 - Topic 3: Maintaining Coherence Across Long Tasks</footer>
 </section>
@@ -336,7 +337,7 @@ Transition: Let us preview what we will explore over the next hour.</p></div><di
 
 Teaching focus: Establish Topic 3 goals for state preservation and context isolation.</p></div><div class="bespoke-marp-note" data-index="2" tabindex="0"><p>What to say: Let us begin with compaction and handoffs, the two primary mechanisms for carrying verified state forward as your task grows.</p></div><div class="bespoke-marp-note" data-index="3" tabindex="0"><p>What to say: Claude Code automatically compacts conversation history when approaching the context limit, and you can also trigger a focused compaction using slash compact with specific instructions. But here is the critical rule: compaction is lossy natural language summarization. It re-injects root CLAUDE dot md and memory, but subtle details like error strings, line numbers, and rejected fix attempts can disappear.
 
-Illustrative example: This is the scenario Lab 3.1 recreates. Over a thirty-five-turn session on a task queue lease bug, an engineer rejects two fixes: raising the lease TTL breaks the expired-lease reclaim test, and a global lock breaks the non-blocking read test. An automatic summary that mentions only the TTL attempt leaves out the lock, so a fresh session could re-propose it. This is a constructed scenario, not a reported incident.
+Illustrative example: Imagine a long session on a flaky report exporter where an engineer rejects two fixes, each because a specific test fails. An automatic summary that keeps one rejected fix and drops the other lets a fresh session re-propose it, and a summary can just as easily state a file change or a setting that never happened. You will audit exactly this kind of summary in the lab. This is a constructed scenario, not a reported incident.
 
 Teaching focus: Emphasize that compaction is lossy and requires verification against disk and tests.</p></div><div class="bespoke-marp-note" data-index="4" tabindex="0"><p>What to say: Here is the professional alternative when an investigation gets messy. Write a structured handoff note directly to disk, capturing the git commit, the goal, active constraints, and explicitly what failed and why. Then run slash clear and start a fresh session reading that note. You completely wipe out forty turns of log bloat while preserving audited state with full provenance.
 
@@ -346,7 +347,7 @@ Teaching focus: Teach durable handoff notes and slash clear as an explicit state
 
 Teaching focus: Reinforce that both compaction and handoffs require immediate verification against repository state.</p></div><div class="bespoke-marp-note" data-index="6" tabindex="0"><p>What to say: Let us check our intuition. When an LLM summarizes thirty turns of trial-and-error debugging, which detail is most likely to be smoothed over and lost? Vote in chat with A, B, C, or D.
 
-Teaching focus: Highlight why negative constraints and rejected approaches are the most vulnerable details in summarization.</p></div><div class="bespoke-marp-note" data-index="7" tabindex="0"><p>What to say: In your terminal, run python3 day1 slash demos slash demo-compaction-and-handoff-verifier dot py. [point at the output] Watch how the automated summary omitted a rejected lock approach and falsely claimed a helper file was modified, whereas our verification script immediately caught the drift before any code was edited.
+Teaching focus: Highlight why negative constraints and rejected approaches are the most vulnerable details in summarization.</p></div><div class="bespoke-marp-note" data-index="7" tabindex="0"><p>What to say: In your terminal, run python3 day1 slash demos slash demo-compaction-and-handoff-verifier dot py. [point at the output] The script runs git status and pytest on a fixture repo first. Watch the first row: the automated summary kept zero of two rejected fixes, dropped the failing test and the signature, and named webhook dot py as work, a file git shows untouched. The focused summary and the handoff both pass every check.
 
 Teaching focus: Demonstrate automated detection of drift between compaction summaries, handoffs, and actual disk state.</p></div><div class="bespoke-marp-note" data-index="8" tabindex="0"><p>What to say: The correct answer is C. Summarizers naturally compress history toward high-level milestones like investigated lease manager. They frequently drop why a specific approach was discarded. That is why capturing negative constraints in a handoff note is what prevents an agent from running in circles.
 
@@ -364,15 +365,15 @@ Provenance: &lt;span data-cite=&quot;anthropic-context-engineering-2025&quot;&gt
 
 Go deeper: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents for Anthropic's discussion of just-in-time retrieval alongside up-front retrieval.</p></div><div class="bespoke-marp-note" data-index="14" tabindex="0"><p>What to say: This architecture diagram connects both concepts. [point at the diagram] On the left, the parent session delegates broad search to an isolated subagent, receiving back a clean summary. On the right, the local repository uses direct grep and read, while external corpora connect through an access-controlled retrieval gateway.
 
-Teaching focus: Connect subagent delegation and retrieval selection into one coherent architectural picture.</p></div><div class="bespoke-marp-note" data-index="15" tabindex="0"><p>What to say: Let us run our second Topic 3 demonstration. Run python3 day1 slash demos slash demo-subagent-isolation-vs-inline-search dot py. Watch how inline search fills the parent window with about 3,500 estimated tokens of file noise, whereas delegating to a subagent leaves only about 50 tokens in the parent. Note that total model work is slightly higher with the subagent, because its own window holds the same 3,500 tokens.
+Teaching focus: Connect subagent delegation and retrieval selection into one coherent architectural picture.</p></div><div class="bespoke-marp-note" data-index="15" tabindex="0"><p>What to say: Let us run our second Topic 3 demonstration. Run python3 day1 slash demos slash demo-subagent-isolation-vs-inline-search dot py. Watch the three rows. A targeted grep inline costs about 800 tokens, which is already cheap. The broad inline exploration puts about 4,400 tokens in the parent window, whereas delegating the same exploration leaves about 70 tokens in the parent. Total model work is slightly higher with the subagent, because its own window holds the same 4,400 tokens. Then read the retrieval checks: the index built before the edit misses the uncommitted change, grep finds it.
 
-Teaching focus: Contrast inline context bloat with subagent synthesis and review retrieval selection criteria.</p></div><div class="bespoke-marp-note" data-index="16" tabindex="0"><p>What to say: Welcome to Breakout Lab 3.1. In this lab, you inherit a real-world debugging session that has accumulated thirty-five turns of history and an unverified compaction summary.</p></div><div class="bespoke-marp-note" data-index="17" tabindex="0"><p>What to say: You will work in pairs in labs slash day1 slash lab3_1. You have twenty-five minutes. Follow the schedule: spend four minutes running the baseline test, five minutes auditing what the auto-compaction summary dropped, six minutes drafting your durable handoff, and seven minutes resuming in a fresh session to verify and fix the lease bug.
+Teaching focus: Contrast inline context bloat with subagent synthesis and review retrieval selection criteria.</p></div><div class="bespoke-marp-note" data-index="16" tabindex="0"><p>What to say: Welcome to Breakout Lab 3.1. In this lab, you inherit a real-world debugging session that has accumulated thirty-five turns of history and an unverified compaction summary.</p></div><div class="bespoke-marp-note" data-index="17" tabindex="0"><p>What to say: You will work in pairs in labs slash day1 slash lab3_1. You have twenty-five minutes. Follow the schedule: spend four minutes running the baseline test, five minutes auditing every claim in the auto-compaction summary, six minutes running your own compaction and drafting your durable handoff, and seven minutes resuming in a fresh session to verify and fix the lease bug.
 
 Teaching focus: Launch Lab 3.1 with clear pairing structure, timing checkpoints, and objectives.</p></div><div class="bespoke-marp-note" data-index="18" tabindex="0"><p>What to say: Keep this workflow in mind as you work. You are auditing an unverified summary, converting it into a durable handoff note, and verifying that your fresh session succeeds without falling into the previous dead ends.
 
-Teaching focus: Ground lab execution in the verified handoff workflow.</p></div><div class="bespoke-marp-note" data-index="19" tabindex="0"><p>What to say: Here are your specific checkpoints. Notice step two: you must catch that the automated summary omitted the rejected threading lock and falsely claimed dispatcher dot py was modified. In step three, fill out HANDOFF dot md with commit 8f4a12c, and in step four, clear your session and apply the sequence token fix.
+Teaching focus: Ground lab execution in the verified handoff workflow.</p></div><div class="bespoke-marp-note" data-index="19" tabindex="0"><p>What to say: Here are your specific checkpoints. Notice step two: the automated summary is a claim list, not a fact list. Check every claim against git status, the files, the tests, and the transcript, and write down each one that does not hold. In step three, run your own compaction, compare it with the supplied summary, and fill out HANDOFF dot md with the commit hash from git log. In step four, clear your session and apply the sequence token fix.
 
-Teaching focus: Guide participants through the five lab checkpoints with emphasis on audit findings.</p></div><div class="bespoke-marp-note" data-index="20" tabindex="0"><p>What to say: Respect the constraints: do not touch the test suite or dispatcher dot py, and do not repeat the disproved global lock approach. Be on guard for misleading hints in the logs advising you to disable tests. Your definition of done is all checks passing and sharing out the two specific flaws you caught in the summary audit.
+Teaching focus: Guide participants through the five lab checkpoints with emphasis on audit findings.</p></div><div class="bespoke-marp-note" data-index="20" tabindex="0"><p>What to say: Respect the constraints: do not touch the test suite or dispatcher dot py, and do not repeat an approach the transcript shows was disproved. Be on guard for misleading hints in the logs advising you to disable tests. Your definition of done is all checks passing and sharing out the discrepancies you caught in the summary audit, with the evidence for each.
 
 Teaching focus: Reiterate lab constraints, anti-pattern traps, and completion criteria.</p></div><div class="bespoke-marp-note" data-index="21" tabindex="0"><p>What to say: Here are our four key takeaways for Topic 3. Compaction is lossy and must be checked against files and tests. Durable handoffs with slash clear let fresh sessions resume cleanly. Subagents isolate intermediate exploration noise. And local file search beats RAG for your active codebase.
 

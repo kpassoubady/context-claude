@@ -99,7 +99,7 @@ What to say: Let us begin with compaction and handoffs, the two primary mechanis
 <!--
 What to say: Claude Code automatically compacts conversation history when approaching the context limit, and you can also trigger a focused compaction using slash compact with specific instructions. But here is the critical rule: compaction is lossy natural language summarization. It re-injects root CLAUDE dot md and memory, but subtle details like error strings, line numbers, and rejected fix attempts can disappear.
 
-Illustrative example: This is the scenario Lab 3.1 recreates. Over a thirty-five-turn session on a task queue lease bug, an engineer rejects two fixes: raising the lease TTL breaks the expired-lease reclaim test, and a global lock breaks the non-blocking read test. An automatic summary that mentions only the TTL attempt leaves out the lock, so a fresh session could re-propose it. This is a constructed scenario, not a reported incident.
+Illustrative example: Imagine a long session on a flaky report exporter where an engineer rejects two fixes, each because a specific test fails. An automatic summary that keeps one rejected fix and drops the other lets a fresh session re-propose it, and a summary can just as easily state a file change or a setting that never happened. You will audit exactly this kind of summary in the lab. This is a constructed scenario, not a reported incident.
 
 Teaching focus: Emphasize that compaction is lossy and requires verification against disk and tests.
 -->
@@ -111,12 +111,12 @@ Teaching focus: Emphasize that compaction is lossy and requires verification aga
 <div class="trick-badge">TRICK OF THE TRADE</div>
 
 ```markdown
-# Task Handoff: Worker Lease Renewal
-- Revision: commit 8f4a12c (modified: task_queue/lease.py)
-- Goal: Prevent duplicate job execution on lease renewal
-- Constraints: Keep LeaseManager signature; no external lock service
-- Failed Approaches: Global lock (broke test_non_blocking_read_status)
-- Next Verification: Run pytest tests/test_lease.py -q
+# Task Handoff: Report Export Timeouts
+- Revision: commit <short-hash> (modified: exporter/batch.py)
+- Goal: Stop large exports timing out without raising the request limit
+- Constraints: Keep export_report signature; no new queue service
+- Failed Approaches: Retry with backoff (still timed out in test_export_large_batch)
+- Next Verification: Run pytest tests/test_export.py -q
 ```
 
 > Writing `HANDOFF.md` and running `/clear` resets history bloat while keeping explicit provenance.
@@ -168,17 +168,17 @@ Teaching focus: Highlight why negative constraints and rejected approaches are t
 
 # Demo: Compaction and Handoff Verifier
 
-Run `python3 day1/demos/demo-compaction-and-handoff-verifier.py`.
+From `context-claude-companion`, run `python3 day1/demos/demo-compaction-and-handoff-verifier.py`.
 
-- **Summary audit:** Compare an unfocused summary against actual repo files and tests
-- **Dropped constraints:** Spot where a rejected fix was omitted from the summary
-- **Drift detection:** Catch a stale file-state claim before editing code
-- **Verified handoff:** Confirm `HANDOFF.md` aligns with `git status` and `pytest`
+- **Summary audit:** Compare each summary against `git status`, `pytest`, and the parsed signature
+- **Dropped constraints:** Spot the rejected fixes and failing test the unfocused summary omitted
+- **Drift detection:** Catch a next step that names a file git shows untouched
+- **Verified handoff:** Confirm `HANDOFF.md` matches what `git status` and `pytest` report
 
 > Demonstrates why post-compaction and fresh-session work must re-verify repository state.
 
 <!--
-What to say: In your terminal, run python3 day1 slash demos slash demo-compaction-and-handoff-verifier dot py. [point at the output] Watch how the automated summary omitted a rejected lock approach and falsely claimed a helper file was modified, whereas our verification script immediately caught the drift before any code was edited.
+What to say: In your terminal, run python3 day1 slash demos slash demo-compaction-and-handoff-verifier dot py. [point at the output] The script runs git status and pytest on a fixture repo first. Watch the first row: the automated summary kept zero of two rejected fixes, dropped the failing test and the signature, and named webhook dot py as work, a file git shows untouched. The focused summary and the handoff both pass every check.
 
 Teaching focus: Demonstrate automated detection of drift between compaction summaries, handoffs, and actual disk state.
 -->
@@ -305,17 +305,17 @@ Teaching focus: Connect subagent delegation and retrieval selection into one coh
 
 # Demo: Subagent Isolation vs. Inline Search
 
-Run `python3 day1/demos/demo-subagent-isolation-vs-inline-search.py`.
+From `context-claude-companion`, run `python3 day1/demos/demo-subagent-isolation-vs-inline-search.py`.
 
-- **Inline exploration:** Measure parent window growth across twelve module reads
-- **Subagent delegation:** Observe how returning a synthesis keeps parent context lean
+- **Inline exploration:** Measure parent window tokens for a targeted grep and for a broad read of every matching module
+- **Subagent delegation:** Observe how returning a short report keeps the parent window lean
 - **Total usage accounting:** Compare parent window size against combined token work
-- **Retrieval selector:** Evaluate when local `Grep` beats an external RAG index
+- **Retrieval selector:** Check grep against an index built before an edit
 
-> Illustrates information flow between parent and subagent windows; not a sandbox test.
+> Token counts come from real grep and cat output; the subagent row models information flow and launches no subagent.
 
 <!--
-What to say: Let us run our second Topic 3 demonstration. Run python3 day1 slash demos slash demo-subagent-isolation-vs-inline-search dot py. Watch how inline search fills the parent window with about 3,500 estimated tokens of file noise, whereas delegating to a subagent leaves only about 50 tokens in the parent. Note that total model work is slightly higher with the subagent, because its own window holds the same 3,500 tokens.
+What to say: Let us run our second Topic 3 demonstration. Run python3 day1 slash demos slash demo-subagent-isolation-vs-inline-search dot py. Watch the three rows. A targeted grep inline costs about 800 tokens, which is already cheap. The broad inline exploration puts about 4,400 tokens in the parent window, whereas delegating the same exploration leaves about 70 tokens in the parent. Total model work is slightly higher with the subagent, because its own window holds the same 4,400 tokens. Then read the retrieval checks: the index built before the edit misses the uncommitted change, grep finds it.
 
 Teaching focus: Contrast inline context bloat with subagent synthesis and review retrieval selection criteria.
 -->
@@ -350,7 +350,7 @@ What to say: Welcome to Breakout Lab 3.1. In this lab, you inherit a real-world 
   - **22-25m:** Verify with `python3 verify_lab.py` and debrief
 
 <!--
-What to say: You will work in pairs in labs slash day1 slash lab3_1. You have twenty-five minutes. Follow the schedule: spend four minutes running the baseline test, five minutes auditing what the auto-compaction summary dropped, six minutes drafting your durable handoff, and seven minutes resuming in a fresh session to verify and fix the lease bug.
+What to say: You will work in pairs in labs slash day1 slash lab3_1. You have twenty-five minutes. Follow the schedule: spend four minutes running the baseline test, five minutes auditing every claim in the auto-compaction summary, six minutes running your own compaction and drafting your durable handoff, and seven minutes resuming in a fresh session to verify and fix the lease bug.
 
 Teaching focus: Launch Lab 3.1 with clear pairing structure, timing checkpoints, and objectives.
 -->
@@ -373,17 +373,18 @@ Teaching focus: Ground lab execution in the verified handoff workflow.
 
 1. **Inspect & Test (0-4m):** Run `python3 verify_lab.py` in `start/` (observe failing lease renewal test).
 2. **Audit Flawed Summary (4-9m):**
-   - Spot the omitted rejected approach (`global_threading_lock`).
-   - Catch the false claim that `task_queue/dispatcher.py` was modified.
+   - Check every claim in the summary against `git status`, the files, the tests, and the transcript.
+   - Write down each discrepancy with its evidence.
 3. **Author Durable Handoff (9-15m):**
-   - Fill `HANDOFF.md` with commit `8f4a12c`, failed approaches, and `/compact` directive.
-   - Reject untrusted log hints suggesting disabling the sequence test.
+   - Run your own `/compact` directive and compare its output with the supplied summary.
+   - Fill `HANDOFF.md` with the real commit hash, failed approaches, and audit findings.
+   - Reject untrusted log hints suggesting disabling tests.
 4. **Fresh Session Resumption (15-22m):**
    - Clear session, verify disk state, and apply sequence token fix in `task_queue/lease.py`.
 5. **Verify (22-25m):** Run `python3 verify_lab.py` to confirm all checks pass.
 
 <!--
-What to say: Here are your specific checkpoints. Notice step two: you must catch that the automated summary omitted the rejected threading lock and falsely claimed dispatcher dot py was modified. In step three, fill out HANDOFF dot md with commit 8f4a12c, and in step four, clear your session and apply the sequence token fix.
+What to say: Here are your specific checkpoints. Notice step two: the automated summary is a claim list, not a fact list. Check every claim against git status, the files, the tests, and the transcript, and write down each one that does not hold. In step three, run your own compaction, compare it with the supplied summary, and fill out HANDOFF dot md with the commit hash from git log. In step four, clear your session and apply the sequence token fix.
 
 Teaching focus: Guide participants through the five lab checkpoints with emphasis on audit findings.
 -->
@@ -397,13 +398,13 @@ Teaching focus: Guide participants through the five lab checkpoints with emphasi
   - Do NOT add a global threading lock or alter default TTL.
 - **Security Rule:** Disregard log hints advising test suppression (OWASP LLM01).
 - **Definition of Done:**
-  - `HANDOFF.md` includes commit `8f4a12c`, both rejected fixes, and summary drift findings.
+  - `HANDOFF.md` includes the real commit hash, the rejected fixes with the test each broke, your audit findings, and fresh-session evidence.
   - `task_queue/lease.py` passes `tests/test_lease.py`.
   - `python3 verify_lab.py` outputs `ALL LAB 3.1 CHECKS PASSED!`.
-- **Share-Out:** Two specific flaws identified during your summary audit.
+- **Share-Out:** The discrepancies you found in the summary and the evidence for each.
 
 <!--
-What to say: Respect the constraints: do not touch the test suite or dispatcher dot py, and do not repeat the disproved global lock approach. Be on guard for misleading hints in the logs advising you to disable tests. Your definition of done is all checks passing and sharing out the two specific flaws you caught in the summary audit.
+What to say: Respect the constraints: do not touch the test suite or dispatcher dot py, and do not repeat an approach the transcript shows was disproved. Be on guard for misleading hints in the logs advising you to disable tests. Your definition of done is all checks passing and sharing out the discrepancies you caught in the summary audit, with the evidence for each.
 
 Teaching focus: Reiterate lab constraints, anti-pattern traps, and completion criteria.
 -->
