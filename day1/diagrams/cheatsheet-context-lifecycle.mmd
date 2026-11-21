@@ -1,0 +1,4 @@
+flowchart LR
+    S["Session start<br/>CLAUDE.md, MEMORY.md"] --> D["On demand<br/>scoped rules, Glob, Grep, Read"]
+    D --> W["Working context<br/>inspect with /context"]
+    W --> V["Verified action<br/>tests and rules pass"]

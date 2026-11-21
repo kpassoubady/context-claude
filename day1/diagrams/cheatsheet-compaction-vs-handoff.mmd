@@ -1,0 +1,6 @@
+flowchart LR
+    L["Long session"] --> C["/compact<br/>lossy summary"]
+    L --> H["HANDOFF.md<br/>then /clear"]
+    C --> V["Verify<br/>git status, pytest"]
+    H --> V
+    V --> R["Resume work"]

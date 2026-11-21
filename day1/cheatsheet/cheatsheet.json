@@ -1,0 +1,288 @@
+{
+  "$schema": "../../../cheatsheet/schemas/cheatsheet.schema.json",
+  "schemaVersion": 1,
+  "meta": {
+    "title": "Context Engineering for Claude Code",
+    "subtitle": "Context lifecycle, rules, handoffs and evaluation",
+    "track": "ai-dev",
+    "course": "context-engineering-ai-coding-agents",
+    "version": "2026.1",
+    "pageSize": "Letter"
+  },
+  "pages": [
+    {
+      "columns": 3,
+      "cards": [
+        {
+          "title": "Prompt vs Context Engineering",
+          "colSpan": 1,
+          "accent": "primary",
+          "blocks": [
+            {
+              "type": "table",
+              "headers": [
+                "Aspect",
+                "Prompt",
+                "Context"
+              ],
+              "rows": [
+                [
+                  "Scope",
+                  "One request",
+                  "Runtime state across turns"
+                ],
+                [
+                  "Inputs",
+                  "Wording, examples",
+                  "Guides, files, tools, memory"
+                ],
+                [
+                  "Fails by",
+                  "Ambiguous task",
+                  "Noisy dumps, competing rules"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Context Lifecycle",
+          "colSpan": 2,
+          "accent": "accent",
+          "blocks": [
+            {
+              "type": "mermaid",
+              "src": "../diagrams/cheatsheet-context-lifecycle.mmd",
+              "caption": "Keep startup lean; load the rest on demand"
+            }
+          ]
+        },
+        {
+          "title": "Startup vs On-Demand Context",
+          "colSpan": 3,
+          "accent": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "headers": [
+                "Phase",
+                "What loads",
+                "Context impact"
+              ],
+              "rows": [
+                [
+                  "Session start",
+                  "Root `CLAUDE.md`, unconditional rules, `MEMORY.md`",
+                  "Occupies space from turn 1"
+                ],
+                [
+                  "Conditional",
+                  "`.claude/rules/*.md` with `paths:` globs",
+                  "Loads when a matching file is read"
+                ],
+                [
+                  "On demand",
+                  "`Glob`, `Grep`, `Read`, Skill and MCP schemas",
+                  "Added only when the task needs them"
+                ],
+                [
+                  "Out of band",
+                  "Permissions, `PreToolUse`, `PostToolUse`",
+                  "Enforces policy outside model prose"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Path-Scoped Rule",
+          "colSpan": 2,
+          "accent": "success",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "markdown",
+              "filename": ".claude/rules/*.md",
+              "code": "---\npaths:\n  - \"services/billing/**/*.py\"\n  - \"tests/billing/**/*.py\"\n---\n- Use integer cents; never use float.\n- Verify with: pytest tests/billing -q"
+            }
+          ]
+        },
+        {
+          "title": "Guidance vs Enforcement",
+          "colSpan": 1,
+          "accent": "warning",
+          "blocks": [
+            {
+              "type": "list",
+              "items": [
+                "`CLAUDE.md` and rules are **advisory**",
+                "**Permissions** and a `PreToolUse` hook block before the call runs",
+                "`PostToolUse` checks after the edit"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Lab 2.1: Definition of Done",
+          "colSpan": 3,
+          "accent": "discussion",
+          "blocks": [
+            {
+              "type": "list",
+              "items": [
+                "`CLAUDE.md` is under 60 lines and references `@AGENTS.md`",
+                "`.claude/rules/orders.md` starts with valid `paths:` frontmatter",
+                "Do not modify `tests/**` or `verify_lab.py`; no `float` in currency logic",
+                "`python3 verify_lab.py` prints `ALL LAB 2.1 CHECKS PASSED!`"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "columns": 3,
+      "cards": [
+        {
+          "title": "Session Commands",
+          "colSpan": 1,
+          "accent": "primary",
+          "blocks": [
+            {
+              "type": "table",
+              "headers": [
+                "Command",
+                "Use"
+              ],
+              "rows": [
+                [
+                  "`/context`",
+                  "Window breakdown"
+                ],
+                [
+                  "`/compact`",
+                  "Focused summary"
+                ],
+                [
+                  "`/clear`",
+                  "Fresh start"
+                ],
+                [
+                  "`/usage`",
+                  "Session usage (alias `/cost`)"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Compaction vs Handoff",
+          "colSpan": 2,
+          "accent": "accent",
+          "blocks": [
+            {
+              "type": "mermaid",
+              "src": "../diagrams/cheatsheet-compaction-vs-handoff.mmd",
+              "caption": "Both paths end at a disk and test check"
+            }
+          ]
+        },
+        {
+          "title": "Handoff Template",
+          "colSpan": 2,
+          "accent": "success",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "markdown",
+              "filename": "HANDOFF.md",
+              "code": "# Task Handoff: <title>\n- Revision: commit <short-hash>\n- Goal: <one line>\n- Constraints: <what must not change>\n- Failed Approaches: <fix and the test it broke>\n- Next Verification: pytest tests/test_export.py -q"
+            }
+          ]
+        },
+        {
+          "title": "Compaction Is Lossy",
+          "colSpan": 1,
+          "accent": "warning",
+          "blocks": [
+            {
+              "type": "callout",
+              "variant": "warning",
+              "text": "Line numbers, error codes and rejected fixes can drop out. Check the summary against `git status` and `pytest`."
+            }
+          ]
+        },
+        {
+          "title": "Subagents and Retrieval",
+          "colSpan": 2,
+          "accent": "info",
+          "blocks": [
+            {
+              "type": "list",
+              "items": [
+                "A subagent has its **own window**; the parent gets findings only",
+                "Isolation is not filesystem or credential isolation",
+                "Local repo: `Glob`, `Grep`, `Read`; RAG for external corpora"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Five Context Hazards",
+          "colSpan": 1,
+          "accent": "danger",
+          "blocks": [
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Verbose tool results",
+                "Stale assumptions",
+                "Redundant rules",
+                "Context dilution",
+                "Conflicting instructions"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Evaluation Gates",
+          "colSpan": 3,
+          "accent": "discussion",
+          "blocks": [
+            {
+              "type": "table",
+              "headers": [
+                "Tier",
+                "Metric",
+                "Requirement"
+              ],
+              "rows": [
+                [
+                  "1. Correctness",
+                  "Automated tests",
+                  "100% pass"
+                ],
+                [
+                  "2. Adherence",
+                  "Invariant checklist",
+                  "All rules followed in the diff"
+                ],
+                [
+                  "3. Safety",
+                  "Boundary checks",
+                  "Zero unauthorized actions"
+                ],
+                [
+                  "4. Efficiency",
+                  "`/context`, `/usage`, turns",
+                  "Compare only after 1 to 3 pass"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
