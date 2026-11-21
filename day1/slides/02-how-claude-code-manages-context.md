@@ -187,14 +187,14 @@ Teaching focus: Establish root CLAUDE dot md as a concise, repo-wide entry point
 ```markdown
 ---
 paths:
-  - "services/orders/**/*.py"
-  - "tests/orders/**/*.py"
+  - "services/billing/**/*.py"
+  - "tests/billing/**/*.py"
 ---
-# Orders Service Rules
+# Billing Service Rules
 
 - Represent all monetary amounts as integer cents; never use float.
-- Require idempotency_key on state-changing order operations.
-- Run verification with: pytest tests/orders -q
+- Require idempotency_key on state-changing billing operations.
+- Run verification with: pytest tests/billing -q
 ```
 
 <!--
@@ -418,14 +418,14 @@ What to say: Welcome to Breakout Lab 2.1. In this exercise, you will take a clut
 
 - **Goal:** Refactor bloated root `CLAUDE.md`, author `.claude/rules/orders.md`, and fix order pricing.
 - **Pacing:**
-  - **0-4m:** Baseline & Audit (`python3 verify_lab.py`)
-  - **4-11m:** Refactor `CLAUDE.md` (<60 lines) and complete `.claude/rules/orders.md`
+  - **0-5m:** Write your prediction, run `python3 verify_lab.py`, open a controlled session, run `/context` (Before)
+  - **5-11m:** Refactor `CLAUDE.md` (<60 lines) and complete `.claude/rules/orders.md`
   - **11-19m:** Fix integer-cent pricing in `services/orders/pricing.py` (swap roles)
-  - **19-23m:** Verify with `python3 verify_lab.py` and fill `context_comparison.md`
-  - **23-25m:** Prepare 60-second evidence share-out
+  - **19-23m:** Verify, then fresh session and `/context` (After); fill `context_comparison.md`
+  - **23-25m:** Two volunteer pairs share out (1 minute each)
 
 <!--
-What to say: You will work in pairs as driver and navigator in the companion repository under labs slash day1 slash lab2_1. You have twenty-five minutes. Follow the pacing milestones on screen: spend the first four minutes establishing your baseline, seven minutes refactoring instructions, and eight minutes implementing the scoped pricing fix before verifying your result.
+What to say: You will work in pairs as driver and navigator in the companion repository under labs slash day1 slash lab2_1. You have twenty-five minutes. Follow the pacing milestones on screen: spend the first five minutes writing your prediction and establishing your baseline with a verifier run and a context reading, six minutes refactoring instructions, and eight minutes implementing the scoped pricing fix before verifying your result.
 
 Teaching focus: Set clear expectations, pairing roles, and timing checkpoints for Lab 2.1.
 -->
@@ -446,17 +446,17 @@ Teaching focus: Ground lab tasks in the scoped rule activation architecture.
 
 # Lab 2.1: Tasks & Workflow Checkpoints
 
-1. **Baseline & Audit (0-4m):** Run `python3 verify_lab.py` in `start/` (observe 5 failing checks and 10 reported issues).
-2. **Refactor Guidance (4-11m):**
+1. **Baseline & Audit (0-5m):** Write your prediction, run `python3 verify_lab.py` in `start/` (5 failing checks, 10 issues), then run `/context` in a controlled session and record Before.
+2. **Refactor Guidance (5-11m):**
    - Trim root `CLAUDE.md` under 60 lines, retain `@AGENTS.md`, remove legacy float directives.
-   - Author `.claude/rules/orders.md` with `paths:` globs for `services/orders/**/*.py` and `tests/orders/**/*.py`.
+   - Author `.claude/rules/orders.md`: derive the `paths:` globs from the directory tree and the failing tests.
 3. **Scoped Fix (11-19m):**
-   - Open `services/orders/pricing.py`; reject untrusted comments (OWASP LLM01).
+   - Find `services/orders/pricing.py` with `Glob` or `Grep` and note the query; reject untrusted comments (OWASP LLM01).
    - Implement integer-cents and idempotency validation adhering to the scoped rule.
-4. **Verify & Compare (19-23m):** Run `python3 verify_lab.py` to confirm all 5 checks pass.
+4. **Verify & Compare (19-23m):** Run `python3 verify_lab.py` until all 5 checks pass; fresh session, `/context`, record After.
 
 <!--
-What to say: Here is your four-step workflow. First, run python3 verify_lab dot py to observe the baseline failures. Second, trim root CLAUDE dot md under sixty lines and author the scoped orders rule. Third, implement the pricing calculation in pricing dot py, watching out for untrusted comment injection. And fourth, re-run verification until all five checks pass.
+What to say: Here is your four-step workflow. First, write your prediction, run python3 verify_lab dot py to observe the baseline failures, and take your first context reading. Second, trim root CLAUDE dot md under sixty lines and author the scoped orders rule, deriving the globs yourself from the directory tree and the failing tests. Third, implement the pricing calculation in pricing dot py, watching out for untrusted comment injection. And fourth, re-run verification until all five checks pass, then take a second context reading in a fresh session and compare it with your prediction.
 
 Teaching focus: Provide an explicit step-by-step roadmap through the lab checkpoints.
 -->
