@@ -211,6 +211,12 @@ Teaching focus: Demonstrate path-scoped rule syntax and conditional activation u
 
 <img src="../diagrams/01-path-scoped-rule-activation.png" alt="Flowchart of path-scoped rules: root CLAUDE.md always loads, while a file read or edit is checked against the paths glob; a match loads the rule into context, and a non-match leaves it unloaded." style="display:block; margin:0 auto; max-height:420px;" />
 
+<!--
+What to say: Read this diagram in two halves. [point at the top row] Root CLAUDE dot md always loads at session start, so it is in the window from turn one. [point at the diamond] Everything else is conditional. Each time Claude reads or edits a file, that path is checked against the paths globs in your rule files. On a match, the rule loads into context. On no match, the rule stays on disk and costs you nothing. That is how a billing rule can exist without taxing someone working on the front end.
+
+Transition: Let us see what that looks like for a fintech ledger repository.
+-->
+
 ---
 
 # Path-Scoped Rules (Fintech)
@@ -241,7 +247,7 @@ Illustrative example: scoping zero-float and idempotency rules to ledger paths k
 - UI developers working in the same repository do not load those rules.
 
 <!--
-What to say: This slide is another reference example of how a media team might scope licensing rules to the audio pipeline while leaving the web UI clean. It is an illustrative scenario, not a description of a named company's system.
+What to say: This slide is another reference example of how a media team might scope licensing rules to the audio pipeline while leaving the web UI clean. It is an illustrative scenario, not a description of a named company's system. Notice that the pattern matches the fintech slide: the rule follows the file, not the person. If you are short on time, the one sentence to keep is that scoping decides who pays the token cost.
 
 Teaching focus: Reinforce path scoping benefits across cross-functional monorepos.
 -->
@@ -292,7 +298,7 @@ What to say: Next, let us look at Claude Code's advanced context features: auto 
 - **Progressive disclosure:** Keeps baseline startup overhead predictable
 
 <!--
-What to say: Claude Code uses progressive disclosure across three additional capabilities. Auto memory records corrections you make during sessions and loads the first two hundred lines at startup. Skills load short descriptions initially and only pull their full instructions when invoked. And MCP server discovery lets Claude discover tool names without loading heavy JSON schemas until a task needs them.
+What to say: Claude Code uses progressive disclosure across three additional capabilities. Auto memory records corrections you make during sessions and loads the first two hundred lines, or twenty-five kilobytes, whichever comes first, at startup. Skills load short descriptions initially and only pull their full instructions when invoked. And MCP server discovery lets Claude discover tool names without loading heavy JSON schemas until a task needs them.
 
 Go deeper: https://code.claude.com/docs/en/memory for details on how auto memory persists learnings across sessions.
 
@@ -317,7 +323,7 @@ Teaching focus: Explain progressive disclosure mechanisms that keep startup over
 <!--
 What to say: This is one of the most critical security takeaways in the entire course. Project instructions in CLAUDE dot md are advisory prose. They guide the model's choices, but they cannot enforce security boundaries. If an untrusted README or prompt injection tells Claude to ignore rules and overwrite an environment file, advisory text cannot stop the tool call. Deterministic security requires permission controls and pre-tool-use hooks that intercept calls outside of model reasoning.
 
-Illustrative example: Suppose a team relies on one sentence in their project guide saying never touch production configuration files. During a long refactor, untrusted script output tells the assistant to back up config dot env, and the write goes through because nothing outside the model blocks it. Relying on model-facing prose instead of repository permissions and blocking hooks is a dangerous architectural mistake. This is a hypothetical scenario, not a reported incident.
+Illustrative example: Suppose a team relies on one sentence in their guide saying never touch production configuration files. During a long refactor, untrusted script output tells the assistant to back up config dot env, and the write goes through because nothing outside the model blocks it. A post-tool-use hook would only report that afterward. This is a hypothetical scenario, not a reported incident.
 
 Go deeper: https://code.claude.com/docs/en/permissions for configuring deterministic tool permissions and hooks.
 -->
@@ -331,7 +337,7 @@ Go deeper: https://code.claude.com/docs/en/permissions for configuring determini
 <img src="../diagrams/guidance-vs-enforcement.svg" alt="Comparison between model-facing advisory guidance and deterministic execution controls using permissions and hooks" style="display:block; margin:0 auto; max-height:420px;" />
 
 <!--
-What to say: Look at how this diagram separates model guidance from execution controls. On the left, CLAUDE dot md sits inside the model context window as advisory guidance. On the right, permissions, pre-tool-use hooks, and CI gates operate out of band. Even if the model decides to run a command, a pre-tool-use hook can cancel the action before it touches your filesystem.
+What to say: Look at how this diagram separates model guidance from execution controls. On the left, CLAUDE dot md sits inside the model context window as advisory guidance. On the right, permissions and pre-tool-use hooks operate out of band, with a post-tool-use hook checking after the action. Even if the model decides to run a command, a pre-tool-use hook can cancel the action before it touches your filesystem.
 
 Teaching focus: Contrast in-band model guidance with out-of-band deterministic enforcement gates.
 -->
@@ -437,7 +443,7 @@ Teaching focus: Set clear expectations, pairing roles, and timing checkpoints fo
 <img src="../diagrams/01-path-scoped-rule-activation.png" alt="Flowchart of path-scoped rules: root CLAUDE.md always loads, while a file read or edit is checked against the paths glob; a match loads the rule into context, and a non-match leaves it unloaded." style="display:block; margin:0 auto; max-height:400px;" />
 
 <!--
-What to say: This diagram matches the exact repository structure you are about to inspect. Root CLAUDE dot md stays lean and delegates orders rules into dot claude slash rules slash orders dot md, which activates only when services slash orders is accessed.
+What to say: This diagram matches the exact repository structure you are about to inspect. Root CLAUDE dot md stays lean and delegates orders rules into dot claude slash rules slash orders dot md, which activates only when services slash orders is accessed. So reading or editing services slash orders slash pricing dot py is what pulls the orders rule in, and touching any other path leaves it unloaded. That is the behavior your glob has to produce.
 
 Teaching focus: Ground lab tasks in the scoped rule activation architecture.
 -->
@@ -491,7 +497,7 @@ Teaching focus: Reinforce lab constraints, security awareness, and definition of
 4. Project instructions guide model behavior, whereas permissions and hooks enforce tool constraints.
 
 <!--
-What to say: As we wrap up Topic 2, remember these four pillars. Root CLAUDE dot md should be concise and universal. Scoped rules load on demand based on file paths. Advanced features like memory and skills disclose context progressively. And always enforce security with permissions and hooks, not model-facing prose.
+What to say: As we wrap up Topic 2, here is why each pillar matters for what you just did in the lab. A concise root CLAUDE dot md is the one file you pay for on every turn, so every line has to earn its place. Scoped rules let you keep detail without paying for it everywhere. Memory, skills, and MCP discovery load in stages, so adding them does not bloat your baseline. And permissions and hooks are the only layer that blocks an action, so anything security critical belongs there, not in prose.
 
 Teaching focus: Consolidate core lessons on context lifecycle, scoped rules, and security controls.
 -->
@@ -508,7 +514,7 @@ Teaching focus: Consolidate core lessons on context lifecycle, scoped rules, and
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: Great work on the lab. We will take five minutes for questions and then a fifteen-minute bio break. When we return, Topic 3 will tackle maintaining coherence across long tasks using compaction, handoffs, and subagents.
+What to say: Great work on the lab. Take a moment to flag any quick questions, and save the bigger ones for the course wrap-up at the end of the day. Then we take our fifteen-minute bio break. When we return, Topic 3 will tackle maintaining coherence across long tasks using compaction, handoffs, and subagents.
 
 Teaching focus: Transition smoothly into the bio break and preview Topic 3.
 -->
