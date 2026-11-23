@@ -80,7 +80,6 @@ Teaching focus: Confirm environment readiness before diving into the concepts.
 ---
 
 <!-- _class: chat-waterfall -->
-<!-- 🌊 WATERFALL STRATEGY INJECTION -->
 
 # Introduce Yourself
 
@@ -128,7 +127,7 @@ Choose one prompt. Share only what feels comfortable.
 > **60 seconds:** Share in chat, speak when invited, keep a private note, or pass.
 
 <!--
-What to say: We will spend four hours collaborating together today, so take a minute to share something personal if you feel comfortable. Pick any one of the three cards on the screen.
+What to say: We will spend four hours collaborating together today, so take a minute to share something personal if you feel comfortable. Pick any one of the three cards on the screen. People who have said something out loud early, even something small, are far more likely to speak up during the demos and labs later, so this one minute pays for itself. Passing is fine too.
 
 Transition: Now that we know who is in the room, let us look at your hands-on experience with context in coding agents.
 -->
@@ -136,7 +135,6 @@ Transition: Now that we know who is in the room, let us look at your hands-on ex
 ---
 
 <!-- _class: chat-waterfall -->
-<!-- 🌊 WATERFALL STRATEGY INJECTION -->
 
 # Your Context Engineering Experience
 
@@ -187,7 +185,7 @@ Transition: Here is our roadmap for the next thirty minutes.
 5. Demo: Multi-turn tool output growth in an agent loop
 
 <!--
-What to say: In this session, we start with the conceptual shift from single-turn prompts to continuous context curation. Then we will trace Claude Code's agent loop, examine what causes context rot, and run two interactive simulations comparing noisy and focused context payloads.
+What to say: In this session, we start with the conceptual shift from single-turn prompts to continuous context curation. Then we will trace Claude Code's agent loop, examine what causes context rot, and run two short demos on noisy versus focused payloads and on multi-turn growth. Each demo gets about three minutes of our thirty. Each part answers one question: what changes beyond prompt design, where does the context come from on every turn, and why does more context sometimes work worse.
 
 Teaching focus: Set expectations for Topic 1 concepts and demonstrations.
 -->
@@ -383,7 +381,7 @@ Teaching focus: Engage participants to predict how raw terminal output affects c
 
 # Demo: Noisy vs. Focused Context Payloads
 
-Run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
+From `context-claude-companion`, run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
 
 - **Payload composition:** Compare a noisy dump against a focused payment task
 - **Signal distribution:** Inspect how verbose logs crowd out project rules
@@ -393,7 +391,7 @@ Run `python3 day1/demos/demo-noisy-vs-focused-context.py`.
 > Runs locally with synthetic fixtures; pair with `/context` in Claude Code for live inspection.
 
 <!--
-What to say: Let us run our first demonstration script. In your terminal, run python3 day1 slash demos slash demo-noisy-vs-focused-context dot py. [point at the terminal output] Notice how the noisy payload is roughly 7,500 estimated tokens with only 2.5 percent signal and leaves the architectural rule about 7,400 tokens away from the active edit, whereas the focused payload is roughly 220 tokens and keeps the rule within about 125 tokens. These are illustrative four-characters-per-token estimates.
+What to say: Let us run our first demonstration script. In your terminal, from the context-claude-companion repo, run python3 day1 slash demos slash demo-noisy-vs-focused-context dot py. [point at the terminal output] Notice how the noisy payload is roughly 7,500 estimated tokens with only 2.5 percent signal and leaves the architectural rule about 7,400 tokens away from the active edit, whereas the focused payload is roughly 220 tokens and keeps the rule within about 125 tokens. These are illustrative four-characters-per-token estimates.
 
 Teaching focus: Compare noisy and focused context payloads and observe token distance from key constraints.
 -->
@@ -410,7 +408,7 @@ Teaching focus: Compare noisy and focused context payloads and observe token dis
 - Option A is false: tool outputs enter context by default. Bounding commands (e.g. `-q --tb=short`) preserves high signal.
 
 <!--
-What to say: The correct answer is B. Any output emitted to stdout during a tool call is ingested directly into working memory. The shell does not filter passing tests for you, and Claude Code does not automatically clear context without your instruction. Bounding commands keeps your context budget focused on what actually broke.
+What to say: The correct answer is B. Any output emitted to stdout during a tool call is ingested directly into working memory. The shell does not filter passing tests for you, and Claude Code does not run slash clear on its own. Automatic compaction can summarize older turns as the window fills, but that is a different thing, and we will see in Topic 3 that it is lossy. Bounding commands keeps your context budget focused on what actually broke.
 
 Transition: Next, let us clarify what actually happens to model reasoning when context grows large.
 -->
@@ -530,7 +528,7 @@ Teaching focus: Demonstrate turn-by-turn context compounding and the impact of p
 4. Retrieved files and logs are untrusted evidence that require bounded queries and verification tests.
 
 <!--
-What to say: Here are the four principles to take away from this opening session. First, context engineering governs the whole information environment across turns. Second, every tool execution leaves a token footprint. Third, context bloat harms recall through attention dilution. And fourth, retrieved files are untrusted data that must be bounded and verified with tests.
+What to say: Four ideas to carry into the labs, and here is why each one matters. Prompt design now covers everything the agent sees, which is why Lab 2.1 has you restructure instructions instead of rewording a prompt. Every tool call leaves tokens behind, so you will bound your commands in both labs. Large context dilutes recall rather than guaranteeing hallucination, so we measure adherence against real tests instead of guessing. And retrieved text is untrusted, which is why you will meet comments and log hints in the lab files that try to mislead you, and you will reject them.
 
 Teaching focus: Reinforce the core conceptual foundations before diving into Claude Code configuration.
 -->
@@ -547,7 +545,7 @@ Teaching focus: Reinforce the core conceptual foundations before diving into Cla
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: We have ten minutes for questions and discussion. When we return for Topic 2, we will look at how Claude Code manages this context under the hood using CLAUDE dot md, scoped rules, auto memory, and on-demand file search.
+What to say: Quick clarifying questions now, please. We have a fifteen-minute course wrap-up at the end of the day, and ten of those minutes are reserved for open questions and discussion, so jot bigger questions in the chat and I will collect them for then. Right now, we move straight into Topic 2, where we look at how Claude Code manages this context under the hood using CLAUDE dot md, scoped rules, auto memory, and on-demand file search.
 
 Teaching focus: Bridge Topic 1 concepts into Topic 2 tooling and configuration.
 -->
