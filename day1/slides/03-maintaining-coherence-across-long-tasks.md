@@ -97,9 +97,9 @@ What to say: Let us begin with compaction and handoffs, the two primary mechanis
 <p class="source" data-cite="anthropic-context-window-2026">Source: <a href="https://code.claude.com/docs/en/context-window">Anthropic, Explore the context window (Claude Code docs)</a>.</p>
 
 <!--
-What to say: Claude Code automatically compacts conversation history when approaching the context limit, and you can also trigger a focused compaction using slash compact with specific instructions. But here is the critical rule: compaction is lossy natural language summarization. It re-injects root CLAUDE dot md and memory, but subtle details like error strings, line numbers, and rejected fix attempts can disappear.
+What to say: Claude Code compacts conversation history automatically near the context limit, and you can trigger a focused compaction with slash compact plus specific instructions. The critical rule: compaction is lossy natural language summarization. It re-injects root CLAUDE dot md and memory, but subtle details like error strings, line numbers, and rejected fix attempts can disappear.
 
-Illustrative example: Imagine a long session on a flaky report exporter where an engineer rejects two fixes, each because a specific test fails. An automatic summary that keeps one rejected fix and drops the other lets a fresh session re-propose it, and a summary can just as easily state a file change or a setting that never happened. You will audit exactly this kind of summary in the lab. This is a constructed scenario, not a reported incident.
+Illustrative example: Imagine a long session on a flaky report exporter where an engineer rejects two fixes, each because a specific test fails. An automatic summary that keeps one rejected fix and drops the other lets a fresh session re-propose it, and a summary can just as easily state a file change or setting that never happened. You will audit exactly this kind of summary in the lab. This is a constructed scenario, not a reported incident.
 
 Teaching focus: Emphasize that compaction is lossy and requires verification against disk and tests.
 -->
@@ -261,7 +261,7 @@ Illustrative example: auditing raw transaction logs in isolated subagent windows
 - The main ingest step receives standardized manifests, not raw file contents.
 
 <!--
-What to say: This slide is a reference example of how a media catalog team might use temporary subagents to extract metadata without filling the main pipeline's memory. It is an illustrative scenario, not a description of a named company's system.
+What to say: This slide is a reference example of how a media catalog team might use temporary subagents to extract metadata without filling the main pipeline's memory. It is an illustrative scenario, not a description of a named company's system. Notice what the main step gets back: manifests, not raw files. That is the whole value of delegation wherever the raw material is large and the answer is small. If you skip this slide, carry that one sentence forward.
 
 Teaching focus: Illustrate subagent batch isolation in media ingestion for offline reference.
 -->
@@ -315,7 +315,7 @@ From `context-claude-companion`, run `python3 day1/demos/demo-subagent-isolation
 > Token counts come from real grep and cat output; the subagent row models information flow and launches no subagent.
 
 <!--
-What to say: Let us run our second Topic 3 demonstration. Run python3 day1 slash demos slash demo-subagent-isolation-vs-inline-search dot py. Watch the three rows. A targeted grep inline costs about 800 tokens, which is already cheap. The broad inline exploration puts about 4,400 tokens in the parent window, whereas delegating the same exploration leaves about 70 tokens in the parent. Total model work is slightly higher with the subagent, because its own window holds the same 4,400 tokens. Then read the retrieval checks: the index built before the edit misses the uncommitted change, grep finds it.
+What to say: Let us run our second Topic 3 demonstration. Run python3 day1 slash demos slash demo-subagent-isolation-vs-inline-search dot py. Watch the three rows. A targeted grep inline costs about 800 tokens, which is already cheap. The broad inline exploration puts about 4,400 tokens in the parent window, whereas the modeled subagent row leaves about 70 tokens in the parent. No subagent runs in this demo, so that row models the information flow. Total model work is slightly higher with the subagent, because its own window holds the same 4,400 tokens. Then read the retrieval checks: the index built before the edit misses the uncommitted change, grep finds it.
 
 Teaching focus: Contrast inline context bloat with subagent synthesis and review retrieval selection criteria.
 -->
@@ -343,14 +343,14 @@ What to say: Welcome to Breakout Lab 3.1. In this lab, you inherit a real-world 
 
 - **Goal:** Audit lossy compaction summary, author durable `HANDOFF.md`, and resume in a fresh session.
 - **Pacing:**
-  - **0-4m:** Inspect & Test (`python3 verify_lab.py`)
+  - **0-4m:** Inspect & Test (`./setup_repo.sh`, then `python3 verify_lab.py`)
   - **4-9m:** Audit `auto_compact_summary.md` against transcript
   - **9-15m:** Author `HANDOFF.md` with provenance and rejected fixes
   - **15-22m:** Fresh session (`/clear`), re-verify state, fix `task_queue/lease.py`
   - **22-25m:** Verify with `python3 verify_lab.py` and debrief
 
 <!--
-What to say: You will work in pairs in labs slash day1 slash lab3_1. You have twenty-five minutes. Follow the schedule: spend four minutes running the baseline test, five minutes auditing every claim in the auto-compaction summary, six minutes running your own compaction and drafting your durable handoff, and seven minutes resuming in a fresh session to verify and fix the lease bug.
+What to say: You will work in pairs in labs slash day1 slash lab3_1. You have twenty-five minutes. Follow the schedule: spend four minutes running the setup script and the baseline test, five minutes auditing every claim in the auto-compaction summary, six minutes running your own compaction and drafting your durable handoff, and seven minutes resuming in a fresh session to verify and fix the lease bug.
 
 Teaching focus: Launch Lab 3.1 with clear pairing structure, timing checkpoints, and objectives.
 -->
@@ -362,7 +362,7 @@ Teaching focus: Launch Lab 3.1 with clear pairing structure, timing checkpoints,
 <img src="../diagrams/compaction-vs-handoff.svg" alt="Flowchart showing automated compaction risks versus verified durable handoffs and test gates" style="display:block; margin:0 auto; max-height:400px;" />
 
 <!--
-What to say: Keep this workflow in mind as you work. You are auditing an unverified summary, converting it into a durable handoff note, and verifying that your fresh session succeeds without falling into the previous dead ends.
+What to say: Keep this workflow in mind as you work. Compare the two columns. [point at the diagram] In-session compaction keeps you in the same conversation with a lossy summary. A handoff writes state to disk and clears the window. In this lab you audit the first and build the second, and both end at the same verification gate. You are auditing an unverified summary, converting it into a durable handoff note, and verifying that your fresh session succeeds without falling into the previous dead ends.
 
 Teaching focus: Ground lab execution in the verified handoff workflow.
 -->
@@ -371,7 +371,7 @@ Teaching focus: Ground lab execution in the verified handoff workflow.
 
 # Lab 3.1: Tasks & Workflow Checkpoints
 
-1. **Inspect & Test (0-4m):** Run `python3 verify_lab.py` in `start/` (observe failing lease renewal test).
+1. **Inspect & Test (0-4m):** Run `./setup_repo.sh` in `start/` once, then `python3 verify_lab.py` (observe failing lease renewal test).
 2. **Audit Flawed Summary (4-9m):**
    - Check every claim in the summary against `git status`, the files, the tests, and the transcript.
    - Write down each discrepancy with its evidence.
@@ -384,7 +384,7 @@ Teaching focus: Ground lab execution in the verified handoff workflow.
 5. **Verify (22-25m):** Run `python3 verify_lab.py` to confirm all checks pass.
 
 <!--
-What to say: Here are your specific checkpoints. Notice step two: the automated summary is a claim list, not a fact list. Check every claim against git status, the files, the tests, and the transcript, and write down each one that does not hold. In step three, run your own compaction, compare it with the supplied summary, and fill out HANDOFF dot md with the commit hash from git log. In step four, clear your session and apply the sequence token fix.
+What to say: Here are your specific checkpoints. In step one, run setup repo dot sh in the start folder, once. It creates the local git repository the audit runs against, and it refuses to run if a dot git folder already exists. Then run verify lab dot py and look at the failing lease renewal test. Notice step two: the automated summary is a claim list, not a fact list. Check every claim against git status, the files, the tests, and the transcript, and write down each one that does not hold. In step three, run your own compaction, compare it with the supplied summary, and fill out HANDOFF dot md with the commit hash from git log. In step four, clear your session and apply the sequence token fix.
 
 Teaching focus: Guide participants through the five lab checkpoints with emphasis on audit findings.
 -->
@@ -419,7 +419,7 @@ Teaching focus: Reiterate lab constraints, anti-pattern traps, and completion cr
 4. Direct `Glob` and `Grep` fit local codebases, whereas RAG serves large access-controlled external corpora.
 
 <!--
-What to say: Here are our four key takeaways for Topic 3. Compaction is lossy and must be checked against files and tests. Durable handoffs with slash clear let fresh sessions resume cleanly. Subagents isolate intermediate exploration noise. And local file search beats RAG for your active codebase.
+What to say: Four takeaways, and each one maps to something you just did. Compaction is lossy, which is why you audited every claim in the summary against git status and the tests instead of trusting it. A handoff note plus slash clear works because the state lives on disk with a real commit hash, not in the model's memory of the conversation. Subagents keep search noise out of the parent window, but they share your filesystem and credentials, so the isolation is about tokens, not security. And for your own codebase, grep and read beat RAG because they are fresh and exact.
 
 Teaching focus: Solidify principles of state verification, compaction auditing, and subagent delegation.
 -->
@@ -436,7 +436,7 @@ Teaching focus: Solidify principles of state verification, compaction auditing, 
 <img class="logo" src="https://cdn.jsdelivr.net/gh/kpassoubady/marp-themes@v19/logo-white.svg" />
 
 <!--
-What to say: Outstanding work on the handoffs lab. We have five minutes for questions, followed by our mid-course Kahoot quiz and a ten-minute break. In Topic 4, we will look at context quality, linting context hazards, and evaluating agent performance.
+What to say: Outstanding work on the handoffs lab. Take a moment to flag any quick questions, and save the bigger ones for the course wrap-up. Then we run our mid-course Kahoot quiz and take a fifteen-minute bio break. In Topic 4, we will look at context quality, linting context hazards, and evaluating agent performance.
 
 Teaching focus: Wrap up Topic 3 and transition into the Kahoot quiz and break.
 -->
