@@ -127,7 +127,7 @@ From `context-claude-companion`, run `python3 day1/demos/demo-context-hazard-lin
 > Reads real fixture files; static checks need human review and runtime tests alongside.
 
 <!--
-What to say: Let us run our first Topic 4 demonstration. Run python3 day1 slash demos slash demo-context-hazard-linter dot py. [point at the output] Notice how the linter scans CLAUDE dot md and rule files to detect missing directories, conflicting test directives, and un-scoped component rules before you ever launch an agent task.
+What to say: Let us run our first Topic 4 demonstration. Run python3 day1 slash demos slash demo-context-hazard-linter dot py. [point at the output] Notice how the linter scans CLAUDE dot md and rule files to detect missing files, conflicting test directives, and un-scoped component rules before you ever launch an agent task.
 
 Teaching focus: Demonstrate static auditing of project instructions to catch configuration hazards early.
 -->
@@ -197,7 +197,7 @@ Go deeper: https://code.claude.com/docs/en/costs for tracking session token usag
 - Cutting too much schema context can save tokens while adding downstream ingestion retries.
 
 <!--
-What to say: This slide is another reference example from streaming media syndication, showing that cutting too much schema context can save tokens while adding downstream ingestion failures. It is an illustrative scenario, not a reported result.
+What to say: This slide is another reference example from streaming media syndication, showing that cutting too much schema context can save tokens while adding downstream ingestion failures. It is an illustrative scenario, not a reported result. The lesson mirrors the fintech slide: a cheaper run that triggers retries downstream has just moved the cost somewhere you are not measuring. If you skip this slide, keep that sentence.
 
 Teaching focus: Reinforce that over-trimming context introduces expensive downstream regressions.
 -->
@@ -209,7 +209,7 @@ Teaching focus: Reinforce that over-trimming context introduces expensive downst
 <img src="../diagrams/context-evaluation-pipeline.svg" alt="Flowchart showing a controlled baseline, context change, mandatory quality and safety gates, and efficiency comparison" style="display:block; margin:0 auto; max-height:420px;" />
 
 <!--
-What to say: This diagram illustrates a controlled A B evaluation pipeline. You pin the exact baseline commit and task prompt, apply your context change, run your automated test gates, verify instruction adherence, and only then record token savings. If the tests fail, you reject the change immediately.
+What to say: This diagram illustrates a controlled A B evaluation pipeline. You pin the exact baseline commit and task prompt, apply your context change, run your automated test gates, verify instruction adherence, and only then record token savings. If the tests fail, you reject the change immediately. Notice that the reject branch comes before the efficiency compare. A cheaper run that already failed a gate tells you nothing worth knowing, so you never spend time comparing its tokens.
 
 Teaching focus: Map out the step-by-step controlled evaluation pipeline.
 -->
@@ -282,7 +282,7 @@ Transition: Let us see how an automated A B C scorecard enforces this exact deci
 
 # Demo: Context A/B/C Scorecard Evaluator
 
-Run `python3 day1/demos/demo-context-ab-evaluator.py`.
+From `context-claude-companion`, run `python3 day1/demos/demo-context-ab-evaluator.py`.
 
 - **Variant A (Bloated baseline):** High context footprint and failed rule adherence
 - **Variant B (Over-trimmed):** Lowest token count, but fails tests and safety gates
@@ -292,7 +292,7 @@ Run `python3 day1/demos/demo-context-ab-evaluator.py`.
 > Uses labeled synthetic benchmark fixtures to demonstrate the evaluation decision rule.
 
 <!--
-What to say: Run python3 day1 slash demos slash demo-context-ab-evaluator dot py. [point at the output] Notice how Variant B has the lowest token count and fastest turns, but the evaluator flags it as rejected because it failed unit tests. Variant C wins because it passes every test while cutting the context footprint by more than half compared with Variant A, from 24,800 to 11,400 tokens.
+What to say: From the context-claude-companion repo, run python3 day1 slash demos slash demo-context-ab-evaluator dot py. [point at the output] Notice how Variant B has the lowest token count and the fewest turns, two, but the evaluator flags it as rejected because it failed the acceptance tests and the safety gate. Variant C wins because it passes every test while cutting the context footprint by more than half compared with Variant A, from 24,800 to 11,400 tokens.
 
 Teaching focus: Demonstrate how an evaluation scorecard automatically rejects over-trimmed false optimizations.
 -->
@@ -329,7 +329,7 @@ Teaching focus: Bridge classroom learning into immediate workplace engineering p
 4. Use `/context`, `/usage`, and turn counts as supporting efficiency measures only after quality gates pass.
 
 <!--
-What to say: Here are the four enduring principles of context engineering. Regularly audit your repos for the five context hazards. Always evaluate changes against a pinned baseline. Never compromise on correctness, adherence, or safety gates. And use token costs and turn counts as secondary measures of efficiency.
+What to say: Four principles to take back to your team, and here is why each one holds. Audit regularly, because hazards creep in one reasonable-looking line at a time. Evaluate against a pinned baseline, because without the same commit, prompt, and tools you cannot say what caused a change. Treat correctness, adherence, and safety as gates, because a cheap run that breaks them is a regression. And read token cost and turn counts last, because they only mean something once the gates pass.
 
 Teaching focus: Summarize the course-wide context engineering methodology.
 -->
@@ -363,6 +363,7 @@ Teaching focus: Conclude the instructional delivery and transition into the cour
 <li>Anthropic (2026). Explore the context window. Claude Code Documentation. code.claude.com/docs/en/context-window</li>
 <li>Anthropic (2026). Hooks reference. Claude Code Documentation. code.claude.com/docs/en/hooks</li>
 <li>Anthropic (2026). How Claude remembers your project. Claude Code Documentation. code.claude.com/docs/en/memory</li>
+<li>Anthropic (2026). Manage costs effectively. Claude Code Documentation. code.claude.com/docs/en/costs</li>
 <li>Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., and Liang, P. (2023). Lost in the Middle: How Language Models Use Long Contexts. arXiv:2307.03172.</li>
 <li>OWASP (2025). <em>LLM01:2025 Prompt Injection</em>. OWASP Gen AI Security Project. genai.owasp.org/llmrisk/llm01-prompt-injection/</li>
 </ul>
